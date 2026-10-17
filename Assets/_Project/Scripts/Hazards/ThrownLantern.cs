@@ -30,6 +30,7 @@ namespace Nullflame
             if (t < 1f) return;
             LanternFire fire = Instantiate(firePrefab, new Vector3(to.x, 0f, to.z), Quaternion.identity);
             if (oil) fire.UseOilRadius();
+            SfxPlayer.Play(SfxId.LanternSmash);
             Destroy(gameObject);
         }
     }

@@ -16,6 +16,7 @@ namespace Nullflame
 
         void Run()
         {
+            SfxPlayer.Play(SfxId.UiClick);
             switch (action)
             {
                 case MenuAction.Play: flow.Play(); break;

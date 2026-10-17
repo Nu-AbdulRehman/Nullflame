@@ -105,6 +105,7 @@ namespace Nullflame
             reversing = g;
             g.BeginReverse();
             fx.SetTimeEffect(true);
+            SfxPlayer.Loop(SfxId.ReverseWhoosh, true);
         }
 
         void Stop()
@@ -112,6 +113,7 @@ namespace Nullflame
             reversing.EndReverse(); // the guard holds where it is
             reversing = null;
             fx.SetTimeEffect(false);
+            SfxPlayer.Loop(SfxId.ReverseWhoosh, false);
         }
 
         void OnDisable()

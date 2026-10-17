@@ -64,6 +64,7 @@ namespace Nullflame
             jumpLanding = landing;
             jumpT = 0f;
             SetState(EntityState.Jumping);
+            SfxPlayer.Play(SfxId.JumpWhoosh);
         }
 
         public void BeginConsume()

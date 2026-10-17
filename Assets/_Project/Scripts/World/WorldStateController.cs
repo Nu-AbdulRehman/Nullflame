@@ -21,6 +21,7 @@ namespace Nullflame
         {
             if (State != WorldState.Meltdown || swapTimer >= 0f) return;
             fx.PlayRewind(tuning.rewindEffectTime);
+            SfxPlayer.Play(SfxId.RewindSweep);
             swapTimer = tuning.rewindEffectTime * 0.5f; // swap behind the white-out peak
         }
 
@@ -33,6 +34,8 @@ namespace Nullflame
             normalRoot.SetActive(true);
             Destroy(meltdownRoot); // Meltdown guards, alarms, wall fire and doors go with it (§10)
             State = WorldState.Normal;
+            SfxPlayer.Loop(SfxId.MusicMeltdown, false);
+            SfxPlayer.Loop(SfxId.MusicNormal, true);
         }
     }
 }

@@ -21,6 +21,7 @@ namespace Nullflame
         {
             Cracked = true;
             if (drip != null) drip.Play();
+            SfxPlayer.Play(SfxId.PipeCrack);
             StartCoroutine(SpawnDrops());
         }
 
@@ -41,6 +42,7 @@ namespace Nullflame
         {
             Cracked = true;
             if (drip != null) drip.Play();
+            SfxPlayer.Play(SfxId.PipeBurst);
             layout.TryGetArea("FinalCorridor", out Rect corridor);
             var guards = GameContext.Current.shadows.Guards;
             for (int i = 0; i < guards.Count; i++)

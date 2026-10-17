@@ -18,6 +18,8 @@ namespace Nullflame
         Vector3 pivot;
         Vector3 pivotVelocity;
         int solidMask;
+        Transform blendFrom;
+        float blendTime, blendElapsed;
 
         void Awake()
         {
@@ -39,6 +41,18 @@ namespace Nullflame
             Cursor.visible = true;
         }
 
+        // Intro (IMPL §21): hold the camera on a scripted pose while the rig is off.
+        public void ShowPose(Transform pose) => cameraTransform.SetPositionAndRotation(pose.position, pose.rotation);
+
+        // Turns the rig on and eases from the pose to the gameplay camera over `time` seconds.
+        public void BlendFrom(Transform pose, float time)
+        {
+            blendFrom = pose;
+            blendTime = time;
+            blendElapsed = 0f;
+            enabled = true;
+        }
+
         public void Rotate(Vector2 lookDelta)
         {
             Yaw += lookDelta.x * tuning.mouseSensitivity;
@@ -47,7 +61,7 @@ namespace Nullflame
 
         void LateUpdate()
         {
-            if (input != null) Rotate(input.Look);
+            if (input != null && blendFrom == null) Rotate(input.Look);
             if (target == null) return;
 
             pivot = Vector3.SmoothDamp(pivot, target.position + Vector3.up * PivotHeight, ref pivotVelocity, tuning.cameraFollowDamping);
@@ -59,7 +73,16 @@ namespace Nullflame
 
             transform.position = pivot;
             transform.rotation = rotation;
-            cameraTransform.SetPositionAndRotation(pivot + back * distance, rotation);
+            Vector3 position = pivot + back * distance;
+            if (blendFrom != null)
+            {
+                blendElapsed += Time.deltaTime;
+                float t = Mathf.SmoothStep(0f, 1f, blendElapsed / blendTime);
+                position = Vector3.Lerp(blendFrom.position, position, t);
+                rotation = Quaternion.Slerp(blendFrom.rotation, rotation, t);
+                if (blendElapsed >= blendTime) blendFrom = null;
+            }
+            cameraTransform.SetPositionAndRotation(position, rotation);
         }
     }
 }

@@ -19,10 +19,13 @@ namespace Nullflame
 
         int solidMask;
 
+        public bool HasValidTarget { get; private set; }
+
         void Awake() => solidMask = LayerMask.GetMask("LevelSolid");
 
         void Update()
         {
+            HasValidTarget = false;
             if (entity.State != EntityState.InShadow || !entity.HasControl || !AimPoint(out Vector3 aim))
             {
                 outline.enabled = false;
@@ -34,6 +37,7 @@ namespace Nullflame
                 outline.enabled = false;
                 return;
             }
+            HasValidTarget = valid;
             DrawOutline(target, valid ? Valid : Invalid);
             if (valid && input.JumpPressed) entity.BeginJump(target, landing);
         }

@@ -31,7 +31,9 @@ namespace Nullflame
 
         void Update()
         {
+            bool wasOpen = logic.IsOpen;
             logic.Tick(GuardsInZone(), Time.deltaTime);
+            if (logic.IsOpen != wasOpen) SfxPlayer.Play(SfxId.GateSlide);
             doorwayBlocker.enabled = !logic.IsOpen;
             open01 = Mathf.MoveTowards(open01, logic.IsOpen ? 1f : 0f, Time.deltaTime / tuning.gatePanelSlideTime);
             Vector3 slide = Vector3.right * (size.x * 0.5f * open01);

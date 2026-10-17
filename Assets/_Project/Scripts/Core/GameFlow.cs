@@ -127,6 +127,7 @@ namespace Nullflame
             int s = Mathf.FloorToInt(RunTime);
             winTimeText.text = $"Time taken: {s / 60}:{s % 60:00}";
             winScreen.SetActive(true);
+            SfxPlayer.Play(SfxId.WinSting);
             SetGameplay(false);
         }
 
@@ -134,6 +135,7 @@ namespace Nullflame
         {
             State = FlowState.Dead;
             deathScreen.SetActive(true);
+            SfxPlayer.Play(SfxId.DeathSting);
             SetGameplay(false);
             restartTimer = tuning.autoRestartDelay;
         }

@@ -22,3 +22,4 @@ Planned (from `docs/implementation/nullflame-implementation.md` §25): `PipeBuil
 
 Known credit requirements before first use: the Vintage Pocket Watch (CC BY 4.0, "Vintage Pocket Watch by Mune (Sketchfab), CC BY 4.0") and Vefects' Free Fire VFX (license not stated; wording pending OD-015).
 | `oilPipe` (via `PH_OilPipe`), `P_FinalGate` visual (`PH_FinalGate`) | `Materials/Palletes/dark color.mat` | #1 Sci-Fi Styled Modular Pack (karboosx) | https://assetstore.unity.com/packages/3d/environments/sci-fi/sci-fi-styled-modular-pack-82913 | Standard Unity Asset Store EULA | No |
+| `sounds[FireLoop]` (via `RegistryAudio` on `P_LanternFire`) | `Audio/SFX_FireMedium_L.wav` | #9 Free Fire VFX (Vefects) | https://vefects.itch.io/free-fire-vfx-unity-urp | Not stated (credited on the win screen, AD-015) | Yes |

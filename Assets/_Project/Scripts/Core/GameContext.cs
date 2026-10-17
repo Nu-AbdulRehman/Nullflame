@@ -15,6 +15,7 @@ namespace Nullflame
         public Essence essence;
         public ConsumeAction consume;
         public TimePowers timePowers;
+        public SfxPlayer sfx;
 
         void Awake() => Current = this;
 

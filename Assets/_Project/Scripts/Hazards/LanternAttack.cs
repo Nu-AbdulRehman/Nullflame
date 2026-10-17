@@ -28,6 +28,7 @@ namespace Nullflame
             timer = tuning.alertTime;
             guard.SetPaused(true);
             if (alertIcon != null) alertIcon.SetActive(true);
+            SfxPlayer.Play(SfxId.AlertSting);
         }
 
         void Update()

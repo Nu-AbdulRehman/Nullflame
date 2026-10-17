@@ -33,5 +33,23 @@ namespace Nullflame
         [Header("VFX")]
         public GameObject lanternFireVfx;
         public GameObject fireSmallVfx;
+
+        [Header("Audio (IMPL §22.2)")]
+        public SfxClip[] sounds;
+
+        [System.Serializable]
+        public struct SfxClip
+        {
+            public SfxId id;
+            public AudioClip clip;
+        }
+
+        public AudioClip Clip(SfxId id)
+        {
+            if (sounds == null) return null;
+            for (int i = 0; i < sounds.Length; i++)
+                if (sounds[i].id == id) return sounds[i].clip;
+            return null;
+        }
     }
 }

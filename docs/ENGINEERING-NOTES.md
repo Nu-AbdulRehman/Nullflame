@@ -112,3 +112,21 @@ MCP for Unity can't edit objects under an inactive parent, so `State_Normal` is 
 ### EN-036: The Kenney Particle Pack is not imported, so the oil drip uses a flat-colour particle
 CLAUDE.md §5.3 allows "default settings with a flat color" when the sprite isn't available. `PH_OilDrip` is a default Particle System with a black URP Particles/Unlit material (PH-015). Import the Kenney Particle Pack to swap in its sprite.
 
+
+### EN-037: The intro gives control after the camera pull, and the skip simulates the pull too (IMPL §21)
+`IntroSequence.Run` waits for G-GLANCE to leave D-PLAYER, blends the camera from `Shared/IntroCloseUp` over T-INTRO-CAM, then calls `BeginPlaying`. `Skip` keeps ticking the wave for the same T-INTRO-CAM after G-GLANCE leaves, so retries start with guards exactly where a full intro leaves them (`IntroTests.Skip_MatchesFullRun_GuardPositions`). Rejected: giving control while the camera still blends, which hands the player a moving camera.
+
+### EN-038: The intro close-up pose is a cosmetic scene transform
+`Shared/IntroCloseUp` sits 1.8 m west of the entity spawn, 1.1 m up, looking at the entity with D-PLAYER behind it. The design doc gives no camera coordinates; this is a look value, not gameplay, so drag it in the Scene view to reframe. Rejected: computing the pose from the orbit camera, which adds code for a value the owner may want to set by eye.
+
+### EN-039: No containment doors animate in the intro
+The Meltdown root holds no door objects: the doorways are open in Meltdown and the closed doors live under `State_Normal`. The intro starts with the doors already open. Rejected: adding Meltdown-only door visuals just to slide them away, which the greybox doesn't need.
+
+### EN-040: Flame vignette uses a second global Volume; hit flash is a HUD image
+`PostFx/FlameFxVolume` (profile `Settings/FlameFxProfile.asset`, orange Vignette) has its weight driven by `ScreenFx` from `FlameReceiver.IsInFlame`. `HUD/HitFlash` flashes red on the intro graze and each time the entity enters flame light. Rejected: changing the time-effect profile, which `SetTimeEffect` drives through its own weight.
+
+### EN-041: Clips reach AudioSources through `RegistryAudio` and `SfxPlayer`
+In Unity 6, `AudioSource` serialises an `AudioResource`, which MCP can't set. `RegistryAudio` puts the registry clip on its AudioSource in `Awake` (the lantern fire loop, the klaxon), and `SfxPlayer` does the same for 2D one-shots and loops. This also keeps "clips only from the AssetRegistry" (IMPL §22.1). The registry stores sounds as an `(SfxId, clip)` list. An empty slot is silent. `ConsumeLoop`, `PipeCreak`, `OilDrip` and `DoorSlide` have no call yet: they need a hold loop or a door animation the greybox doesn't have.
+
+### EN-042: Hint wording other than the reverse hint is agent-written
+§12 names the six hints but gives text only for reverse (§9 Beat 2, copied exactly). The others are short imperative lines built from §3 controls, held in `HintPresenter.texts` so the owner can rewrite them in the Inspector. Each shows for 5 s, once per run.

@@ -114,6 +114,7 @@ namespace Nullflame
             essence.PreviewCost = 0f;
             if (c.IsGain) essence.Gain(c.Amount);
             else essence.TrySpend(c.Amount);
+            SfxPlayer.Play(c.kind == ConsumableKind.Pedestal ? SfxId.PowerGranted : SfxId.ConsumeDone);
             if (c.kind == ConsumableKind.Pedestal) timePowers.Grant(); // the stopwatch is eaten with the pedestal
             else if (c.kind == ConsumableKind.FinalGate) flow.Win(); // Beat 5
             entity.EndConsume();
