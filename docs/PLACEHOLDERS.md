@@ -15,7 +15,7 @@ Every placeholder asset in the project and what the final asset must be (`CLAUDE
 | PH-009 | Unity cylinder pedestal + flat cylinder 'stopwatch' (default material) | `Shared/Pedestal` (`P_Pedestal`, S11, Beat 2) | Pedestal from #1 columns/machines; stopwatch = Vintage Pocket Watch FBX (already imported) with a URP material copy under `Art/` built from its textures. Using the watch requires the CC BY credit on the win screen | Open |
 | PH-010 | `PH_Ring.png` (64 px white ring sprite, baked) | `HUD/HoldRing` (S19, §12) | Fine as is; final look may add a soft glow ring | Open |
 | PH-011 | Two Unity cubes (3 × 4 × 0.2 m, default material) as the sliding gate panels | `Shared/SemiFinalGate` (`P_GuardGate`, S14, §7.8) | Pack #3 Sci Fi Doors gate (two panels), scaled to the 6 × 4 m doorway | Open |
-| PH-012 | Unity cube panel + thin cylinder handles (Up in Meltdown, Down in Normal) | `Shared/LeverPanel` (`P_LeverPanel`), `State_*/LeverHandle_*` (S13, Beat 3) | Panel from #1 machines/computers; handle stays a primitive (`PH_LeverHandle`, no free lever) with a #1 metal material | Open |
+| PH-012 | Thin cylinder handles (Up in Meltdown, Down in Normal) on the pack #1 `console` | `Shared/LeverPanel` (`P_LeverPanel`), `State_*/LeverHandle_*` (S13, Beat 3) | Panel done (#1 `console`, EN-061); handle stays a primitive bar in `M_LanternGlow` (no free lever) | Panel closed, handle open |
 | PH-013 | Plain uGUI panels and `P_MenuButton` (Unity default button sprite, LegacyRuntime font) | `Canvas/TitleScreen`, `PauseScreen`, `MissedScreen`, `DeathScreen` (S19, §12, §14) | Styled screens with the game font and colours in B10 polish | Open |
 | PH-014 | `PH_OilPipe` (Unity cylinder, #1 `dark color` material, no collider) | `AssetRegistry.oilPipe`, placed by `PipeBuilder` on each `P_CrackablePipe` (S16, §7.6) | Wall oil-pipe mesh, 3 m segments that read as crackable, #1 sci-fi style | Open |
 | PH-015 | `PH_OilDrip` (default Particle System, `PH_OilDrip.mat` flat black URP Particles/Unlit) | `P_CrackablePipe` drip (S16, §7.6) | Kenney Particle Pack sprite tinted black (pack not imported yet), or a drip VFX | Open |
@@ -28,8 +28,8 @@ Every placeholder asset in the project and what the final asset must be (`CLAUDE
 The implementation spec (`docs/implementation/nullflame-implementation.md` §23, §25.2) expects these gaps. They get real rows above only when created.
 
 - `PH_OilPipe`: wall pipe for `CrackablePipe` (S16). No free pipe pack found.
-- `PH_LeverHandle`: breaker lever handle on the #1 panel. No free lever found.
-- `PH_Locker`: Barracks lockers. No pack confirmed.
+- `PH_LeverHandle`: breaker lever handle on the #1 `console`. No free lever found; a glowing bar for now (EN-061).
+- `PH_Locker`: Barracks lockers. Closed: pack #1 `computer_station` fitted to the locker box (EN-061).
 - `PH_OilDrip`: oil drip particle system using a Kenney Particle Pack sprite tinted black.
 - `PH_OilDrop`, `PH_EssenceGradient`, `PH_AlertIcon`: baked by `DecalBaker` in later steps.
 - `PH_Tone_<Event>`: only for sound events with no fitting clip in the approved sources.
