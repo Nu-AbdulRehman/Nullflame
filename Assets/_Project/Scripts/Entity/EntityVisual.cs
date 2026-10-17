@@ -7,6 +7,7 @@ namespace Nullflame
     {
         [SerializeField] GameTuning tuning;
         [SerializeField] ShadowEntity entity;
+        [SerializeField] ConsumeAction consume;
         [SerializeField] Transform blob;
         [SerializeField] Transform teardrop;
         [SerializeField] float wobbleAmount = 0.06f;
@@ -31,6 +32,9 @@ namespace Nullflame
             else
             {
                 float s = tuning.entitySize * (1f + wobbleAmount * Mathf.Sin(Time.time * wobbleSpeed));
+                // While consuming, the blob spreads over the target's shadow (design doc §5.1, §7.3 step 2).
+                if (consume.Target != null && entity.Current != null)
+                    s = Mathf.Lerp(s, Mathf.Max(entity.Current.size.x, entity.Current.size.y), consume.Progress);
                 blob.localScale = new Vector3(s, s, 1f);
                 blob.position = new Vector3(p.x, BlobHeight, p.z);
             }

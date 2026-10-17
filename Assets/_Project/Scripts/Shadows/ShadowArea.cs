@@ -19,6 +19,8 @@ namespace Nullflame
         public bool isMoving;
         [Tooltip("True only on the breaker lever panel's shadow (facility rewind spot).")]
         public bool isRewindSpot;
+        [Tooltip("Optional: what holding E in this shadow eats.")]
+        public Consumable consumable;
         [Tooltip("Oil drops and void shadows: destroyed when lantern fire reaches them.")]
         public bool destroyedByFire;
         [SerializeField] Transform decal;

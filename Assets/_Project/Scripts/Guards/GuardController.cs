@@ -21,6 +21,7 @@ namespace Nullflame
         public bool startOnEnable = true;
 
         public bool HasLantern { get; set; } = true;
+        public bool IsBeingConsumed { get; set; }
         public GuardMotion Motion { get; private set; }
 
         static readonly List<RoutePoint> TravelBuffer = new List<RoutePoint>(32);

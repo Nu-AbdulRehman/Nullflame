@@ -12,6 +12,8 @@ Every placeholder asset in the project and what the final asset must be (`CLAUDE
 | PH-006 | Unity capsule (default material) as the guard body | `P_Guard/Visual` (S7, §8.1) | Pack #5 Low Poly SWAT body as a child visual through `AssetRegistry`, Humanoid rig driven by `Art/Guard.controller` (B10) | Open |
 | PH-007 | Red unlit sphere `PH_AlertIcon.mat` above the guard's head | `P_Guard/AlertIcon` (S10, §12 "!" over the guard) | Camera-facing "!" icon sprite, 128 px PNG, red/orange, readable at 15 m | Open |
 | PH-008 | Small Unity sphere + orange point light | `P_ThrownLantern/Body` (S10, §7.9) | The guard lantern model (pack #10 hand-held lantern or the CC0 Low poly Lantern OBJ) as the thrown visual | Open |
+| PH-009 | Unity cylinder pedestal + flat cylinder 'stopwatch' (default material) | `Shared/Pedestal` (`P_Pedestal`, S11, Beat 2) | Pedestal from #1 columns/machines; stopwatch = Vintage Pocket Watch FBX (already imported) with a URP material copy under `Art/` built from its textures. Using the watch requires the CC BY credit on the win screen | Open |
+| PH-010 | `PH_Ring.png` (64 px white ring sprite, baked) | `HUD/HoldRing` (S19, §12) | Fine as is; final look may add a soft glow ring | Open |
 
 ## Expected placeholders (not created yet)
 

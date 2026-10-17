@@ -15,8 +15,22 @@ namespace Nullflame
         public bool PausePressed { get; private set; }
         public bool SkipPressed { get; private set; }
 
+        bool simulated;
+
+        // Tests drive holds without devices. Look, move and jump stay zero while simulated.
+        public void Simulate(bool consume, bool reverse = false, bool rewind = false)
+        {
+            simulated = true;
+            Look = Move = Vector2.zero;
+            JumpPressed = PausePressed = SkipPressed = false;
+            ConsumeHeld = consume;
+            ReverseHeld = reverse;
+            RewindHeld = rewind;
+        }
+
         void Update()
         {
+            if (simulated) return;
             var mouse = Mouse.current;
             var kb = Keyboard.current;
             Look = mouse != null ? mouse.delta.ReadValue() : Vector2.zero;

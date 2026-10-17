@@ -26,6 +26,7 @@ namespace Nullflame.EditorTools
             Material(null, "PH_Outline", QueueOutline);
             Material(null, "PH_Teardrop", QueueEntity, Color.black);
             Material(null, "PH_ViewCone", QueueCone, new Color(1f, 1f, 1f, 0.12f));
+            Sprite(Texture("PH_Ring", (u, v) => new Color(1f, 1f, 1f, Ring(u, v, 0.78f, 0.98f))));
             ViewCone(AssetDatabase.LoadAssetAtPath<GameTuning>(FacilityBuilder.TuningPath));
             AssetDatabase.SaveAssets();
         }
@@ -74,6 +75,22 @@ namespace Nullflame.EditorTools
         {
             float r = Vector2.Distance(new Vector2(u, v), new Vector2(0.5f, 0.5f)) * 2f;
             return 1f - Mathf.Clamp01((r - inner) / (1f - inner));
+        }
+
+        // Opaque between inner and outer (fractions of the radius), soft one pixel at each edge.
+        static float Ring(float u, float v, float inner, float outer)
+        {
+            float r = Vector2.Distance(new Vector2(u, v), new Vector2(0.5f, 0.5f)) * 2f;
+            float px = 2f / Res;
+            return Mathf.Clamp01((r - inner) / px) * Mathf.Clamp01((outer - r) / px);
+        }
+
+        static void Sprite(Texture2D tex)
+        {
+            var importer = (TextureImporter)AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(tex));
+            importer.textureType = TextureImporterType.Sprite;
+            importer.spriteImportMode = SpriteImportMode.Single;
+            importer.SaveAndReimport();
         }
 
         static Texture2D Texture(string name, System.Func<float, float, Color> pixel)

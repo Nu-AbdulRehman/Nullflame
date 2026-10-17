@@ -13,6 +13,7 @@ namespace Nullflame
         public ShadowRegistry shadows;
         public ShadowEntity entity;
         public Essence essence;
+        public ConsumeAction consume;
 
         void Awake() => Current = this;
 

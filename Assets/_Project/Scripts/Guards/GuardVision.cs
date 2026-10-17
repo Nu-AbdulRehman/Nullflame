@@ -26,8 +26,10 @@ namespace Nullflame
         void Update()
         {
             ShadowEntity entity = GameContext.Current != null ? GameContext.Current.entity : null;
-            bool sees = entity != null && guard.HasLantern && CanSee(entity);
-            if (timer.Tick(sees, Time.deltaTime)) Spotted?.Invoke(this);
+            bool sees = entity != null && guard.HasLantern && !guard.IsBeingConsumed && CanSee(entity);
+            if (!timer.Tick(sees, Time.deltaTime)) return;
+            GameContext.Current.consume.Cancel(); // a spotted consume is cancelled at no cost (§7.3)
+            Spotted?.Invoke(this);
         }
 
         bool CanSee(ShadowEntity e)

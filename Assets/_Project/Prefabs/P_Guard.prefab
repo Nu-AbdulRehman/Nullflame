@@ -357,6 +357,7 @@ GameObject:
   - component: {fileID: 3207484466581047409}
   - component: {fileID: 8957981638465384575}
   - component: {fileID: 1292040082354544694}
+  - component: {fileID: 4500936589162249930}
   m_Layer: 0
   m_Name: P_Guard
   m_TagString: Untagged
@@ -435,6 +436,22 @@ MonoBehaviour:
   lantern: {fileID: 2408896981860528578}
   alertIcon: {fileID: 1570061052222424840}
   thrownPrefab: {fileID: 8653902215335726290, guid: f70a04dee32e90840bca32cc43b9fb40, type: 3}
+--- !u!114 &4500936589162249930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4747920969538303069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce091e541e21a364a8fb913763a955bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.Consumable
+  tuning: {fileID: 11400000, guid: f6b00f4c9d7c7a04889585562eac4160, type: 2}
+  kind: 0
+  displayName: Guard
+  sinkRoot: {fileID: 838241545863831997}
 --- !u!1 &5183685339554918858
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,6 +610,10 @@ PrefabInstance:
       propertyPath: isMoving
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6836066064788778360, guid: e69acd504ae75494994897d349556687, type: 3}
+      propertyPath: consumable
+      value: 
+      objectReference: {fileID: 4500936589162249930}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

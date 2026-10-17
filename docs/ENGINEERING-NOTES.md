@@ -57,3 +57,12 @@ Their positions are layout data (Appendix A.3), so they live in `FacilityLayout`
 
 ### EN-018: Lanternless guards keep a white cone (IMPL §10.5)
 The spec asks for a grey-tinted cone while lanternless. Skipped for now: it needs a per-guard material instance, and the hidden lantern already shows the state. Add in B10 polish if play-testing shows confusion.
+
+### EN-019: Consume effects are chosen by kind in code, not a UnityEvent (IMPL §13.1)
+`ConsumeAction` grants the time power when a `Pedestal` is eaten (and will call the win in B9 for the `FinalGate`). Rejected: an Inspector-wired `onConsumed` UnityEvent, which MCP for Unity can't wire reliably and which adds a field for two fixed outcomes.
+
+### EN-020: After a cancelled consume, E must be released before a new one starts
+Without the latch, a consume cancelled by spotting restarts on the next frame while E is still held. The latch also applies to release-cancels, where E is up anyway.
+
+### EN-021: `InputReader.Simulate` drives holds in tests
+PlayMode tests call `Simulate(consume, reverse, rewind)`, which stops device reads for that reader. Rejected: test-only public setters on each gameplay component, which spreads the hook.

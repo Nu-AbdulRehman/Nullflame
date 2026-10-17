@@ -66,6 +66,16 @@ namespace Nullflame
             SetState(EntityState.Jumping);
         }
 
+        public void BeginConsume()
+        {
+            if (State == EntityState.InShadow) SetState(EntityState.Consuming);
+        }
+
+        public void EndConsume()
+        {
+            if (State == EntityState.Consuming) SetState(EntityState.InShadow);
+        }
+
         public void Die()
         {
             if (State == EntityState.Dead) return;
