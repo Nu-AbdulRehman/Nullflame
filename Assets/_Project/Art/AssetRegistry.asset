@@ -19,7 +19,7 @@ MonoBehaviour:
   showOnlyDoor: {fileID: 8875449794350654438, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
   crate: {fileID: 178326, guid: 777d150aa6d8e1d48bcaea831bed7072, type: 3}
   cart: {fileID: 155844, guid: 6456a4784f31cab439d29b7e3bb286a4, type: 3}
-  cabinet: {fileID: 142160, guid: b3f6e169466f65a4aa48e83805d9e440, type: 3}
+  cabinet: {fileID: 186660, guid: 914595d46f531e44f8b35cd1232a0750, type: 3}
   bunk: {fileID: 192520, guid: 9efb87eb649319c4c8c3a954a74df462, type: 3}
   locker: {fileID: 116326, guid: 82c3b8fcabff82d4787f83e992e386df, type: 3}
   lanternRack: {fileID: 179106, guid: db49253e161c21440b7ccf6d59865098, type: 3}

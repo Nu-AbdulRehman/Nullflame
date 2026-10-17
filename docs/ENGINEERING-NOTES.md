@@ -192,3 +192,6 @@ Owner choice (2026-10-18): `FacilityLayout.wallHeight` (6 m) and `wallBelowFloor
 
 ### EN-061: Lever console, stocked lantern rack, locker cabinets
 Owner request (2026-10-18). `P_LeverPanel/Panel` keeps its box collider and shadow but hides its cube; the pack #1 `console` sits in the same footprint, and the Meltdown/Normal handle bars use `M_LanternGlow` so the lever reads in the dark. The lantern rack stays the pack #1 `shelf` fitted to its box; `FacilityBuilder.StockRack` stands four CC0 lanterns (`AssetRegistry.rackLantern`) on the rack's top face and hangs two on the front 0.3 m above the floor. The owner sank the rack so its centre is on the floor (`FacilityLayout.asset` props[4].center.y = 0, the asset being the source over the code defaults); the lanterns follow the box, so they sit on the visible top at 0.9 m. Lockers use pack #1 `computer_station` fitted to the 0.6 × 2 × 0.5 m locker box, the pack's tallest narrow unit.
+
+### EN-062: The Time Room cabinet is the pack #1 vending machine
+The pack's `cabinet` is a wide low unit (2 x 1.77 x 1.56 m); fitted to the 1.2 x 2 x 0.6 m cabinet box it squashed into a featureless block. `vending_machine` (2.4 x 4 x 1.15 m) fits that box at a uniform 0.5 scale, so it keeps its proportions and front panel. `AssetRegistry.cabinet` now points at it.
