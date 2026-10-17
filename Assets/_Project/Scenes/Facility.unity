@@ -19108,6 +19108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.FlameReceiver
   entity: {fileID: 1552938427}
   essence: {fileID: 1768299188}
+  tuning: {fileID: 11400000, guid: f6b00f4c9d7c7a04889585562eac4160, type: 2}
 --- !u!114 &1552938431
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -37,8 +37,8 @@ namespace Nullflame
         {
             // The ridden guard never notices its rider (design doc §7.2).
             if (e.Current != null && e.Current.owner == guard.gameObject) return false;
-            bool acting = e.State == EntityState.Jumping || e.State == EntityState.Consuming || e.OnFloor
-                || (e.State == EntityState.InShadow && e.Current != null && e.Current.opacity == ShadowOpacity.Soft);
+            // Any shadow hides a still entity (AD-028); jumping, consuming and bare floor show it.
+            bool acting = e.State == EntityState.Jumping || e.State == EntityState.Consuming || e.OnFloor;
             if (!acting) return false;
 
             Vector3 eye = guard.transform.position + Vector3.up * tuning.viewEyeHeight;

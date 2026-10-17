@@ -33,12 +33,17 @@ namespace Nullflame.Tests
             yield return null;
         }
 
+        float held; // seconds E was held in the strip: the strip drains T-DMG-SOFT meanwhile (AD-028)
+        float SoftDrain => tuning.softShadowDps * held;
+
         IEnumerator HoldE(float seconds)
         {
             input.Simulate(consume: true);
-            for (float t = 0f; t < seconds; t += Time.deltaTime) yield return null;
+            held = 0f;
+            for (float t = 0f; t < seconds; t += Time.deltaTime) { yield return null; held += Time.deltaTime; }
             input.Simulate(consume: false);
             yield return null;
+            held += Time.deltaTime; // the release frame drains too
         }
 
         static int OilDrops()
@@ -57,7 +62,7 @@ namespace Nullflame.Tests
             float before = essence.Value;
             yield return HoldE((tuning.pipeSafeStart + tuning.pipeSafeEnd) * 0.5f);
             Assert.IsTrue(pipe.Cracked);
-            Assert.AreEqual(before - tuning.pipeCost, essence.Value, 1e-3f);
+            Assert.AreEqual(before - tuning.pipeCost - SoftDrain, essence.Value, 0.5f);
             for (float t = 0f; t < tuning.pipeDropDuration + 0.3f; t += Time.deltaTime) yield return null;
             Assert.AreEqual(tuning.pipeDropCount, OilDrops());
         }
@@ -69,7 +74,7 @@ namespace Nullflame.Tests
             float before = essence.Value;
             yield return HoldE(tuning.pipeSafeStart * 0.5f);
             Assert.IsFalse(pipe.Cracked);
-            Assert.AreEqual(before, essence.Value, 1e-3f);
+            Assert.AreEqual(before - SoftDrain, essence.Value, 0.5f);
         }
 
         // §7.6 [Default]: a cracked crack point can't be cracked again.
@@ -82,7 +87,7 @@ namespace Nullflame.Tests
             entity.Place(pipe.strip, pipe.strip.Center); // the drops are smaller, so stand on the strip again
             float before = essence.Value;
             yield return HoldE(tuning.pipeBurstTime + 0.2f);
-            Assert.AreEqual(before, essence.Value, 1e-3f, "no second crack or burst");
+            Assert.AreEqual(before - SoftDrain, essence.Value, 0.5f, "no second crack or burst");
             Assert.AreEqual(tuning.pipeDropCount, OilDrops());
             Assert.IsNull(Object.FindAnyObjectByType<ThrownLantern>());
         }
@@ -95,7 +100,7 @@ namespace Nullflame.Tests
             float before = essence.Value;
             yield return HoldE(tuning.pipeBurstTime + 0.1f);
             Assert.IsTrue(pipe.Cracked);
-            Assert.AreEqual(before - tuning.pipeBurstCost, essence.Value, 1e-3f);
+            Assert.AreEqual(before - tuning.pipeBurstCost - SoftDrain, essence.Value, 0.5f);
             Assert.AreEqual(0, OilDrops(), "a burst pours oil but drops no oil shadows");
         }
 

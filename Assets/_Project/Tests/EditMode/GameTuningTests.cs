@@ -21,8 +21,7 @@ namespace Nullflame.Tests
                 Assert.AreEqual(100f, t.essenceStart, "T-ESS-START");
                 Assert.AreEqual(10f, t.introGrazeDamage, "T-ESS-INTRO");
                 Assert.AreEqual(10f, t.essenceFloor, "T-ESS-FLOOR");
-                Assert.AreEqual(8f, t.lanternDps, "T-DMG-LANTERN");
-                Assert.AreEqual(5f, t.alarmDps, "T-DMG-ALARM");
+                Assert.AreEqual(2f, t.softShadowDps, "T-DMG-SOFT");
                 Assert.AreEqual(3f, t.lanternRadius, "T-LANTERN-RADIUS");
                 Assert.AreEqual(0.6f, t.throwTime, "T-THROW-TIME");
                 Assert.AreEqual(1f, t.fireStartRadius, "T-FIRE-START");
@@ -63,7 +62,7 @@ namespace Nullflame.Tests
             try
             {
                 Assert.AreEqual(20f, t.GetSpawner(SpawnerId.SleepMeltdown).interval, "T-SPN-SLEEP-M");
-                Assert.AreEqual(3, t.GetSpawner(SpawnerId.SleepNormal).maxAlive, "T-SPN-SLEEP-N");
+                Assert.AreEqual(2, t.GetSpawner(SpawnerId.SleepNormal).maxAlive, "T-SPN-SLEEP-N (AD-025)");
                 Assert.AreEqual(15f, t.GetSpawner(SpawnerId.SideNormal).interval, "T-SPN-SIDE-N");
                 Assert.IsTrue(t.GetSpawner(SpawnerId.FinalNormal).refillOnly, "T-SPN-FINAL-N");
             }

@@ -96,13 +96,26 @@ namespace Nullflame.Tests
             Assert.IsFalse(spotted);
         }
 
-        // T-VIEW-GRACE: soft shadows hide nothing, but spotting waits 0.2 s.
+        // AD-028: a soft shadow hides a still entity too.
         [UnityTest]
-        public IEnumerator SoftShadow_Spotted_AfterGrace_TVIEWGRACE()
+        public IEnumerator SoftShadow_NotSpotted_AD028()
         {
             yield return Setup();
             ShadowArea s = MakeShadow(new Vector3(25f, 0f, 39f), ShadowOpacity.Soft);
             entity.Place(s, s.Center);
+            yield return Wait(0.6f);
+            Assert.IsFalse(spotted);
+        }
+
+        // T-VIEW-GRACE: bare floor hides nothing, but spotting waits 0.2 s.
+        [UnityTest]
+        public IEnumerator Floor_Spotted_AfterGrace_TVIEWGRACE()
+        {
+            yield return Setup();
+            ShadowArea s = MakeShadow(new Vector3(25f, 0f, 39f), ShadowOpacity.Soft);
+            entity.Place(s, s.Center);
+            entity.Move(new Vector3(0.8f, 0f, 0f));
+            Assert.IsTrue(entity.OnFloor);
             yield return Wait(0.1f);
             Assert.IsFalse(spotted, "not before the grace time");
             yield return Wait(0.3f);

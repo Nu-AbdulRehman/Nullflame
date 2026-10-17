@@ -38,8 +38,7 @@ namespace Nullflame
         [Tooltip("T-ESS-LOW: bar pulses and heartbeat plays below this")] public float essenceLowThreshold = 25f;
 
         [Header("Flame")]
-        [Tooltip("T-DMG-LANTERN: guard lantern drain (per s)")] public float lanternDps = 8f;
-        [Tooltip("T-DMG-ALARM: alarm light drain (per s)")] public float alarmDps = 5f;
+        [Tooltip("T-DMG-SOFT: drain inside a soft shadow (pipe strips), any world state (per s), AD-028")] public float softShadowDps = 2f;
         [Tooltip("T-DMG-FIRE: lantern fire drain (per s), AD-022")] public float fireDps = 15f;
         [Tooltip("T-DMG-FLOOR: lantern or alarm light drain while on bare floor (per s), AD-023")] public float floorLightDps = 40f;
         [Tooltip("T-LANTERN-RADIUS: guard lantern damage radius (m)")] public float lanternRadius = 3f;

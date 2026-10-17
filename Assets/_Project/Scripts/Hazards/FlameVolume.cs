@@ -29,11 +29,7 @@ namespace Nullflame
         // Lantern and alarm light: blocked by walls and by an opaque shadow (EN-048, AD-018). Fire is not light.
         public bool IsLight => kind == FlameKind.Lantern || kind == FlameKind.Alarm;
 
-        // On bare floor, light drains T-DMG-FLOOR instead (AD-023).
-        public float FloorDamagePerSecond => tuning.floorLightDps;
-
-        public float DamagePerSecond =>
-            kind == FlameKind.Lantern ? tuning.lanternDps : kind == FlameKind.Alarm ? tuning.alarmDps
-            : kind == FlameKind.LanternFire ? tuning.fireDps : 0f;
+        // Light only reaches the entity on bare floor (AD-023, AD-028); fire burns anywhere.
+        public float DamagePerSecond => IsLight ? tuning.floorLightDps : kind == FlameKind.LanternFire ? tuning.fireDps : 0f;
     }
 }

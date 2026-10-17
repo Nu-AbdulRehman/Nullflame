@@ -57,17 +57,21 @@ namespace Nullflame.Tests
 
     public sealed class FlameTests : HazardFixture
     {
-        // T-DMG-LANTERN: 8 per second while another guard's lantern touches the entity.
+        // T-DMG-SOFT (AD-028): a soft shadow drains slowly on its own; light never reaches it.
         [UnityTest]
-        public IEnumerator LanternDrains_TDMGLANTERN()
+        public IEnumerator SoftShadow_Drains_TDMGSOFT()
         {
             yield return Setup();
-            guard.GetComponent<GuardVision>().enabled = false; // a soft shadow is spottable; measure the drain alone
-            PlaceAt(new Vector3(25f, 0f, 39f));
+            PlaceAt(new Vector3(19f, 0f, 20f)); // Main Corridor, no flame light near
             yield return null;
             float before = essence.Value;
             yield return Wait(1f);
-            Assert.AreEqual(tuning.lanternDps, before - essence.Value, 1f);
+            Assert.AreEqual(tuning.softShadowDps, before - essence.Value, 0.5f);
+            PlaceAt(new Vector3(25f, 0f, 39f)); // in G-MAIN's lantern: still only the soft drain
+            yield return null;
+            before = essence.Value;
+            yield return Wait(1f);
+            Assert.AreEqual(tuning.softShadowDps, before - essence.Value, 0.5f);
         }
 
         // EN-048: lantern light stops at walls. A LevelSolid block between the lantern and the entity: no drain.
@@ -78,6 +82,8 @@ namespace Nullflame.Tests
             guard.GetComponent<GuardVision>().enabled = false;
             Vector3 at = new Vector3(25f, 0f, 39f);
             PlaceAt(at);
+            entity.Move(new Vector3(0.8f, 0f, 0f)); // bare floor: light would reach it
+            at = entity.transform.position;
             Vector3 lantern = guard.GetComponentInChildren<Light>().transform.position;
             var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
             wall.layer = LayerMask.NameToLayer("LevelSolid");
@@ -101,16 +107,18 @@ namespace Nullflame.Tests
             Assert.AreEqual(tuning.essenceStart, essence.Value, 1e-3f);
         }
 
-        // T-DMG-ALARM: 5 per second under an alarm light (Meltdown).
+        // T-DMG-FLOOR: an alarm light (Meltdown) drains the floor rate on bare floor, nothing in a shadow.
         [UnityTest]
-        public IEnumerator Alarm_TDMGALARM()
+        public IEnumerator Alarm_OnFloor_Drains_TDMGFLOOR()
         {
             yield return Setup();
             PlaceAt(new Vector3(8f, 0f, 8f));
+            entity.Move(new Vector3(0.8f, 0f, 0f));
+            Assert.IsTrue(entity.OnFloor);
             yield return null;
             float before = essence.Value;
             yield return Wait(1f);
-            Assert.AreEqual(tuning.alarmDps, before - essence.Value, 1f);
+            Assert.AreEqual(tuning.floorLightDps, before - essence.Value, 3f);
         }
 
         // AD-018: an opaque shadow is cover from flame light (no lantern drain), but fire still burns in it.
@@ -160,7 +168,8 @@ namespace Nullflame.Tests
         public IEnumerator Spotted_ThrowsAfterAlert_TGRDALERT_TTHROWTIME()
         {
             yield return Setup();
-            PlaceAt(new Vector3(25f, 0f, 39f), ShadowOpacity.Soft);
+            PlaceAt(new Vector3(25f, 0f, 39f));
+            entity.Move(new Vector3(0.8f, 0f, 0f)); // bare floor in the cone (AD-028: shadows hide)
             yield return Wait(tuning.viewGrace + tuning.alertTime * 0.5f);
             Assert.IsNull(Object.FindAnyObjectByType<LanternFire>(), "no fire during the alert");
             yield return Wait(tuning.alertTime + tuning.throwTime);
@@ -231,7 +240,8 @@ namespace Nullflame.Tests
         public IEnumerator Relight_AtRack_AD021()
         {
             yield return Setup();
-            PlaceAt(new Vector3(25f, 0f, 39f), ShadowOpacity.Soft);
+            PlaceAt(new Vector3(25f, 0f, 39f));
+            entity.Move(new Vector3(0.8f, 0f, 0f)); // bare floor in the cone
             yield return Wait(tuning.viewGrace + tuning.alertTime + 0.1f);
             Assert.IsFalse(guard.HasLantern);
             Vector3 atThrow = guard.transform.position;

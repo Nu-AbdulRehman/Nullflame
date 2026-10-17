@@ -9,6 +9,7 @@ namespace Nullflame
     {
         [SerializeField] ShadowEntity entity;
         [SerializeField] Essence essence;
+        [SerializeField] GameTuning tuning;
 
         readonly List<FlameVolume> touching = new List<FlameVolume>(16);
         int solidMask;
@@ -32,8 +33,8 @@ namespace Nullflame
             IsInFlame = false;
             // Flames never touch an airborne entity (AD-011).
             if (entity.State != EntityState.InShadow && entity.State != EntityState.Consuming) return;
-            // An opaque shadow is cover from flame light (lanterns, alarms); fire still burns (AD-018).
-            bool covered = entity.Current != null && entity.Current.opacity == ShadowOpacity.Opaque;
+            // Any shadow is cover from flame light (lanterns, alarms); fire still burns (AD-018, AD-028).
+            bool covered = entity.Current != null;
 
             float dps = 0f;
             for (int i = touching.Count - 1; i >= 0; i--)
@@ -47,8 +48,10 @@ namespace Nullflame
                     essence.Kill();
                     return;
                 }
-                dps += f.IsLight && entity.OnFloor ? f.FloorDamagePerSecond : f.DamagePerSecond;
+                dps += f.DamagePerSecond;
             }
+            // A soft shadow (pipe strip) is thin cover: a slow drain until oil drops give opaque cover (AD-028).
+            if (entity.Current != null && entity.Current.opacity == ShadowOpacity.Soft) dps += tuning.softShadowDps;
             if (dps <= 0f) return;
             IsInFlame = true;
             essence.Damage(dps * Time.deltaTime);
