@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c8dd2083b656f9d448c5b8de5f156995, type: 2}
+  - {fileID: 2100000, guid: 22ed5071b9c588c47beeeb844581b824, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -140,5 +140,8 @@ MonoBehaviour:
   size: {x: 1.5, y: 1.5}
   isMoving: 0
   isRewindSpot: 0
+  consumable: {fileID: 0}
+  pipe: {fileID: 0}
   destroyedByFire: 1
   decal: {fileID: 1070834314216803408}
+  hideDecal: 0

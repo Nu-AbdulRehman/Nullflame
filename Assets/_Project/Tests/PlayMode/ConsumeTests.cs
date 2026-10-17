@@ -111,19 +111,21 @@ namespace Nullflame.Tests
             Assert.IsFalse(powers.HasTimePower);
         }
 
-        // §7.5: after a consume the entity sits in a void shadow.
+        // §7.5 / AD-023: after a consume the entity stands where it was; a void only where floor is not allowed.
         [UnityTest]
-        public IEnumerator LeavesVoidShadow()
+        public IEnumerator LeavesEntityOnFloor_AD023()
         {
             yield return SetupConsume();
             ShadowArea shadow = guard.GetComponentInChildren<ShadowArea>();
             entity.Place(shadow, shadow.Center);
+            Vector3 spot = entity.transform.position;
             input.Simulate(consume: true);
             yield return Wait(tuning.guardConsumeTime + 0.3f);
             input.Simulate(consume: false);
             yield return null;
-            Assert.IsNotNull(entity.Current);
-            Assert.IsTrue(entity.Current.destroyedByFire, "void shadow");
+            Assert.IsTrue(entity.OnFloor, "Barracks floor is allowed: no void after the consume");
+            Assert.AreEqual(spot.x, entity.transform.position.x, 1e-3f);
+            Assert.AreEqual(EntityState.InShadow, entity.State);
         }
 
         // T-COST-GATE, T-CON-GATE: the placed Final Gate refuses at Essence 80 and wins above it (Beat 5).

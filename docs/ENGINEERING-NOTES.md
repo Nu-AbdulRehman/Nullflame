@@ -169,6 +169,9 @@ Walls and opaque cover stop light (lantern, alarm); they never stop fire. `Flame
 ### EN-055: Stepping out of a prop's shadow, and jumping onto bare floor
 A prop's shadow footprint often lies inside the guard NavMesh's 0.5 m clearance band round the prop, so a floor step from it found no mesh within 0.3 m and was refused: the entity was trapped. `ShadowEntity.FloorStep` now treats a start point off the mesh as "inside a band": the step is allowed onto the nearest floor within 1 m, with no raycast. From the floor itself a step into a band is still refused, so walls and props still block. `JumpTargeting` also accepts a jump with no shadow under the reticle when `ShadowEntity.CanLandOnFloor` says the point is allowed floor on the mesh; the landing attaches to whatever shadow is there, or stays on the floor. No outline is drawn for a floor jump. Rejected: a looser snap everywhere, which would let the entity walk through thin walls.
 
+### EN-056: No void where the floor is allowed; the void decal is round
+After a consume the entity sat in a 1.5 m square void decal with its blob hidden (opaque cover), which read as "the entity became a square". Where the layout allows floor (AD-023) a vanished shadow now leaves the entity standing on the floor with its blob; the void is spawned only where floor is forbidden (the Final Corridor group), and `P_VoidShadow`'s decal uses the round `PH_EntityBlob` material so it reads as the entity's own patch. Note the trade: after eating a guard in a lit spot the entity is on bare floor, so other lanterns burn at T-DMG-FLOOR until it moves.
+
 ### EN-052: The SWAT model's tonfa is hidden
 `SWAT_A_Tonfa` on the pack #5 body was active and read as a grey object in the lantern hand. Disabled in `P_Guard`.
 

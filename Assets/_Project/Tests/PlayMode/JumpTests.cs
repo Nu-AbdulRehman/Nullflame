@@ -90,11 +90,21 @@ namespace Nullflame.Tests
 
         // §7.5: when the current shadow disappears the entity stays put in a void shadow.
         [UnityTest]
-        public IEnumerator ShadowRemoved_LeavesVoid_TSHDVOID()
+        public IEnumerator ShadowRemoved_FloorWhereAllowed_VoidElsewhere_TSHDVOID()
         {
             yield return TestScenes.LoadFacility();
             var entity = Object.FindAnyObjectByType<ShadowEntity>();
             ShadowArea temp = Object.Instantiate(Shadow("PedestalShadow"), new Vector3(5f, 0f, 2f), Quaternion.identity);
+            entity.Place(temp, temp.Center);
+            Vector3 floorSpot = entity.transform.position;
+            Object.Destroy(temp.gameObject);
+            yield return null;
+            yield return null;
+            Assert.IsTrue(entity.OnFloor, "Time Room floor is allowed (AD-023): no void");
+            Assert.AreEqual(floorSpot, entity.transform.position);
+
+            yield return Flow.ToNormal();
+            temp = Object.Instantiate(Shadow("PedestalShadow"), new Vector3(18.6f, 0f, 46.5f), Quaternion.identity);
             entity.Place(temp, temp.Center);
             Vector3 before = entity.transform.position;
 
@@ -102,7 +112,7 @@ namespace Nullflame.Tests
             yield return null;
             yield return null;
 
-            Assert.IsNotNull(entity.Current);
+            Assert.IsNotNull(entity.Current, "Final Corridor allows no floor: a void");
             Assert.IsTrue(entity.Current.destroyedByFire, "void shadow");
             Assert.AreEqual(AssetLoad.Tuning().voidShadowSize, entity.Current.size.x, 1e-4f, "T-SHD-VOID");
             Assert.AreEqual(before.x, entity.transform.position.x, 1e-3f);

@@ -103,9 +103,10 @@ namespace Nullflame
         {
             if (currentLost)
             {
-                // Our shadow vanished (consumed owner, despawn, fire). Stay put in a void (design doc §7.5).
+                // Our shadow vanished (consumed owner, despawn, fire). Stay put: on the floor where the floor is
+                // allowed (AD-023), else in a void (design doc §7.5).
                 currentLost = false;
-                SpawnVoid(transform.position);
+                if (!CanLandOnFloor(transform.position)) SpawnVoid(transform.position);
             }
             if (Current != null && Current.isMoving)
             {
