@@ -17,7 +17,6 @@ namespace Nullflame
         GuardController ridden;
 
         public bool HasTimePower { get; private set; }
-        public bool IsReversing => reversing != null;
 
         // The guard whose shadow the entity rides, if any (cached by shadow owner).
         public GuardController RiddenGuard
