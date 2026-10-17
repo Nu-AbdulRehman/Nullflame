@@ -124,6 +124,35 @@ namespace Nullflame.Tests
             Assert.IsNotNull(entity.Current);
             Assert.IsTrue(entity.Current.destroyedByFire, "void shadow");
         }
+
+        // T-COST-GATE, T-CON-GATE: the placed Final Gate refuses at Essence 80 and wins above it (Beat 5).
+        [UnityTest]
+        public IEnumerator Gate_RefusedAtEightyOrLess_TCOSTGATE()
+        {
+            yield return SetupConsume();
+            yield return Flow.ToNormal();
+            foreach (string n in new[] { "SP-SIDE-N", "SP-FINAL-N", "G-PATROL" }) GameObject.Find(n).SetActive(false);
+            var gate = GameObject.Find("FinalGate").GetComponent<Consumable>();
+            ShadowArea shadow = GameObject.Find("GateShadow").GetComponent<ShadowArea>();
+            var flow = Flow.Find<GameFlow>();
+
+            essence.Set(tuning.gateCost);
+            entity.Place(shadow, shadow.Center);
+            input.Simulate(consume: true);
+            yield return Wait(tuning.gateConsumeTime + 0.3f);
+            Assert.IsTrue(gate != null, "refused at 80");
+            Assert.AreEqual(FlowState.Playing, flow.State);
+
+            input.Simulate(consume: false);
+            yield return null;
+            essence.Set(tuning.gateCost + 1f);
+            input.Simulate(consume: true);
+            yield return Wait(tuning.gateConsumeTime + 0.3f);
+            input.Simulate(consume: false);
+            Assert.IsTrue(gate == null, "consumed");
+            Assert.AreEqual(FlowState.Won, flow.State);
+            Assert.IsTrue(GameObject.Find("Canvas").transform.Find("WinScreen").gameObject.activeSelf);
+        }
     }
 
     public sealed class UiTests : HazardFixture

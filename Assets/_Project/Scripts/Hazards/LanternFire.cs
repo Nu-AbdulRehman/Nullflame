@@ -26,6 +26,13 @@ namespace Nullflame
             Apply();
         }
 
+        // Pipe-burst oil fire grows to T-FIRE-RADIUS-OIL (§7.6). Call right after Instantiate.
+        public void UseOilRadius()
+        {
+            fire = new FireRadius(tuning.fireStartRadius, tuning.fireOilRadius, tuning.fireGrowTime, tuning.fireLifeTime, tuning.fireShrinkTime);
+            Apply();
+        }
+
         void OnEnable()
         {
             registry = GameContext.Current != null ? GameContext.Current.shadows : null;

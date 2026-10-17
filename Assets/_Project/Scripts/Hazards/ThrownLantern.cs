@@ -13,9 +13,11 @@ namespace Nullflame
 
         Vector3 from, to;
         float t;
+        bool oil;
 
-        public void Launch(Vector3 start, Vector3 target)
+        public void Launch(Vector3 start, Vector3 target, bool oilFire = false)
         {
+            oil = oilFire;
             from = start;
             to = target;
             t = 0f;
@@ -26,7 +28,8 @@ namespace Nullflame
             t += Time.deltaTime / tuning.throwTime;
             transform.position = JumpArc.Evaluate(from, to, arcHeight, t);
             if (t < 1f) return;
-            Instantiate(firePrefab, new Vector3(to.x, 0f, to.z), Quaternion.identity);
+            LanternFire fire = Instantiate(firePrefab, new Vector3(to.x, 0f, to.z), Quaternion.identity);
+            if (oil) fire.UseOilRadius();
             Destroy(gameObject);
         }
     }

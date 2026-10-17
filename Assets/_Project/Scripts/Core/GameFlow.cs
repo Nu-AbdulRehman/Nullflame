@@ -26,6 +26,8 @@ namespace Nullflame
         [SerializeField] GameObject pauseScreen;
         [SerializeField] GameObject deathScreen;
         [SerializeField] GameObject missedScreen;
+        [SerializeField] GameObject winScreen;
+        [SerializeField] UnityEngine.UI.Text winTimeText;
 
         float restartTimer = -1f;
         Rect timeRoom;
@@ -118,9 +120,13 @@ namespace Nullflame
 #endif
         }
 
+        // Final Gate consumed (Beat 5): win screen with the run time and credits.
         public void Win()
         {
             State = FlowState.Won;
+            int s = Mathf.FloorToInt(RunTime);
+            winTimeText.text = $"Time taken: {s / 60}:{s % 60:00}";
+            winScreen.SetActive(true);
             SetGameplay(false);
         }
 

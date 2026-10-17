@@ -120,5 +120,14 @@ namespace Nullflame.Tests
             return null;
 #endif
         }
+
+        public static T Prefab<T>(string name) where T : Object
+        {
+#if UNITY_EDITOR
+            return UnityEditor.AssetDatabase.LoadAssetAtPath<T>($"Assets/_Project/Prefabs/{name}.prefab");
+#else
+            return null;
+#endif
+        }
     }
 }

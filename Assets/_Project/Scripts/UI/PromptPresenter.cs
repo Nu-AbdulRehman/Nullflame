@@ -18,6 +18,7 @@ namespace Nullflame
         bool shownAffordable;
         bool shownReverse;
         bool shownRewind;
+        CrackablePipe shownPipe;
 
         void LateUpdate()
         {
@@ -25,13 +26,16 @@ namespace Nullflame
             bool affordable = c == null || c.IsGain || essence.CanAfford(c.Amount) || consume.Target != null;
             bool reverse = timePowers.CanReverse; // R/Q stay hidden until the time power is granted (§7.4)
             bool rewind = timePowers.AtRewindSpot;
+            CrackablePipe pipe = consume.Pipe != null ? consume.Pipe : consume.AvailablePipe;
             if (rewind) affordable = essence.CanAfford(tuning.rewindCost) || timePowers.ChannelProgress > 0f;
-            if (c == shown && affordable == shownAffordable && reverse == shownReverse && rewind == shownRewind) return;
+            if (pipe != null) affordable = essence.CanAfford(tuning.pipeCost) || consume.Pipe != null;
+            if (c == shown && affordable == shownAffordable && reverse == shownReverse && rewind == shownRewind && pipe == shownPipe) return;
             shownRewind = rewind;
+            shownPipe = pipe;
             shown = c;
             shownAffordable = affordable;
             shownReverse = reverse;
-            label.enabled = c != null || reverse || rewind;
+            label.enabled = c != null || reverse || rewind || pipe != null;
             if (!label.enabled) return;
             string text = "";
             if (c != null)
@@ -39,6 +43,7 @@ namespace Nullflame
                 int amount = Mathf.RoundToInt(c.Amount);
                 text = c.IsGain ? $"[E] Consume {c.displayName} (+{amount})" : $"[E] Consume {c.displayName} ({amount})";
             }
+            if (pipe != null) text = $"[E] Crack pipe ({Mathf.RoundToInt(tuning.pipeCost)})";
             if (reverse) text += (text.Length > 0 ? "\n" : "") + $"[R] Reverse ({Mathf.RoundToInt(tuning.reverseCostPerSecond)}/s)";
             if (rewind) text += (text.Length > 0 ? "\n" : "") + $"[Q] Rewind facility ({Mathf.RoundToInt(tuning.rewindCost)})";
             label.text = text;

@@ -96,3 +96,19 @@ MCP for Unity can't edit objects under an inactive parent, so `State_Normal` is 
 
 ### EN-031: PlayMode tests start from the control moment
 `TestScenes.LoadFacility` clears `HasSeenIntro`, loads the scene, then calls `GameFlow.BeginPlaying()`, so tests skip the title screen without running the intro skip. Tests that need the wave call `IntroSequence.Run()` themselves. Test waits use game time, because an unfocused Editor runs at a low frame rate and real-time waits under-ran. The Player's Start Shadow must be `PlayerRoomFloor`; a manual check that changes it and saves the scene breaks the beat tests.
+
+### EN-032: The pipe hold ring shows its zone by colour, not three background arcs
+`HoldRingView` tints the fill grey, green or red as the meter passes T-PIPE-SAFE-START and T-PIPE-SAFE-END. The spec's three fixed background arcs need extra Image objects and a second sprite; the colour change tells the player the same thing. Add the arcs in B10 polish if play shows players can't time the release.
+
+### EN-033: The pipe hold lives in ConsumeAction; CrackablePipe only acts on the result
+`ConsumeAction` already owns E, the release latch and the cost preview, so it runs the `PipeCrackMeter` and calls `CrackablePipe.Crack()` or `Burst()`. Leaving the strip mid-hold drops it with no effect and no cost. Rejected: a second E reader on the pipe (two components fighting over one key) and a shared hold interface (one extra type for two callers).
+
+### EN-034: A burst throw skips the alert
+`LanternAttack.ThrowAt` throws at once, ignoring guards already lanternless. The escape window is T-THROW-TIME plus the fire's grow time, as §7.6 describes. The burst pours no visible oil yet; the larger fire (T-FIRE-RADIUS-OIL) is the only effect until B10 VFX.
+
+### EN-035: The Final Gate win is called in code, like the pedestal grant (EN-019)
+`ConsumeAction.Complete` calls `GameFlow.Win()` for `ConsumableKind.FinalGate`, so `P_FinalGate` has no `onConsumed` event. The win screen shows "Time taken: m:ss" from `GameFlow.RunTime` and both credit lines word for word (AD-015, CLAUDE.md §5.4).
+
+### EN-036: The Kenney Particle Pack is not imported, so the oil drip uses a flat-colour particle
+CLAUDE.md §5.3 allows "default settings with a flat color" when the sprite isn't available. `PH_OilDrip` is a default Particle System with a black URP Particles/Unlit material (PH-015). Import the Kenney Particle Pack to swap in its sprite.
+

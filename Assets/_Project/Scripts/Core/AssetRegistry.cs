@@ -23,6 +23,7 @@ namespace Nullflame
         public GameObject locker;
         public GameObject lanternRack;
         public GameObject labBench;
+        public GameObject oilPipe;
 
         [Header("Lights")]
         public GameObject ceilingLight;

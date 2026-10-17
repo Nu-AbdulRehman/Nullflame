@@ -17,6 +17,13 @@ namespace Nullflame.Tests
         public static T Find<T>() where T : Object => Object.FindAnyObjectByType<T>();
         public static GuardController Guard(string name) => GameObject.Find(name).GetComponent<GuardController>();
 
+        // Rewinds to Normal (Beat 4-5 state: the Final Corridor wall fire is off) and waits out the white-out.
+        public static IEnumerator ToNormal()
+        {
+            Find<WorldStateController>().Rewind();
+            for (float t = 0f; t < AssetLoad.Tuning().rewindEffectTime + 0.1f; t += Time.deltaTime) yield return null;
+        }
+
         public static IEnumerator LoadAsRetry()
         {
             GameFlow.HasSeenIntro = true;

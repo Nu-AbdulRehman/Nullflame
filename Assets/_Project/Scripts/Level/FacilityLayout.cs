@@ -10,6 +10,7 @@ namespace Nullflame
     [System.Serializable] public struct OpeningSpec { public string id; public Vector2 center; public float width; public OpeningKind kind; }
     [System.Serializable] public struct PropSpec { public string id; public PropKind kind; public Vector3 center; public Vector3 size; public float yaw; }
     [System.Serializable] public struct BlockerSpec { public string id; public Vector2 center; public Vector2 size; }
+    [System.Serializable] public struct CrackPointSpec { public string id; public float zMin, zMax, stripX, dropX, wallFaceX; }
 
     // Facility geometry in metres, X east, Z north (design doc §4, IMPL §6.1, Appendix A.1-A.3).
     // Defaults are the approved Appendix A values (AD-003); edit them in the asset, then rebuild.
@@ -114,6 +115,15 @@ namespace Nullflame
             new Vector3(15.95f, 2f, 44f), new Vector3(15.95f, 2f, 48.5f), new Vector3(15.95f, 2f, 53f),
             new Vector3(21.55f, 2f, 44f), new Vector3(21.55f, 2f, 48.5f), new Vector3(21.55f, 2f, 53f),
         };
+        [Header("Final Corridor pipes (Appendix A.6, AD-012)")]
+        public float pipeHeight = 2.5f;
+        public float pipeStripWidth = 1f;
+        public CrackPointSpec[] crackPoints =
+        {
+            Crack("W1", 42f, true), Crack("W2", 45f, true), Crack("W3", 48f, true), Crack("W4", 51f, true),
+            Crack("E1", 42f, false), Crack("E2", 45f, false), Crack("E3", 48f, false), Crack("E4", 51f, false),
+        };
+
         public Color alarmColor = new Color(1f, 0.1f, 0.05f);
         public Color fireColor = new Color(1f, 0.5f, 0.15f);
 
@@ -129,6 +139,10 @@ namespace Nullflame
 
         static AreaSpec Area(string id, float x0, float x1, float z0, float z1, bool access) =>
             new AreaSpec { id = id, xz = Rect.MinMaxRect(x0, z0, x1, z1), playerAccess = access };
+        // 3 m segments; west strips X 15.85-16.85 with drops at X 17.45, east strips X 20.65-21.65 with drops at X 20.05.
+        static CrackPointSpec Crack(string id, float z0, bool west) => west
+            ? new CrackPointSpec { id = id, zMin = z0, zMax = z0 + 3f, stripX = 16.35f, dropX = 17.45f, wallFaceX = 15.85f }
+            : new CrackPointSpec { id = id, zMin = z0, zMax = z0 + 3f, stripX = 21.15f, dropX = 20.05f, wallFaceX = 21.65f };
         static WallSpec Wall(float ax, float az, float bx, float bz) =>
             new WallSpec { a = new Vector2(ax, az), b = new Vector2(bx, bz) };
         static OpeningSpec Opening(string id, float x, float z, float width, OpeningKind kind) =>

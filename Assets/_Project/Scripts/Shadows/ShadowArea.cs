@@ -21,6 +21,8 @@ namespace Nullflame
         public bool isRewindSpot;
         [Tooltip("Optional: what holding E in this shadow eats.")]
         public Consumable consumable;
+        [Tooltip("Pipe strips only: the crack point holding E acts on.")]
+        public CrackablePipe pipe;
         [Tooltip("Oil drops and void shadows: destroyed when lantern fire reaches them.")]
         public bool destroyedByFire;
         [SerializeField] Transform decal;

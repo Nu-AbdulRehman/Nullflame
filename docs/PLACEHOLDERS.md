@@ -17,6 +17,11 @@ Every placeholder asset in the project and what the final asset must be (`CLAUDE
 | PH-011 | Two Unity cubes (3 × 4 × 0.2 m, default material) as the sliding gate panels | `Shared/SemiFinalGate` (`P_GuardGate`, S14, §7.8) | Pack #3 Sci Fi Doors gate (two panels), scaled to the 6 × 4 m doorway | Open |
 | PH-012 | Unity cube panel + thin cylinder handles (Up in Meltdown, Down in Normal) | `Shared/LeverPanel` (`P_LeverPanel`), `State_*/LeverHandle_*` (S13, Beat 3) | Panel from #1 machines/computers; handle stays a primitive (`PH_LeverHandle`, no free lever) with a #1 metal material | Open |
 | PH-013 | Plain uGUI panels and `P_MenuButton` (Unity default button sprite, LegacyRuntime font) | `Canvas/TitleScreen`, `PauseScreen`, `MissedScreen`, `DeathScreen` (S19, §12, §14) | Styled screens with the game font and colours in B10 polish | Open |
+| PH-014 | `PH_OilPipe` (Unity cylinder, #1 `dark color` material, no collider) | `AssetRegistry.oilPipe`, placed by `PipeBuilder` on each `P_CrackablePipe` (S16, §7.6) | Wall oil-pipe mesh, 3 m segments that read as crackable, #1 sci-fi style | Open |
+| PH-015 | `PH_OilDrip` (default Particle System, `PH_OilDrip.mat` flat black URP Particles/Unlit) | `P_CrackablePipe` drip (S16, §7.6) | Kenney Particle Pack sprite tinted black (pack not imported yet), or a drip VFX | Open |
+| PH-016 | `PH_OilDecal` (baked black soft-edged quad) | `P_OilDrop` (S16, §7.6) | Glossy oil puddle decal, 1.2 m | Open |
+| PH-017 | `PH_FinalGate` (Unity cube 6 × 4 × 1.5 m, #1 `dark color` material, LevelSolid collider) | `Shared/FinalGate` (`P_FinalGate`, S11, Beat 5) | Pack #3 Sci Fi Doors gate scaled to the 6 × 4 m slot, sinks on consume | Open |
+| PH-018 | Plain uGUI win screen (default button sprite, LegacyRuntime font) | `Canvas/WinScreen` (S17, §12) | Styled win screen in B10 polish; credit lines must stay word for word | Open |
 
 ## Expected placeholders (not created yet)
 

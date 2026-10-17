@@ -13,7 +13,7 @@ namespace Nullflame.EditorTools
         const int Res = 64;
 
         // Render queues from IMPL §2.8: shadows under cones under the outline under the entity.
-        public const int QueueShadow = 3000, QueueCone = 3002, QueueOutline = 3003, QueueEntity = 3004;
+        public const int QueueShadow = 3000, QueueOil = 3001, QueueCone = 3002, QueueOutline = 3003, QueueEntity = 3004;
         const int ConeSegments = 24;
 
         [MenuItem("Nullflame/Bake Decals")]
@@ -26,6 +26,8 @@ namespace Nullflame.EditorTools
             Material(null, "PH_Outline", QueueOutline);
             Material(null, "PH_Teardrop", QueueEntity, Color.black);
             Material(null, "PH_ViewCone", QueueCone, new Color(1f, 1f, 1f, 0.12f));
+            Material(Texture("PH_OilDecal", (u, v) => new Color(0.02f, 0.02f, 0.03f, 0.92f * Radial(u, v, 0.8f))),
+                "PH_OilDecal", QueueOil);
             Sprite(Texture("PH_Ring", (u, v) => new Color(1f, 1f, 1f, Ring(u, v, 0.78f, 0.98f))));
             ViewCone(AssetDatabase.LoadAssetAtPath<GameTuning>(FacilityBuilder.TuningPath));
             AssetDatabase.SaveAssets();

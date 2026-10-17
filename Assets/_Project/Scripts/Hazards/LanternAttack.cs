@@ -48,7 +48,19 @@ namespace Nullflame
             if (timer > 0f) return;
 
             // Aims where the entity's shadow is when the throw starts; the lantern doesn't home (§7.9 rule 2).
-            Instantiate(thrownPrefab, lantern.transform.position, Quaternion.identity).Launch(lantern.transform.position, aim);
+            Throw(aim, false);
+        }
+
+        // Pipe burst (§7.6): throw at once at the burst point, with no alert. Ignored while lanternless.
+        public void ThrowAt(Vector3 point, bool oil)
+        {
+            if (phase == Phase.Lanternless || !guard.HasLantern) return;
+            Throw(point, oil);
+        }
+
+        void Throw(Vector3 aim, bool oil)
+        {
+            Instantiate(thrownPrefab, lantern.transform.position, Quaternion.identity).Launch(lantern.transform.position, aim, oil);
             lantern.SetActive(false);
             guard.HasLantern = false;
             guard.SetPaused(false);

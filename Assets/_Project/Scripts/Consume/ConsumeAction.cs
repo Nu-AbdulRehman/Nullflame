@@ -11,6 +11,7 @@ namespace Nullflame
         [SerializeField] ShadowEntity entity;
         [SerializeField] Essence essence;
         [SerializeField] TimePowers timePowers;
+        [SerializeField] GameFlow flow;
         [Tooltip("How far the target sinks below the floor (look only).")]
         [SerializeField] float sinkDepth = 2.2f;
 
@@ -19,13 +20,22 @@ namespace Nullflame
         GuardController targetGuard;
         Vector3 sinkStart;
         bool waitForRelease; // after a cancel, E must be let go before a new consume starts
+        CrackablePipe pipe;
+        PipeCrackMeter meter;
 
         public Consumable Target => target;
-        public float Progress => hold != null ? hold.Normalized : 0f;
+        public CrackablePipe Pipe => pipe;
+        public float Progress => hold != null ? hold.Normalized : meter != null && pipe != null ? meter.Normalized : 0f;
+        public PipeZone Zone => meter != null ? meter.Zone : PipeZone.Grey;
 
         // The consumable under the entity, if any (prompt and cost preview read this).
         public Consumable Available =>
             entity.State == EntityState.InShadow && entity.Current != null ? entity.Current.consumable : null;
+
+        // The uncracked pipe under the entity, if any.
+        public CrackablePipe AvailablePipe =>
+            entity.State == EntityState.InShadow && entity.Current != null && entity.Current.pipe != null
+            && !entity.Current.pipe.Cracked ? entity.Current.pipe : null;
 
         void Update()
         {
@@ -36,13 +46,42 @@ namespace Nullflame
                 else Sink(hold.Normalized);
                 return;
             }
+            if (pipe != null) { TickPipe(); return; }
 
             Consumable c = Available;
-            essence.PreviewCost = c != null && !c.IsGain ? c.Amount : timePowers.AtRewindSpot ? tuning.rewindCost : 0f;
+            CrackablePipe p = AvailablePipe;
+            essence.PreviewCost = c != null && !c.IsGain ? c.Amount : p != null ? tuning.pipeCost
+                : timePowers.AtRewindSpot ? tuning.rewindCost : 0f;
             if (!input.ConsumeHeld) waitForRelease = false;
-            if (c == null || !entity.HasControl || !input.ConsumeHeld || waitForRelease) return;
+            if (!entity.HasControl || !input.ConsumeHeld || waitForRelease) return;
+            if (p != null && essence.CanAfford(tuning.pipeCost)) { pipe = p; return; }
+            if (c == null) return;
             if (!c.IsGain && !essence.CanAfford(c.Amount)) return; // shown red in the prompt
             Begin(c);
+        }
+
+        // Hold E on a pipe (§7.6): release in safe or warning cracks; holding to T-PIPE-BURST bursts.
+        // Leaving the strip drops the hold with no effect.
+        void TickPipe()
+        {
+            meter ??= new PipeCrackMeter(tuning.pipeSafeStart, tuning.pipeSafeEnd, tuning.pipeBurstTime);
+            if (entity.Current != pipe.strip || entity.State != EntityState.InShadow) { EndPipe(); meter.Release(); return; }
+            if (input.ConsumeHeld)
+            {
+                if (meter.Hold(Time.deltaTime) != PipeResult.Burst) return;
+                essence.TrySpend(tuning.pipeBurstCost); // AD-014
+                pipe.Burst();
+                EndPipe();
+                return;
+            }
+            if (meter.Release() == PipeResult.Crack && essence.TrySpend(tuning.pipeCost)) pipe.Crack();
+            EndPipe();
+        }
+
+        void EndPipe()
+        {
+            pipe = null;
+            waitForRelease = true;
         }
 
         void Begin(Consumable c)
@@ -76,6 +115,7 @@ namespace Nullflame
             if (c.IsGain) essence.Gain(c.Amount);
             else essence.TrySpend(c.Amount);
             if (c.kind == ConsumableKind.Pedestal) timePowers.Grant(); // the stopwatch is eaten with the pedestal
+            else if (c.kind == ConsumableKind.FinalGate) flow.Win(); // Beat 5
             entity.EndConsume();
             Destroy(c.gameObject); // its shadow goes too; the entity drops into a void (§7.5)
         }
