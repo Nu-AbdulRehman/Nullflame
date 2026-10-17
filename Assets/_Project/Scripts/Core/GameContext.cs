@@ -10,7 +10,6 @@ namespace Nullflame
     {
         public static GameContext Current { get; private set; }
 
-        public GameTuning tuning;
         public ShadowRegistry shadows;
 
         void Awake() => Current = this;

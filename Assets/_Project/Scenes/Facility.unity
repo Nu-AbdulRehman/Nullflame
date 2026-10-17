@@ -11347,7 +11347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2e6589abde5248408c6d0ce8fbdcce6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.GameContext
-  tuning: {fileID: 11400000, guid: f6b00f4c9d7c7a04889585562eac4160, type: 2}
   shadows: {fileID: 349484986}
 --- !u!1 &1779649922
 GameObject:

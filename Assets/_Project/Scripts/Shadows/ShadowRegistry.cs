@@ -10,10 +10,7 @@ namespace Nullflame
 
         public IReadOnlyList<ShadowArea> Shadows => shadows;
 
-        public void Register(ShadowArea s)
-        {
-            if (!shadows.Contains(s)) shadows.Add(s);
-        }
+        public void Register(ShadowArea s) => shadows.Add(s);
 
         public void Unregister(ShadowArea s) => shadows.Remove(s);
 
