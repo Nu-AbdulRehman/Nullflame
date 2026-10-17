@@ -145,3 +145,11 @@ Play-testing (2026-10-17) showed the grey shadow decals reading as lit boxes on 
 
 ### EN-047: Prop, guard and room shadows are drawn by the lights, not by decals
 Owner feedback (2026-10-17): the rectangular decals still read as boxes. `ShadowArea.hideDecal` (true on `P_ShadowArea`, so every static shadow, the guard shadow, the pedestal, lever and Final Gate shadows) turns the decal renderer off; the visible shadow is the real-time shadow the scene lights cast from the owner (EN-046). The gameplay footprint is unchanged and still shows as the white/red outline when targeted (§12). Oil drops, void shadows and pipe strips keep their decals: nothing casts them. Known mismatch: the walkable rectangle and the lit silhouette differ where a light sits off-axis; move the light or the `ShadowArea` in the Inspector if a beat reads wrong. Rejected: shaping the footprint from the shadow map, which §7.1 forbids.
+
+### EN-048: Guards hold a lantern; flame light stops at walls; the view-cone decal is off
+Owner feedback (2026-10-17): the floor view cone read as fake light that passed through walls. Changes, all gameplay-neutral except the first:
+- `FlameReceiver` now line-casts (`LevelSolid`) from a lantern or alarm volume to the entity before applying drain; a wall between them blocks it. Instant-kill fire volumes are untouched (`FlameTests.LanternBehindWall_NoDamage`).
+- `LanternHold` on `P_Guard/Lantern` moves the lantern (light, damage sphere, model) to the `Hand_R` bone every `LateUpdate`, so the hand animation carries the light. The damage sphere sways with the hand by a few centimetres; its 3 m radius makes that invisible in play.
+- The hand lantern model is the CC0 PolygonDan `polygondan_lantern.obj` at 4% scale, nested under `Lantern`.
+- The `ViewCone` decal renderer is disabled in `P_Guard`; the guard's facing and its lantern light show where it looks. Re-enable the renderer in the prefab to get the cone back. Spotting still uses the §8.3 cone and line of sight.
+Rejected: a spot light for the lantern (a lantern is omnidirectional; §7.7 says sphere), and clipping the cone decal against walls (needs a depth-tested projector, which is the Decal renderer feature again).

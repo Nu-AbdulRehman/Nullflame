@@ -11,6 +11,9 @@ namespace Nullflame
         [SerializeField] Essence essence;
 
         readonly List<FlameVolume> touching = new List<FlameVolume>(16);
+        int solidMask;
+
+        void Awake() => solidMask = LayerMask.GetMask("LevelSolid");
 
         public bool IsInFlame { get; private set; }
 
@@ -38,6 +41,7 @@ namespace Nullflame
                 FlameVolume f = touching[i];
                 if (f == null) { touching.RemoveAt(i); continue; }
                 if (!f.Lit || IsOwnLantern(f) || (covered && !f.InstantKill)) continue;
+                if (!f.InstantKill && Blocked(f)) continue; // flame light stops at walls (EN-048)
                 if (f.InstantKill)
                 {
                     essence.Kill();
@@ -48,6 +52,13 @@ namespace Nullflame
             if (dps <= 0f) return;
             IsInFlame = true;
             essence.Damage(dps * Time.deltaTime);
+        }
+
+        // Light from a lantern or alarm lamp reaches the entity only with a clear line to it.
+        bool Blocked(FlameVolume f)
+        {
+            Vector3 target = entity.transform.position + Vector3.up * 0.3f;
+            return Physics.Linecast(f.transform.position, target, solidMask, QueryTriggerInteraction.Ignore);
         }
 
         // A guard's own lantern never hurts the shadow it casts (design doc §7.2, O1).

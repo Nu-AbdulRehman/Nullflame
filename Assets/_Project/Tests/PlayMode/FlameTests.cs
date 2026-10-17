@@ -70,6 +70,26 @@ namespace Nullflame.Tests
             Assert.AreEqual(tuning.lanternDps, before - essence.Value, 1f);
         }
 
+        // EN-048: lantern light stops at walls. A LevelSolid block between the lantern and the entity: no drain.
+        [UnityTest]
+        public IEnumerator LanternBehindWall_NoDamage()
+        {
+            yield return Setup();
+            guard.GetComponent<GuardVision>().enabled = false;
+            Vector3 at = new Vector3(25f, 0f, 39f);
+            PlaceAt(at);
+            Vector3 lantern = guard.GetComponentInChildren<Light>().transform.position;
+            var wall = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wall.layer = LayerMask.NameToLayer("LevelSolid");
+            wall.transform.position = (lantern + at) * 0.5f + Vector3.up;
+            wall.transform.rotation = Quaternion.LookRotation(at - lantern);
+            wall.transform.localScale = new Vector3(3f, 3f, 0.2f);
+            yield return null;
+            float before = essence.Value;
+            yield return Wait(1f);
+            Assert.AreEqual(before, essence.Value, 1e-3f);
+        }
+
         // §7.2 / O1: a guard's own lantern never hurts the shadow it casts.
         [UnityTest]
         public IEnumerator OwnLantern_DoesNotHurtRider()
