@@ -20203,6 +20203,7 @@ MonoBehaviour:
   startShadow: {fileID: 3122246267142899471}
   voidPrefab: {fileID: 3261929221609670697, guid: 0c4ee54fe78d6c44d8b80bc1f2a2e04d, type: 3}
   essence: {fileID: 1768299188}
+  layout: {fileID: 11400000, guid: c6d1044fde7ed944ba5c6d256e194b77, type: 2}
 --- !u!136 &1552938428
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -22141,7 +22142,8 @@ MonoBehaviour:
   label: {fileID: 1662928294}
   showTime: 5
   texts:
-  - W/A/S/D to slide within your shadow. Move the mouse to look.
+  - W/A/S/D to move. The floor is safe in the dark; lantern light on bare floor burns
+    fast.
   - Aim at a shadow and left-click to jump to it.
   - Hold E to consume the owner of this shadow.
   - Hold R while riding a guard to reverse their time.

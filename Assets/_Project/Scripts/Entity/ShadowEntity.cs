@@ -1,13 +1,14 @@
 using System;
 using UnityEngine;
+using UnityEngine.AI;
 using Nullflame.Logic;
 
 namespace Nullflame
 {
     public enum EntityState { Inactive, InShadow, Jumping, Consuming, Dead }
 
-    // The player: always in a shadow, jumping between shadows, or dead (design doc §5, IMPL §7.3).
-    // Riding is just being InShadow in a moving shadow.
+    // The player: in a shadow, on bare floor where the layout allows it (AD-023), jumping, or dead
+    // (design doc §5, IMPL §7.3). Riding is just being InShadow in a moving shadow.
     [DefaultExecutionOrder(0)]
     public sealed class ShadowEntity : MonoBehaviour
     {
@@ -17,10 +18,12 @@ namespace Nullflame
         [SerializeField] ShadowArea startShadow;
         [SerializeField] ShadowArea voidPrefab;
         [SerializeField] Essence essence;
+        [SerializeField] FacilityLayout layout;
 
         public EntityState State { get; private set; } = EntityState.Inactive;
         public ShadowArea Current { get; private set; }
         public bool IsRiding => Current != null && Current.isMoving;
+        public bool OnFloor => State == EntityState.InShadow && Current == null; // bare floor, no cover (AD-023)
         public bool HasControl { get; private set; } = true;
         public event Action<EntityState> StateChanged;
 
@@ -31,6 +34,7 @@ namespace Nullflame
         bool currentLost;
 
         float Margin => tuning.entitySize * 0.5f;
+        const float FloorSnap = 0.3f; // how far off the guard NavMesh a floor step may land
 
         void Start()
         {
@@ -101,9 +105,7 @@ namespace Nullflame
                 currentLost = false;
                 SpawnVoid(transform.position);
             }
-            if (Current == null) return;
-
-            if (Current.isMoving)
+            if (Current != null && Current.isMoving)
             {
                 transform.position = Current.Center;
                 return;
@@ -114,8 +116,41 @@ namespace Nullflame
             fwd.y = 0f;
             fwd.Normalize();
             Vector3 right = new Vector3(fwd.z, 0f, -fwd.x);
-            Vector3 move = (right * input.Move.x + fwd * input.Move.y) * (tuning.slideSpeed * dt);
-            transform.position = Current.ClampInside(transform.position + move, Margin);
+            Move((right * input.Move.x + fwd * input.Move.y) * (tuning.slideSpeed * dt));
+        }
+
+        // A step inside the current shadow is clamped to it as before. A step that leaves it, or any step
+        // on the floor, is allowed where the layout permits floor and the guard NavMesh is walkable (walls
+        // and props stop it); it attaches to whatever shadow it lands in (AD-023).
+        public void Move(Vector3 delta)
+        {
+            Vector3 target = transform.position + delta;
+            Vector3 clamped = Current != null ? Current.ClampInside(target, Margin) : target;
+            if (Current != null && (clamped - target).sqrMagnitude < 1e-6f)
+            {
+                transform.position = clamped;
+                return;
+            }
+            if (!FloorStep(transform.position, ref target))
+            {
+                if (Current != null) transform.position = clamped;
+                return;
+            }
+            transform.position = target;
+            ShadowArea s = GameContext.Current != null ? GameContext.Current.shadows.FindAt(target, null) : null;
+            if (s == Current) return;
+            Attach(s);
+            if (s != null && s.isMoving) transform.position = s.Center;
+        }
+
+        bool FloorStep(Vector3 from, ref Vector3 target)
+        {
+            if (layout != null && !layout.FloorAllowed(target)) return false;
+            if (!NavMesh.SamplePosition(from, out NavMeshHit start, FloorSnap, NavMesh.AllAreas)) return false;
+            if (NavMesh.Raycast(start.position, target, out NavMeshHit hit, NavMesh.AllAreas)) return false; // wall or prop
+            if (!NavMesh.SamplePosition(target, out NavMeshHit end, FloorSnap, NavMesh.AllAreas)) return false;
+            target = new Vector3(end.position.x, target.y, end.position.z);
+            return true;
         }
 
         void TickJump(float dt)

@@ -47,7 +47,7 @@ namespace Nullflame
                     essence.Kill();
                     return;
                 }
-                dps += f.DamagePerSecond;
+                dps += f.IsLight && entity.OnFloor ? f.FloorDamagePerSecond : f.DamagePerSecond;
             }
             if (dps <= 0f) return;
             IsInFlame = true;

@@ -127,6 +127,22 @@ namespace Nullflame
         public Color alarmColor = new Color(1f, 0.1f, 0.05f);
         public Color fireColor = new Color(1f, 0.5f, 0.15f);
 
+        [Tooltip("AD-023: areas where the entity may not stand on bare floor. Areas without player access are also excluded.")]
+        public string[] noFloorAreas = { "SemiFinalGate", "FinalCorridor", "WestSideCorridor", "EastSideCorridor", "FinalGate" };
+
+        // True when p lies in an area the entity may cross on bare floor (AD-023).
+        public bool FloorAllowed(Vector3 p)
+        {
+            var xz = new Vector2(p.x, p.z);
+            for (int i = 0; i < areas.Length; i++)
+            {
+                if (!areas[i].xz.Contains(xz)) continue;
+                if (!areas[i].playerAccess || System.Array.IndexOf(noFloorAreas, areas[i].id) >= 0) return false;
+                return true;
+            }
+            return false;
+        }
+
         public bool TryGetArea(string id, out Rect xz)
         {
             for (int i = 0; i < areas.Length; i++)
