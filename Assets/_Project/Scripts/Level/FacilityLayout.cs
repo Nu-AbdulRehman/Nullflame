@@ -19,6 +19,8 @@ namespace Nullflame
     public sealed class FacilityLayout : ScriptableObject
     {
         public float wallThickness = 0.2f;
+        [Tooltip("Walls rise above the T-LVL-CEIL ceiling and poke through it (owner, 2026-10-18).")]
+        public float wallHeight = 6f;
         public float ceilingLightRange = 8f;      // look only; gameplay never reads lights
         public float ceilingLightIntensity = 1.5f;
 

@@ -183,3 +183,6 @@ Pack #8's `MediumFlames` and `TinyFlames` prefab roots store their demo-scene po
 
 ### EN-058: Ceilings and light fixtures
 `FacilityBuilder` now places a ceiling per area at T-LVL-CEIL: the floor tile flipped 180 degrees, solid (`LevelSolid`) so the orbit camera's spherecast keeps the camera under it at steep pitches. The `ceilingLight` registry slot is pack #1 `light_celing_1`; the builder hangs it from the ceiling plane above each point light and disables the prefab's own `Light`, so the builder's light (shadow-casting, range and intensity from the layout) stays the single source per fixture. Re-run `Build Facility`, then `Bake NavMesh` (the bake collects render meshes under `Level_Generated`; ceilings at 4 m add a walkable surface on top that nothing uses).
+
+### EN-059: Walls are 6 m, ceilings 4 m
+Owner choice (2026-10-18): `FacilityLayout.wallHeight` (6 m) drives wall spans and a lintel above every opening; the ceiling slab, door panels, blockers and light heights stay on T-LVL-CEIL (4 m). The walls poke through the ceiling, which hides the seam where kit wall and ceiling tiles meet. Hand-scaling walls under `Level_Generated` is lost on the next `Build Facility`; this field is the source.

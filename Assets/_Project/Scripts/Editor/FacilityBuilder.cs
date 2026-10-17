@@ -77,7 +77,7 @@ namespace Nullflame.EditorTools
                     float t = Vector2.Dot(o.center - w.a, dir);
                     if (t < 0f || t > length || Vector2.Distance(w.a + dir * t, o.center) > 0.01f) continue;
                     cuts.Add(new Vector2(t - o.width * 0.5f, t + o.width * 0.5f));
-                    BuildOpening(o, w.a + dir * t, yaw, height, layout.wallThickness, level, meltdown, normal, registry);
+                    BuildOpening(o, w.a + dir * t, yaw, height, layout.wallHeight, layout.wallThickness, level, meltdown, normal, walls, registry);
                 }
                 cuts.Sort((p, q) => p.x.CompareTo(q.x));
 
@@ -86,10 +86,10 @@ namespace Nullflame.EditorTools
                 int span = 0;
                 foreach (Vector2 cut in cuts)
                 {
-                    WallSpan(walls, i, span++, w.a, dir, start, cut.x, yaw, height, layout.wallThickness, registry);
+                    WallSpan(walls, i, span++, w.a, dir, start, cut.x, yaw, layout.wallHeight, layout.wallThickness, registry);
                     start = cut.y;
                 }
-                WallSpan(walls, i, span, w.a, dir, start, length + half, yaw, height, layout.wallThickness, registry);
+                WallSpan(walls, i, span, w.a, dir, start, length + half, yaw, layout.wallHeight, layout.wallThickness, registry);
             }
 
             Transform blockers = Group(level, "Blockers");
@@ -202,11 +202,15 @@ namespace Nullflame.EditorTools
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        static void BuildOpening(OpeningSpec o, Vector2 c, float yaw, float height, float thickness,
-            Transform level, Transform meltdown, Transform normal, AssetRegistry registry)
+        static void BuildOpening(OpeningSpec o, Vector2 c, float yaw, float height, float wallHeight, float thickness,
+            Transform level, Transform meltdown, Transform normal, Transform walls, AssetRegistry registry)
         {
             var panelCenter = new Vector3(c.x, height * 0.5f, c.y);
             var panelSize = new Vector3(o.width, height, thickness);
+            // Doors stop at the ceiling; the wall continues above them up to wallHeight.
+            if (wallHeight > height + 0.01f)
+                Block(o.id + "_Lintel", walls, new Vector3(c.x, (height + wallHeight) * 0.5f, c.y),
+                    new Vector3(o.width, wallHeight - height, thickness), yaw, registry.wallSegment, solid: true, visible: true);
             switch (o.kind)
             {
                 case OpeningKind.ContainmentDoor:
