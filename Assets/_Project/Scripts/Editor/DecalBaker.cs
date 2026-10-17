@@ -16,6 +16,15 @@ namespace Nullflame.EditorTools
         public const int QueueShadow = 3000, QueueOil = 3001, QueueCone = 3002, QueueOutline = 3003, QueueEntity = 3004;
         const int ConeSegments = 24;
 
+        // The SCP badge on every guard's back: the owner's logo on an alpha-blended unlit quad (AD-030).
+        [MenuItem("Nullflame/Bake Badge Material")]
+        public static void BakeBadge()
+        {
+            var logo = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/_Project/Art/scp_logo.png");
+            Material(logo, "Assets/_Project/Art/M_ScpBadge.mat", QueueShadow, null, fullPath: true);
+            AssetDatabase.SaveAssets();
+        }
+
         [MenuItem("Nullflame/Bake Decals")]
         public static void Bake()
         {
@@ -115,9 +124,9 @@ namespace Nullflame.EditorTools
         }
 
         // URP Unlit, transparent, alpha blended, no depth write.
-        static void Material(Texture2D tex, string name, int queue, Color? color = null)
+        static void Material(Texture2D tex, string name, int queue, Color? color = null, bool fullPath = false)
         {
-            string path = $"{Folder}/{name}.mat";
+            string path = fullPath ? name : $"{Folder}/{name}.mat";
             var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
             if (mat == null)
             {
