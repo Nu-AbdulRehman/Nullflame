@@ -33,8 +33,9 @@ namespace Nullflame
         [Header("VFX")]
         public GameObject lanternFireVfx;
         public GameObject fireSmallVfx;
+        public GameObject lanternSmashVfx;
 
-        [Header("Audio (IMPL ง22.2)")]
+        [Header("Audio (IMPL ยง22.2)")]
         public SfxClip[] sounds;
 
         [System.Serializable]

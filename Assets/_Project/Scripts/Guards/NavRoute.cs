@@ -14,6 +14,19 @@ namespace Nullflame
         static readonly NavMeshPath Path = new NavMeshPath();
         static readonly List<RoutePoint> Buffer = new List<RoutePoint>(64);
 
+        // Corners from `from` to `to` (both sampled onto the mesh, `from` excluded). False with no complete path.
+        public static bool TryPath(Vector3 from, Vector3 to, List<Vector3> corners)
+        {
+            corners.Clear();
+            if (!NavMesh.SamplePosition(from, out NavMeshHit ha, SampleRadius, NavMesh.AllAreas)
+                || !NavMesh.SamplePosition(to, out NavMeshHit hb, SampleRadius, NavMesh.AllAreas)
+                || !NavMesh.CalculatePath(ha.position, hb.position, NavMesh.AllAreas, Path)
+                || Path.status != NavMeshPathStatus.PathComplete) return false;
+            Vector3[] c = Path.corners;
+            for (int i = 1; i < c.Length; i++) corners.Add(new Vector3(c[i].x, from.y, c[i].z));
+            return corners.Count > 0;
+        }
+
         public static void Expand(List<RoutePoint> points, bool loop)
         {
             if (points.Count < 2 || !NavMesh.SamplePosition(points[0].Position, out _, SampleRadius, NavMesh.AllAreas)) return;

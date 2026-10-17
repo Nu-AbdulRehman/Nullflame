@@ -392,11 +392,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.LanternAttack
   tuning: {fileID: 11400000, guid: f6b00f4c9d7c7a04889585562eac4160, type: 2}
+  layout: {fileID: 11400000, guid: c6d1044fde7ed944ba5c6d256e194b77, type: 2}
   guard: {fileID: 3207484466581047409}
   vision: {fileID: 8957981638465384575}
   lantern: {fileID: 2408896981860528578}
   alertIcon: {fileID: 1570061052222424840}
   thrownPrefab: {fileID: 8653902215335726290, guid: f70a04dee32e90840bca32cc43b9fb40, type: 3}
+  throwAnimTime: 1.2
+  rackPickupTime: 1
 --- !u!114 &4500936589162249930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +797,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 838241545863831997}
     m_Modifications:
+    - target: {fileID: 9235606642112466, guid: ea9476d7d0a5df44b9e7228ebdec0a0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5154640065634820841, guid: ea9476d7d0a5df44b9e7228ebdec0a0c, type: 3}
       propertyPath: m_Name
       value: Body

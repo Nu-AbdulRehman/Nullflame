@@ -136,7 +136,8 @@ namespace Nullflame.Tests
             entity.Place(pipe.strip, pipe.strip.Center);
 
             input.Simulate(consume: true);
-            for (float t = 0f; t < tuning.pipeBurstTime + 0.1f; t += Time.deltaTime) yield return null;
+            // The hold starts the frame after E goes down; wait on the result, not on a frame count.
+            for (float t = 0f; t < tuning.pipeBurstTime + 1f && !pipe.Cracked; t += Time.deltaTime) yield return null;
             input.Simulate(consume: false);
 
             Assert.IsTrue(pipe.Cracked);

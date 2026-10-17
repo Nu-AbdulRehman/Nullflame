@@ -41,7 +41,7 @@ namespace Nullflame
             Cursor.visible = true;
         }
 
-        // Intro (IMPL ง21): hold the camera on a scripted pose while the rig is off.
+        // Intro (IMPL ยง21): hold the camera on a scripted pose while the rig is off.
         public void ShowPose(Transform pose) => cameraTransform.SetPositionAndRotation(pose.position, pose.rotation);
 
         // Turns the rig on and eases from the pose to the gameplay camera over `time` seconds.

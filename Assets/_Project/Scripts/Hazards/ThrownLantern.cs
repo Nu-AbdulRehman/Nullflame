@@ -8,6 +8,7 @@ namespace Nullflame
     {
         [SerializeField] GameTuning tuning;
         [SerializeField] LanternFire firePrefab;
+        [SerializeField] AssetRegistry assets;
         [Tooltip("Arc apex above the straight line (look only).")]
         [SerializeField] float arcHeight = 1.5f;
 
@@ -30,6 +31,7 @@ namespace Nullflame
             if (t < 1f) return;
             LanternFire fire = Instantiate(firePrefab, new Vector3(to.x, 0f, to.z), Quaternion.identity);
             if (oil) fire.UseOilRadius();
+            if (assets != null && assets.lanternSmashVfx != null) Destroy(Instantiate(assets.lanternSmashVfx, fire.transform.position, Quaternion.identity), 4f);
             SfxPlayer.Play(SfxId.LanternSmash);
             Destroy(gameObject);
         }

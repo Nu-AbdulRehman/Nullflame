@@ -15,6 +15,27 @@ namespace Nullflame.Tests
         // An L-shaped route: 4 m east then 4 m north (4 s at 2 m/s).
         static List<RoutePoint> LRoute() => new List<RoutePoint> { P(0, 0), P(4, 0), P(4, 4) };
 
+        // AD-021: a detour walks out to the errand, waits, walks back and resumes the route; history keeps it.
+        [Test]
+        public void Detour_OutAndBack_ResumesRoute_AD021()
+        {
+            var m = new GuardMotion(LRoute(), null, Walk, RevMul, Step);
+            m.Start();
+            m.Tick(1f); // 2 m along the first leg (Walk = 2 m/s)
+            Vector3 left = m.Position;
+            m.Detour(new List<Vector3> { new Vector3(left.x, 0f, 3f) }, 0.5f);
+            Assert.AreEqual(GuardMoveState.Detour, m.State);
+            float outTime = (3f - left.z) / Walk;
+            m.Tick(outTime + 0.25f);
+            Assert.AreEqual(3f, m.Position.z, 1e-3f, "waiting at the errand");
+            m.Tick(0.25f + outTime + 0.01f);
+            Assert.AreEqual(GuardMoveState.Travel, m.State, "back on the route");
+            Assert.AreEqual(left.x, m.Position.x, 1e-2f);
+            m.Tick(100f);
+            Assert.IsTrue(m.ReachedEnd);
+            Assert.IsTrue(m.History.Count > 3, "detour corners are in the history");
+        }
+
         static GuardMotion Run(List<RoutePoint> travel, List<RoutePoint> post, float seconds)
         {
             var m = new GuardMotion(travel, post, Walk, RevMul, Step);

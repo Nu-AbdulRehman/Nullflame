@@ -159,3 +159,9 @@ Rejected: a spot light for the lantern (a lantern is omnidirectional; §7.7 says
 
 ### EN-050: Route-versus-obstacle check (2026-10-17)
 A read-only editor query walked every `WaypointRoute` segment, every spawn-to-first-waypoint leg and every travel-to-post join against the `Level_Generated/Props` renderer bounds and a `LevelSolid` line cast at 1 m. No route crosses a prop. The only `LevelSolid` crossings are SP-SIDE-N's legs through the Semi-Final Gate, which opens for guards (T-GATE-ZONE 2 m ahead at 2 m/s = 1 s; the panels slide in 0.5 s). The only crossings of the SCP door line are G-TIME's through D-SCP-T, open in Meltdown. Guards do walk through each other: there is no avoidance, by design (deterministic routes, §8.1).
+
+### EN-051: `GuardMotion.Walk` is the one leg-walker for travel and detours
+`TickTravel` and the new `TickDetour` share `Walk(pts, ref idx, dt, record)`; the post loop keeps its own modulo loop. A detour clears any dwell left at the waypoint the guard was standing on. Rejected: a second motion class for errands, which would need its own history handling.
+
+### EN-052: The SWAT model's tonfa is hidden
+`SWAT_A_Tonfa` on the pack #5 body was active and read as a grey object in the lantern hand. Disabled in `P_Guard`.

@@ -30,6 +30,7 @@ MonoBehaviour:
   wallFireLantern: {fileID: 1882602143141976, guid: 56c82061e6c4de742a208837848be55a, type: 3}
   lanternFireVfx: {fileID: 1478314613700728, guid: be6847dd39ab95f4daa2ed98e4f90564, type: 3}
   fireSmallVfx: {fileID: 1972207730512856, guid: ea4fb55d0227e604386f44f905cfe7c0, type: 3}
+  lanternSmashVfx: {fileID: 1828176872806910, guid: 64891a0eb28db934898420d80ca07cb3, type: 3}
   sounds:
   - id: 8
     clip: {fileID: 8300000, guid: af0e33a1b1f847f4f80e106592282d96, type: 3}

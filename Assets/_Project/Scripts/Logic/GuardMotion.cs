@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Nullflame.Logic
 {
-    public enum GuardMoveState { Idle, Travel, Post, Reversing, Hold }
+    public enum GuardMoveState { Idle, Travel, Post, Reversing, Hold, Detour }
 
     public struct RoutePoint
     {
@@ -28,6 +28,9 @@ namespace Nullflame.Logic
         int next;             // index of the point being walked to (travel or post)
         float dwellLeft;
         float sampleTimer;
+        List<RoutePoint> detour; // out to a point, dwell, back to where the guard left its route (AD-021)
+        int detourNext;
+        GuardMoveState resumeState;
 
         public GuardMotion(IReadOnlyList<RoutePoint> travel, IReadOnlyList<RoutePoint> post,
             float walkSpeed, float reverseMultiplier, float historyStep)
@@ -72,6 +75,25 @@ namespace Nullflame.Logic
             if (State == GuardMoveState.Reversing) State = GuardMoveState.Hold;
         }
 
+        // Leaves the route along `path` (the last point is the errand), waits `dwell` there, walks the same
+        // points back and resumes the route from where it left. Travel detours are recorded in history.
+        public bool Detour(IReadOnlyList<Vector3> path, float dwell)
+        {
+            if ((State != GuardMoveState.Travel && State != GuardMoveState.Post) || path.Count == 0) return false;
+            detour = new List<RoutePoint>(path.Count * 2 + 1);
+            for (int i = 0; i < path.Count; i++) detour.Add(new RoutePoint { Position = path[i] });
+            RoutePoint end = detour[detour.Count - 1];
+            end.Dwell = dwell;
+            detour[detour.Count - 1] = end;
+            for (int i = path.Count - 2; i >= 0; i--) detour.Add(new RoutePoint { Position = path[i] });
+            detour.Add(new RoutePoint { Position = Position });
+            detourNext = 0;
+            dwellLeft = 0f;
+            resumeState = State;
+            State = GuardMoveState.Detour;
+            return true;
+        }
+
         public void Tick(float dt)
         {
             if (Paused) return;
@@ -80,44 +102,55 @@ namespace Nullflame.Logic
                 case GuardMoveState.Travel: TickTravel(dt); break;
                 case GuardMoveState.Post: TickPost(dt); break;
                 case GuardMoveState.Reversing: TickReverse(dt); break;
+                case GuardMoveState.Detour: TickDetour(dt); break;
             }
         }
 
         void TickTravel(float dt)
         {
-            while (dt > 0f && State == GuardMoveState.Travel)
+            if (Walk(travel, ref next, dt, record: true)) EndTravel();
+        }
+
+        void TickDetour(float dt)
+        {
+            if (!Walk(detour, ref detourNext, dt, record: resumeState == GuardMoveState.Travel)) return;
+            detour = null;
+            State = resumeState;
+        }
+
+        // Walks pts from idx; true once past the last point with time to spare (the caller moves on).
+        bool Walk(IReadOnlyList<RoutePoint> pts, ref int idx, float dt, bool record)
+        {
+            while (dt > 0f)
             {
                 if (dwellLeft > 0f)
                 {
-                    dt = Dwell(travel[next - 1], dt);
+                    dt = Dwell(pts[idx - 1], dt);
                     continue;
                 }
-                if (next >= travel.Count)
-                {
-                    EndTravel();
-                    return;
-                }
-                Vector3 target = travel[next].Position;
+                if (idx >= pts.Count) return true;
+                Vector3 target = pts[idx].Position;
                 Vector3 to = target - Position;
                 float timeToTarget = to.magnitude / walkSpeed;
-                float chunk = Mathf.Min(dt, historyStep - sampleTimer, timeToTarget);
+                float chunk = record ? Mathf.Min(dt, historyStep - sampleTimer, timeToTarget) : Mathf.Min(dt, timeToTarget);
                 Facing = FlatDir(to, Facing);
                 dt -= chunk;
-                sampleTimer += chunk;
+                if (record) sampleTimer += chunk;
                 if (chunk >= timeToTarget)
                 {
                     Position = target;
-                    AddHistory(Position); // corner
-                    dwellLeft = travel[next].Dwell;
-                    next++;
+                    if (record) AddHistory(Position); // corner
+                    dwellLeft = pts[idx].Dwell;
+                    idx++;
                 }
                 else Position += to * (chunk / timeToTarget);
-                if (sampleTimer >= historyStep - 1e-6f)
+                if (record && sampleTimer >= historyStep - 1e-6f)
                 {
                     sampleTimer = 0f;
                     AddHistory(Position);
                 }
             }
+            return false;
         }
 
         void EndTravel()

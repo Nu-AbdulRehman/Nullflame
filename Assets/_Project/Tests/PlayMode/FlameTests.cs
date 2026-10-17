@@ -222,20 +222,32 @@ namespace Nullflame.Tests
             Assert.IsTrue(victim == null, "destroyed by the fire");
         }
 
-        // T-LANTERN-RELIGHT: the guard relights after 10 s (time scaled up for the test).
+        // AD-021: after a throw the guard stands through the animation, walks to the lantern rack for a new
+        // lantern and comes back. (T-LANTERN-RELIGHT is the fallback when no path to the rack exists.)
         [UnityTest]
-        public IEnumerator Relight_After_TLANTERNRELIGHT()
+        public IEnumerator Relight_AtRack_AD021()
         {
             yield return Setup();
             PlaceAt(new Vector3(25f, 0f, 39f), ShadowOpacity.Soft);
             yield return Wait(tuning.viewGrace + tuning.alertTime + 0.1f);
             Assert.IsFalse(guard.HasLantern);
+            Vector3 atThrow = guard.transform.position;
+            guard.StartRoute(); // paused through the throw; the errand then leaves from the route
+            yield return Wait(0.5f);
+            Assert.Less(Vector3.Distance(atThrow, guard.transform.position), 0.05f, "stands still through the throw");
             ShadowArea away = MakeShadow(new Vector3(10f, 0f, 26f));
             entity.Place(away, away.Center);
+            Vector3 rack = new Vector3(29f, 0f, 38.75f); // in front of the Barracks lantern rack (Appendix A.2)
+            float nearest = float.MaxValue;
             Time.timeScale = 10f;
-            yield return Wait(tuning.lanternRelightTime + 0.5f);
+            for (float t = 0f; t < 60f && !guard.HasLantern; t += Time.deltaTime)
+            {
+                yield return null; // sample after the frame, so the relight frame itself counts
+                nearest = Mathf.Min(nearest, Vector3.Distance(guard.transform.position, rack));
+            }
             Time.timeScale = 1f;
-            Assert.IsTrue(guard.HasLantern);
+            Assert.IsTrue(guard.HasLantern, "relit");
+            Assert.Less(nearest, 1f, "went to the rack for it");
         }
     }
 
