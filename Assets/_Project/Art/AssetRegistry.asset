@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6186369e198d24abc5b4563f5cea58, type: 3}
   m_Name: AssetRegistry
   m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.AssetRegistry
-  floorTile: {fileID: 0}
-  wallSegment: {fileID: 0}
+  floorTile: {fileID: 111202, guid: 69b3d20c177508d43a1c6f09b448d3ea, type: 3}
+  wallSegment: {fileID: 127348, guid: e37a5396a520a8e4e8e48c74975b6a61, type: 3}
   doorFrame: {fileID: 0}
-  containmentDoor: {fileID: 0}
-  showOnlyDoor: {fileID: 0}
-  crate: {fileID: 0}
-  cart: {fileID: 0}
-  cabinet: {fileID: 0}
-  bunk: {fileID: 0}
+  containmentDoor: {fileID: 8875449794350654438, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
+  showOnlyDoor: {fileID: 8875449794350654438, guid: b581fdbd127292d44ab21c4b16d91d05, type: 3}
+  crate: {fileID: 178326, guid: 777d150aa6d8e1d48bcaea831bed7072, type: 3}
+  cart: {fileID: 155844, guid: 6456a4784f31cab439d29b7e3bb286a4, type: 3}
+  cabinet: {fileID: 142160, guid: b3f6e169466f65a4aa48e83805d9e440, type: 3}
+  bunk: {fileID: 192520, guid: 9efb87eb649319c4c8c3a954a74df462, type: 3}
   locker: {fileID: 0}
-  lanternRack: {fileID: 0}
-  labBench: {fileID: 0}
+  lanternRack: {fileID: 179106, guid: db49253e161c21440b7ccf6d59865098, type: 3}
+  labBench: {fileID: 118386, guid: 861fea087c7148246939515a3d957d2e, type: 3}
   oilPipe: {fileID: 7014594128248770012, guid: 292a20cd11ee1634c94eaf73a8fb68d3, type: 3}
   ceilingLight: {fileID: 0}
   alarmLight: {fileID: 0}

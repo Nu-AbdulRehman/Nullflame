@@ -130,3 +130,12 @@ In Unity 6, `AudioSource` serialises an `AudioResource`, which MCP can't set. `R
 
 ### EN-042: Hint wording other than the reverse hint is agent-written
 §12 names the six hints but gives text only for reverse (§9 Beat 2, copied exactly). The others are short imperative lines built from §3 controls, held in `HintPresenter.texts` so the owner can rewrite them in the Inspector. Each shows for 5 s, once per run.
+
+### EN-043: Guard reverse uses a backward-walk state instead of a negative speed multiplier (IMPL §10.6)
+MCP can't set a state's speed parameter, so `Art/Guard.controller` has a `WalkBack` state on pack #6 `HumanM@Walk01_Backward`, entered while `Direction < 0`. `GuardAnimation` sets `Speed` to the measured ground speed (unsigned) and `Direction` to −1 while reversing. The guard keeps facing its route direction while reversed, so a backward walk reads correctly. `Consumed` is reached from Idle and Walk, not Any State, so the bool can't restart the clip every frame. Root motion is off. Rejected: a negative `Animator.speed`, which plays every layer backwards.
+
+### EN-044: `GuardAnimation` finds its guard and Animator with `GetComponent`
+Wiring references between objects inside one prefab isn't reliable through MCP (instance ids are temporary), so `GuardAnimation` and `LanternAttack` look up their siblings in `Awake`. Both are on the same `P_Guard` root, so the lookup can't miss. Rejected: unpacking and re-saving `P_Guard`, which would flatten its nested `P_ShadowArea`.
+
+### EN-045: Kit slots filled for walls, floors, doors and props; lights and frames left as primitives (IMPL §23)
+`AssetRegistry` now points `floorTile`, `wallSegment`, `containmentDoor`, `showOnlyDoor`, `crate`, `cart`, `cabinet`, `bunk`, `lanternRack` and `labBench` at pack #1 and #3 prefabs; `FacilityBuilder` stretches each to its box. Left empty: `doorFrame` and the #1 animated doors (they carry their own scripts and triggers), `ceilingLight` (the #1 light prefab adds a second Light per fixture), `alarmLight` (needs a red emissive material copy) and `locker` (no pack has one). The guard body is the pack #5 SWAT model under `P_Guard/Visual/Body`, placed in the prefab like the other prefab visuals, not through a registry slot.

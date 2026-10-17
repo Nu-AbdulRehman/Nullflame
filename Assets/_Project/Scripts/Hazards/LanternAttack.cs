@@ -17,6 +17,9 @@ namespace Nullflame
 
         Phase phase;
         float timer;
+        GuardAnimation anim;
+
+        void Awake() => anim = GetComponent<GuardAnimation>();
 
         void OnEnable() => vision.Spotted += OnSpotted;
         void OnDisable() => vision.Spotted -= OnSpotted;
@@ -29,6 +32,7 @@ namespace Nullflame
             guard.SetPaused(true);
             if (alertIcon != null) alertIcon.SetActive(true);
             SfxPlayer.Play(SfxId.AlertSting);
+            anim.Alert();
         }
 
         void Update()
@@ -63,6 +67,7 @@ namespace Nullflame
         {
             Instantiate(thrownPrefab, lantern.transform.position, Quaternion.identity).Launch(lantern.transform.position, aim, oil);
             lantern.SetActive(false);
+            anim.Throw();
             guard.HasLantern = false;
             guard.SetPaused(false);
             if (alertIcon != null) alertIcon.SetActive(false);
