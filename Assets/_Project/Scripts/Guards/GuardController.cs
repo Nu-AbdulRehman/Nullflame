@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Nullflame.Logic;
@@ -23,10 +22,6 @@ namespace Nullflame
 
         public bool HasLantern { get; set; } = true;
         public GuardMotion Motion { get; private set; }
-        public GuardMoveState MoveState => Motion.State;
-        public bool ReachedPost => Motion.ReachedEnd;
-        public event Action<GuardController> ArrivedAtEnd;
-        public event Action<GuardController> Removed;
 
         static readonly List<RoutePoint> TravelBuffer = new List<RoutePoint>(32);
 
@@ -42,7 +37,6 @@ namespace Nullflame
             }
             float speed = mood == GuardMood.Meltdown ? tuning.guardWalkSpeedMeltdown : tuning.guardWalkSpeedNormal;
             Motion = new GuardMotion(travel, post, speed, tuning.reverseSpeedMultiplier, tuning.historyStep);
-            Motion.ArrivedAtEnd += () => ArrivedAtEnd?.Invoke(this);
             Apply();
             if (lanternLight != null) lanternLight.color = lanternColor;
         }
@@ -51,8 +45,6 @@ namespace Nullflame
         {
             if (startOnEnable) StartRoute();
         }
-
-        void OnDestroy() => Removed?.Invoke(this);
 
         public void StartRoute() => Motion.Start();
         public void BeginReverse() => Motion.BeginReverse();
