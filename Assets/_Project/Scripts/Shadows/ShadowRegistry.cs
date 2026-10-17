@@ -3,17 +3,21 @@ using UnityEngine;
 
 namespace Nullflame
 {
-    // Every active ShadowArea and fire, and the queries on them (IMPL §7.2). Guards join in a later step.
+    // Every active ShadowArea, guard and fire, and the queries on them (IMPL §7.2).
     public sealed class ShadowRegistry : MonoBehaviour
     {
         readonly List<ShadowArea> shadows = new List<ShadowArea>();
         readonly List<LanternFire> fires = new List<LanternFire>();
+        readonly List<GuardController> guards = new List<GuardController>();
 
         public IReadOnlyList<ShadowArea> Shadows => shadows;
 
         public void Register(ShadowArea s) => shadows.Add(s);
 
         public void Unregister(ShadowArea s) => shadows.Remove(s);
+        public IReadOnlyList<GuardController> Guards => guards;
+        public void Register(GuardController g) => guards.Add(g);
+        public void Unregister(GuardController g) => guards.Remove(g);
         public void Register(LanternFire f) => fires.Add(f);
         public void Unregister(LanternFire f) => fires.Remove(f);
 

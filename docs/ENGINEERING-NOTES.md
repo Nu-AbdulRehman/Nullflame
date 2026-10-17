@@ -66,3 +66,9 @@ Without the latch, a consume cancelled by spotting restarts on the next frame wh
 
 ### EN-021: `InputReader.Simulate` drives holds in tests
 PlayMode tests call `Simulate(consume, reverse, rewind)`, which stops device reads for that reader. Rejected: test-only public setters on each gameplay component, which spreads the hook.
+
+### EN-022: Scanlines are a hand-written HLSL shader driven by a global, not a Shader Graph (AD-013)
+`Assets/_Project/Shaders/Scanlines.shader` uses URP's Blit.hlsl, which is what the Full Screen Pass Renderer Feature expects. `ScreenFx` sets the global `_TimeFxIntensity`; at 0 the pass leaves the image unchanged, so the feature stays enabled rather than being toggled. Rejected: a Shader Graph (a large JSON asset that can't be authored safely through MCP), toggling the feature with `SetActive` (needs a reference to a renderer sub-asset), and setting a property on the material asset at runtime (it would change the asset in the Editor). The desaturation is a Volume (`PostFx/TimeFxVolume`, Color Adjustments saturation −100) whose weight follows the same intensity. Main Camera now has post-processing enabled.
+
+### EN-023: A guard that finished its route can be reversed
+`GuardMotion.BeginReverse` used to refuse the Idle state, so a guard that reached the end of a route with no post loop (Beat 4 transit guards) couldn't be reversed. Only an empty history now blocks a reverse.

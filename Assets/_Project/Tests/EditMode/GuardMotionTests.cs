@@ -139,6 +139,17 @@ namespace Nullflame.Tests
             Assert.AreEqual(count, m.HistoryCount);
         }
 
+        // A guard whose route ended with no post loop can still be reversed (Beat 4 transit guards).
+        [Test]
+        public void Reverse_FromRouteEnd_Works()
+        {
+            var m = Run(new List<RoutePoint> { P(0, 0), P(2, 0) }, null, 2f);
+            Assert.AreEqual(GuardMoveState.Idle, m.State);
+            m.BeginReverse();
+            m.Tick(0.1f);
+            Assert.AreEqual(GuardMoveState.Reversing, m.State);
+        }
+
         [Test]
         public void ArrivedAtEnd_FiresOnce()
         {

@@ -63,7 +63,7 @@ namespace Nullflame.Logic
 
         public void BeginReverse()
         {
-            if (history.Count == 0 || State == GuardMoveState.Idle) return;
+            if (history.Count == 0) return; // never started, or reversed back to spawn
             State = GuardMoveState.Reversing;
         }
 

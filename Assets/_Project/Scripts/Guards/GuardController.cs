@@ -42,6 +42,16 @@ namespace Nullflame
             if (lanternLight != null) lanternLight.color = lanternColor;
         }
 
+        void OnEnable()
+        {
+            if (GameContext.Current != null) GameContext.Current.shadows.Register(this);
+        }
+
+        void OnDisable()
+        {
+            if (GameContext.Current != null) GameContext.Current.shadows.Unregister(this);
+        }
+
         void Start()
         {
             if (startOnEnable) StartRoute();

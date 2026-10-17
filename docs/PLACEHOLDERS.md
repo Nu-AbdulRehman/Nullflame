@@ -14,6 +14,7 @@ Every placeholder asset in the project and what the final asset must be (`CLAUDE
 | PH-008 | Small Unity sphere + orange point light | `P_ThrownLantern/Body` (S10, §7.9) | The guard lantern model (pack #10 hand-held lantern or the CC0 Low poly Lantern OBJ) as the thrown visual | Open |
 | PH-009 | Unity cylinder pedestal + flat cylinder 'stopwatch' (default material) | `Shared/Pedestal` (`P_Pedestal`, S11, Beat 2) | Pedestal from #1 columns/machines; stopwatch = Vintage Pocket Watch FBX (already imported) with a URP material copy under `Art/` built from its textures. Using the watch requires the CC BY credit on the win screen | Open |
 | PH-010 | `PH_Ring.png` (64 px white ring sprite, baked) | `HUD/HoldRing` (S19, §12) | Fine as is; final look may add a soft glow ring | Open |
+| PH-011 | Two Unity cubes (3 × 4 × 0.2 m, default material) as the sliding gate panels | `Shared/SemiFinalGate` (`P_GuardGate`, S14, §7.8) | Pack #3 Sci Fi Doors gate (two panels), scaled to the 6 × 4 m doorway | Open |
 
 ## Expected placeholders (not created yet)
 
