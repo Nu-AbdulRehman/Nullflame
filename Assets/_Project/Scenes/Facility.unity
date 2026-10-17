@@ -5905,7 +5905,7 @@ Transform:
   m_GameObject: {fileID: 437515474}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.75, y: 0, z: 5}
+  m_LocalPosition: {x: 4, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15491,6 +15491,8 @@ Transform:
   - {fileID: 274137521}
   - {fileID: 1833603826}
   - {fileID: 1419179491}
+  - {fileID: 1659106216}
+  - {fileID: 2069617785}
   m_Father: {fileID: 1957502183}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1166569424
@@ -21832,6 +21834,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 422645465}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1659106215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1659106216}
+  m_Layer: 0
+  m_Name: W5_Door
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1659106216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659106215}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.5, y: 0, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1161209678}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1662928291
 GameObject:
   m_ObjectHideFlags: 0
@@ -27001,7 +27034,7 @@ GameObject:
   - component: {fileID: 2034837501}
   - component: {fileID: 2034837502}
   m_Layer: 0
-  m_Name: W1_Stop
+  m_Name: W1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27034,8 +27067,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0520d6c01d58c5d4caee80d004b068a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.Waypoint
-  dwell: 4
-  hasLook: 1
+  dwell: 0
+  hasLook: 0
   lookAt: {x: 6.25, y: 0, z: 7}
 --- !u!1 &2038953372
 GameObject:
@@ -27503,6 +27536,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2701246164395183429, guid: e69acd504ae75494994897d349556687, type: 3}
   m_PrefabInstance: {fileID: 2059159288}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2069617784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2069617785}
+  - component: {fileID: 2069617786}
+  m_Layer: 0
+  m_Name: W6_Out
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2069617785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069617784}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 3.75, y: 0, z: 9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1161209678}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2069617786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2069617784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0520d6c01d58c5d4caee80d004b068a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.Waypoint
+  dwell: 3
+  hasLook: 1
+  lookAt: {x: 3.75, y: 0, z: 12}
 --- !u!1001 &2071218923
 PrefabInstance:
   m_ObjectHideFlags: 0

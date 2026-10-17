@@ -153,3 +153,9 @@ Owner feedback (2026-10-17): the floor view cone read as fake light that passed 
 - The hand lantern model is the CC0 PolygonDan `polygondan_lantern.obj` at 4% scale, nested under `Lantern`.
 - The `ViewCone` decal renderer is disabled in `P_Guard`; the guard's facing and its lantern light show where it looks. Re-enable the renderer in the prefab to get the cone back. Spotting still uses the §8.3 cone and line of sight.
 Rejected: a spot light for the lantern (a lantern is omnidirectional; §7.7 says sphere), and clipping the cone decal against walls (needs a depth-tested projector, which is the Decal renderer feature again).
+
+### EN-049: The hand lantern glows with an unlit material
+`Art/M_LanternGlow.mat` is URP Unlit, orange, on `P_Guard/Lantern/LanternModel/default`. Unlit reads as self-lit under any light and needs no emission keyword, which MCP can't enable on a URP Lit material. One colour for every guard; G-TIME's amber lantern differs only in its light colour. Rejected: URP Lit with `_EMISSION`, which MCP can't switch on without a hand edit of the material.
+
+### EN-050: Route-versus-obstacle check (2026-10-17)
+A read-only editor query walked every `WaypointRoute` segment, every spawn-to-first-waypoint leg and every travel-to-post join against the `Level_Generated/Props` renderer bounds and a `LevelSolid` line cast at 1 m. No route crosses a prop. The only `LevelSolid` crossings are SP-SIDE-N's legs through the Semi-Final Gate, which opens for guards (T-GATE-ZONE 2 m ahead at 2 m/s = 1 s; the panels slide in 0.5 s). The only crossings of the SCP door line are G-TIME's through D-SCP-T, open in Meltdown. Guards do walk through each other: there is no avoidance, by design (deterministic routes, §8.1).
