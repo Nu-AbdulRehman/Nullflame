@@ -66,7 +66,7 @@ The `Logic` folder stays inside the runtime assembly. A rule enforced by review 
 
 ### 2.3 Physics layers `[OD-007]`
 
-User layers (AD-002; Unity assigned slots 8 to 10 because 6 and 7 were taken by `add_layer`'s ordering). Code looks layers up by name, never by index:
+User layers (AD-002). `add_layer` assigned slots 8 to 10. Code looks layers up by name, never by index:
 
 | Layer | Index | Used by | Hit by |
 |---|---|---|---|
