@@ -57,9 +57,10 @@ PROPOSED names:
 |---|---|---|---|
 | `Nullflame.Runtime` | `Scripts/` (including `Logic/`) | `Unity.InputSystem`, `UnityEngine.UI`, `Unity.RenderPipelines.Universal.Runtime`, `Unity.RenderPipelines.Core.Runtime` | `Nullflame`, `Nullflame.Logic` |
 | `Nullflame.Editor` | `Scripts/Editor/` (Editor platform only) | `Nullflame.Runtime` | `Nullflame.EditorTools` |
-| `Nullflame.Tests` | `Tests/` (test assembly, Editor + PlayMode via `optionalUnityReferences`/test-framework defaults) | `Nullflame.Runtime`, `Nullflame.Editor`, NUnit, `UnityEngine.TestRunner`, `UnityEditor.TestRunner` | `Nullflame.Tests` |
+| `Nullflame.Tests.EditMode` | `Tests/EditMode/` (Editor platform only) | `Nullflame.Runtime`, `Nullflame.Editor`, NUnit, `UnityEngine.TestRunner`, `UnityEditor.TestRunner` | `Nullflame.Tests` |
+| `Nullflame.Tests.PlayMode` | `Tests/PlayMode/` (all platforms) | `Nullflame.Runtime`, NUnit, `UnityEngine.TestRunner`, `UnityEditor.TestRunner` | `Nullflame.Tests` |
 
-`CLAUDE.md` §3 asks for exactly one test assembly. EditMode and PlayMode tests therefore share `Nullflame.Tests`, with the assembly's platforms set to Editor only. PlayMode tests run from the Editor test runner. Verify with `unity_docs` that a single test assembly can host both modes in Test Framework 1.6.0; if it can't, raise it with the owner before splitting.
+Two test assemblies, because EditMode tests need an Editor-only assembly and PlayMode tests an all-platforms one (AD-016).
 
 The `Logic` folder stays inside the runtime assembly. A rule enforced by review (not by a separate assembly): files under `Logic/` may use only `System`, `System.Collections.Generic` and the UnityEngine value types `Vector2`, `Vector3`, `Quaternion`, `Mathf`, `Rect`. No `MonoBehaviour`, `GameObject`, `Transform`, `Time`, `Physics` or `Debug`.
 

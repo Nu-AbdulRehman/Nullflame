@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b26ef60f8ce27654f81d98b50cf151a4, type: 3}
+  m_Name: GameTuning
+  m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.GameTuning
+  ceilingHeight: 4
+  entitySize: 1.2
+  slideSpeed: 2.5
+  jumpRange: 6
+  jumpArcHeight: 1.5
+  jumpTime: 0.45
+  reticleSnapDistance: 2
+  jumpRayHeight: 0.5
+  essenceMax: 100
+  essenceStart: 100
+  introGrazeDamage: 10
+  essenceFloor: 10
+  essenceLowThreshold: 25
+  lanternDps: 8
+  alarmDps: 5
+  lanternRadius: 3
+  alarmFloorRadius: 2
+  throwTime: 0.6
+  fireStartRadius: 1
+  fireMaxRadius: 4
+  fireOilRadius: 5
+  fireGrowTime: 2
+  fireLifeTime: 6
+  fireShrinkTime: 1
+  lanternRelightTime: 10
+  pipeCost: 5
+  pipeBurstCost: 5
+  pedestalCost: 20
+  gateCost: 80
+  reverseCostPerSecond: 5
+  rewindCost: 30
+  guardGain: 25
+  guardConsumeTime: 2
+  pedestalConsumeTime: 3
+  gateConsumeTime: 5
+  consumeSinkFraction: 0.4
+  rewindChannelTime: 2
+  rewindEffectTime: 1.5
+  reverseSpeedMultiplier: 2
+  pipeBurstTime: 1.5
+  pipeSafeStart: 0.6
+  pipeSafeEnd: 1.1
+  pipeDropCount: 3
+  pipeDropDuration: 2
+  pipeDropSpacing: 1.5
+  oilDropSize: 1.2
+  voidShadowSize: 1.5
+  guardShadowOffset: 0.6
+  guardShadowWidth: 1.5
+  guardShadowDepth: 1
+  guardWalkSpeedNormal: 2
+  guardWalkSpeedMeltdown: 2.4
+  alertTime: 0.6
+  historyStep: 0.25
+  viewAngle: 70
+  viewRange: 8
+  viewGrace: 0.2
+  viewEyeHeight: 1.6
+  gateTriggerDepth: 2
+  gateCloseDelay: 1.5
+  gatePanelSlideTime: 0.5
+  introWaveSpacing: 3
+  introGlanceTime: 2
+  introCameraPullTime: 1.5
+  autoRestartDelay: 3
+  cameraDistance: 6
+  cameraPitchMin: 25
+  cameraPitchMax: 70
+  cameraPitchStart: 45
+  mouseSensitivity: 0.12
+  cameraFollowDamping: 0.12
+  cameraCollisionRadius: 0.3
+  spawnSleepMeltdown:
+    interval: 20
+    maxAlive: 2
+    refillOnly: 0
+  spawnSleepNormal:
+    interval: 25
+    maxAlive: 3
+    refillOnly: 0
+  spawnSideNormal:
+    interval: 15
+    maxAlive: 2
+    refillOnly: 0
+  spawnFinalNormal:
+    interval: 10
+    maxAlive: 2
+    refillOnly: 1
+  spawnFinalMeltdown:
+    interval: 0
+    maxAlive: 2
+    refillOnly: 1
