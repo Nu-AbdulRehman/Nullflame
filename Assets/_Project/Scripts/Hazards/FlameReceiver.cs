@@ -29,13 +29,15 @@ namespace Nullflame
             IsInFlame = false;
             // Flames never touch an airborne entity (AD-011).
             if (entity.State != EntityState.InShadow && entity.State != EntityState.Consuming) return;
+            // An opaque shadow is cover from flame light (lanterns, alarms); fire still burns (AD-018).
+            bool covered = entity.Current != null && entity.Current.opacity == ShadowOpacity.Opaque;
 
             float dps = 0f;
             for (int i = touching.Count - 1; i >= 0; i--)
             {
                 FlameVolume f = touching[i];
                 if (f == null) { touching.RemoveAt(i); continue; }
-                if (!f.Lit || IsOwnLantern(f)) continue;
+                if (!f.Lit || IsOwnLantern(f) || (covered && !f.InstantKill)) continue;
                 if (f.InstantKill)
                 {
                     essence.Kill();

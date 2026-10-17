@@ -24,7 +24,8 @@ namespace Nullflame.Tests
                 if (g != guard.transform) g.gameObject.SetActive(false);
         }
 
-        protected static ShadowArea MakeShadow(Vector3 at, ShadowOpacity opacity = ShadowOpacity.Opaque)
+        // Soft by default: an opaque shadow is full cover (AD-018), so damage tests stand in soft ones.
+        protected static ShadowArea MakeShadow(Vector3 at, ShadowOpacity opacity = ShadowOpacity.Soft)
         {
             ShadowArea s = Object.Instantiate(GameObject.Find("CartShadow").GetComponent<ShadowArea>(), at, Quaternion.identity);
             s.opacity = opacity;
@@ -32,7 +33,7 @@ namespace Nullflame.Tests
             return s;
         }
 
-        protected void PlaceAt(Vector3 at, ShadowOpacity opacity = ShadowOpacity.Opaque)
+        protected void PlaceAt(Vector3 at, ShadowOpacity opacity = ShadowOpacity.Soft)
         {
             ShadowArea s = MakeShadow(at, opacity);
             entity.Place(s, s.Center);
@@ -61,6 +62,7 @@ namespace Nullflame.Tests
         public IEnumerator LanternDrains_TDMGLANTERN()
         {
             yield return Setup();
+            guard.GetComponent<GuardVision>().enabled = false; // a soft shadow is spottable; measure the drain alone
             PlaceAt(new Vector3(25f, 0f, 39f));
             yield return null;
             float before = essence.Value;
@@ -91,7 +93,20 @@ namespace Nullflame.Tests
             Assert.AreEqual(tuning.alarmDps, before - essence.Value, 1f);
         }
 
-        // §7.7: wall fire lanterns kill instantly, even in shadow.
+        // AD-018: an opaque shadow is cover from flame light (no lantern drain), but fire still kills in it.
+        [UnityTest]
+        public IEnumerator OpaqueShadow_NoLightDamage_FireStillKills_AD018()
+        {
+            yield return Setup();
+            PlaceAt(new Vector3(25f, 0f, 39f), ShadowOpacity.Opaque);
+            yield return Wait(1f);
+            Assert.AreEqual(tuning.essenceStart, essence.Value, 1e-3f, "no lantern drain in an opaque shadow");
+            SpawnFire(new Vector3(25f, 0f, 39f));
+            yield return Wait(0.2f);
+            Assert.AreEqual(EntityState.Dead, entity.State, "fire still burns in an opaque shadow");
+        }
+
+        // §7.7: wall fire lanterns kill instantly, even in a soft shadow.
         [UnityTest]
         public IEnumerator WallFire_Kills()
         {

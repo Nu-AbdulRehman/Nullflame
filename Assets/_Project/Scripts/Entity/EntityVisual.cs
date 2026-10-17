@@ -14,13 +14,24 @@ namespace Nullflame
         [SerializeField] float wobbleSpeed = 3f;
 
         const float BlobHeight = 0.02f; // IMPL §2.8 draw order
+        const float MergedAmbient = 0.3f; // cosmetic: how much ambient is left while merged into an opaque shadow
 
         Vector3 lastPosition;
+        Color baseAmbient;
+        float merged;
+
+        void Awake() => baseAmbient = RenderSettings.ambientLight;
+        void OnDisable() => RenderSettings.ambientLight = baseAmbient;
 
         void LateUpdate()
         {
             bool jumping = entity.State == EntityState.Jumping;
-            blob.gameObject.SetActive(!jumping && entity.State != EntityState.Inactive);
+            // In an opaque shadow the entity merges into it (AD-018): no blob, every cast shadow goes darker.
+            // The blob stays while consuming, where it spreads over the target.
+            bool hidden = !jumping && consume.Target == null && entity.Current != null && entity.Current.opacity == ShadowOpacity.Opaque;
+            merged = Mathf.MoveTowards(merged, hidden ? 1f : 0f, Time.deltaTime * 4f);
+            RenderSettings.ambientLight = Color.Lerp(baseAmbient, baseAmbient * MergedAmbient, merged);
+            blob.gameObject.SetActive(!jumping && !hidden && entity.State != EntityState.Inactive);
             teardrop.gameObject.SetActive(jumping);
 
             Vector3 p = entity.transform.position;
