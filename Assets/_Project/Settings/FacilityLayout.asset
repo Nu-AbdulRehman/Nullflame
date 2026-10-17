@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.FacilityLayout
   wallThickness: 0.2
   wallHeight: 6
+  wallBelowFloor: 1
   ceilingLightRange: 8
   ceilingLightIntensity: 1.5
   areas:
@@ -288,7 +289,7 @@ MonoBehaviour:
     yaw: 0
   - id: LanternRack
     kind: 5
-    center: {x: 29, y: 0.9, z: 39.6}
+    center: {x: 29, y: 0, z: 39.6}
     size: {x: 2, y: 1.8, z: 0.5}
     yaw: 0
   - id: Bunk1

@@ -250,8 +250,8 @@ namespace Nullflame.EditorTools
             for (int i = 0; i < RackLanterns; i++)
             {
                 float x = (i + 0.5f) / RackLanterns * p.size.x - p.size.x * 0.5f;
-                Lantern(row, new Vector3(x, p.size.y, 0f), registry);                                   // top row
-                if (i % 2 == 0) Lantern(row, new Vector3(x + 0.2f, p.size.y * 0.5f, -p.size.z * 0.5f - 0.12f), registry); // hanging on the front
+                Lantern(row, new Vector3(x, p.size.y * 0.5f, 0f), registry);                              // standing on the top face
+                if (i % 2 == 0) Lantern(row, new Vector3(x + 0.2f, 0.3f, -p.size.z * 0.5f - 0.12f), registry); // hanging on the front, above the floor
             }
         }
 
