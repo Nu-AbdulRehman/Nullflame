@@ -38,7 +38,7 @@ namespace Nullflame
             }
 
             Consumable c = Available;
-            essence.PreviewCost = c != null && !c.IsGain ? c.Amount : 0f;
+            essence.PreviewCost = c != null && !c.IsGain ? c.Amount : timePowers.AtRewindSpot ? tuning.rewindCost : 0f;
             if (!input.ConsumeHeld) waitForRelease = false;
             if (c == null || !entity.HasControl || !input.ConsumeHeld || waitForRelease) return;
             if (!c.IsGain && !essence.CanAfford(c.Amount)) return; // shown red in the prompt

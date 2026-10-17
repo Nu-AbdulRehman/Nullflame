@@ -15,6 +15,7 @@ Every placeholder asset in the project and what the final asset must be (`CLAUDE
 | PH-009 | Unity cylinder pedestal + flat cylinder 'stopwatch' (default material) | `Shared/Pedestal` (`P_Pedestal`, S11, Beat 2) | Pedestal from #1 columns/machines; stopwatch = Vintage Pocket Watch FBX (already imported) with a URP material copy under `Art/` built from its textures. Using the watch requires the CC BY credit on the win screen | Open |
 | PH-010 | `PH_Ring.png` (64 px white ring sprite, baked) | `HUD/HoldRing` (S19, §12) | Fine as is; final look may add a soft glow ring | Open |
 | PH-011 | Two Unity cubes (3 × 4 × 0.2 m, default material) as the sliding gate panels | `Shared/SemiFinalGate` (`P_GuardGate`, S14, §7.8) | Pack #3 Sci Fi Doors gate (two panels), scaled to the 6 × 4 m doorway | Open |
+| PH-012 | Unity cube panel + thin cylinder handles (Up in Meltdown, Down in Normal) | `Shared/LeverPanel` (`P_LeverPanel`), `State_*/LeverHandle_*` (S13, Beat 3) | Panel from #1 machines/computers; handle stays a primitive (`PH_LeverHandle`, no free lever) with a #1 metal material | Open |
 
 ## Expected placeholders (not created yet)
 

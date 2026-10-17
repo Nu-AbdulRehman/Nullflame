@@ -72,3 +72,9 @@ PlayMode tests call `Simulate(consume, reverse, rewind)`, which stops device rea
 
 ### EN-023: A guard that finished its route can be reversed
 `GuardMotion.BeginReverse` used to refuse the Idle state, so a guard that reached the end of a route with no post loop (Beat 4 transit guards) couldn't be reversed. Only an empty history now blocks a reverse.
+
+### EN-024: A rewind channel needs Q released after it ends, and dies outside Meltdown
+Found by `Rewind_IsOneWay`: holding Q after a completed rewind started a second channel during the 0.75 s before the swap, which then ran on into Normal and charged T-COST-REWIND again. The channel now cancels when the world leaves Meltdown, and any ended channel (completed or cancelled) needs Q released first. Same pattern as the consume latch (EN-020).
+
+### EN-025: State_Normal is activated briefly in Edit mode to author its contents
+MCP for Unity can't edit objects under an inactive parent, so `State_Normal` is switched on while its routes and guards are authored, then switched off again before saving. `WorldStateController` relies on it starting inactive.

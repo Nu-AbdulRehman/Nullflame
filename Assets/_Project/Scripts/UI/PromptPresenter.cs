@@ -17,17 +17,21 @@ namespace Nullflame
         Consumable shown;
         bool shownAffordable;
         bool shownReverse;
+        bool shownRewind;
 
         void LateUpdate()
         {
             Consumable c = consume.Target != null ? consume.Target : consume.Available;
             bool affordable = c == null || c.IsGain || essence.CanAfford(c.Amount) || consume.Target != null;
             bool reverse = timePowers.CanReverse; // R/Q stay hidden until the time power is granted (§7.4)
-            if (c == shown && affordable == shownAffordable && reverse == shownReverse) return;
+            bool rewind = timePowers.AtRewindSpot;
+            if (rewind) affordable = essence.CanAfford(tuning.rewindCost) || timePowers.ChannelProgress > 0f;
+            if (c == shown && affordable == shownAffordable && reverse == shownReverse && rewind == shownRewind) return;
+            shownRewind = rewind;
             shown = c;
             shownAffordable = affordable;
             shownReverse = reverse;
-            label.enabled = c != null || reverse;
+            label.enabled = c != null || reverse || rewind;
             if (!label.enabled) return;
             string text = "";
             if (c != null)
@@ -36,6 +40,7 @@ namespace Nullflame
                 text = c.IsGain ? $"[E] Consume {c.displayName} (+{amount})" : $"[E] Consume {c.displayName} ({amount})";
             }
             if (reverse) text += (text.Length > 0 ? "\n" : "") + $"[R] Reverse ({Mathf.RoundToInt(tuning.reverseCostPerSecond)}/s)";
+            if (rewind) text += (text.Length > 0 ? "\n" : "") + $"[Q] Rewind facility ({Mathf.RoundToInt(tuning.rewindCost)})";
             label.text = text;
             label.color = affordable ? normal : unaffordable;
         }

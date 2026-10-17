@@ -14,6 +14,7 @@ namespace Nullflame
         public ShadowEntity entity;
         public Essence essence;
         public ConsumeAction consume;
+        public TimePowers timePowers;
 
         void Awake() => Current = this;
 
