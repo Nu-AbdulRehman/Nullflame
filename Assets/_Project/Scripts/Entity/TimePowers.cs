@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Nullflame
@@ -7,13 +6,10 @@ namespace Nullflame
     public sealed class TimePowers : MonoBehaviour
     {
         public bool HasTimePower { get; private set; }
-        public event Action Granted;
 
         public void Grant()
         {
-            if (HasTimePower) return;
             HasTimePower = true;
-            Granted?.Invoke();
         }
     }
 }
