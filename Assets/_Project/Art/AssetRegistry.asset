@@ -25,7 +25,7 @@ MonoBehaviour:
   lanternRack: {fileID: 179106, guid: db49253e161c21440b7ccf6d59865098, type: 3}
   labBench: {fileID: 118386, guid: 861fea087c7148246939515a3d957d2e, type: 3}
   oilPipe: {fileID: 7014594128248770012, guid: 292a20cd11ee1634c94eaf73a8fb68d3, type: 3}
-  ceilingLight: {fileID: 0}
+  ceilingLight: {fileID: 113558, guid: 9c0a6df65fcfba243abb2cf9260b869f, type: 3}
   alarmLight: {fileID: 0}
   wallFireLantern: {fileID: 1882602143141976, guid: 56c82061e6c4de742a208837848be55a, type: 3}
   lanternFireVfx: {fileID: 1478314613700728, guid: be6847dd39ab95f4daa2ed98e4f90564, type: 3}

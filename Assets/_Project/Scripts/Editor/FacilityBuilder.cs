@@ -47,12 +47,18 @@ namespace Nullflame.EditorTools
             float height = tuning.ceilingHeight;
 
             Transform floors = Group(level, "Floors");
+            Transform ceilings = Group(level, "Ceilings");
             foreach (var area in layout.areas)
             {
                 Rect r = area.xz;
                 var center = new Vector3(r.center.x, -FloorThickness * 0.5f, r.center.y);
                 Block("Floor_" + area.id, floors, center, new Vector3(r.width, FloorThickness, r.height), 0f,
                     registry.floorTile, solid: false, visible: true);
+                // Ceiling at T-LVL-CEIL: the floor tile flipped. Solid, so the orbit camera stays under it.
+                var top = new Vector3(r.center.x, height + FloorThickness * 0.5f, r.center.y);
+                GameObject ceiling = Block("Ceiling_" + area.id, ceilings, top, new Vector3(r.width, FloorThickness, r.height), 0f,
+                    registry.floorTile, solid: true, visible: true);
+                ceiling.transform.rotation = Quaternion.Euler(180f, 0f, 0f);
             }
 
             Transform walls = Group(level, "Walls");
@@ -110,7 +116,12 @@ namespace Nullflame.EditorTools
                 light.range = layout.ceilingLightRange;
                 light.intensity = layout.ceilingLightIntensity;
                 light.shadows = LightShadows.Soft; // real silhouettes are a look only; gameplay reads ShadowArea (design doc 7.1)
-                if (registry.ceilingLight != null) Instantiate(registry.ceilingLight, go.transform);
+                if (registry.ceilingLight == null) continue;
+                // The fixture hangs from the ceiling plane; the builder's point light is the only light source
+                // (the pack prefab's own Light is switched off so fixtures don't double up, EN-058).
+                GameObject fixture = Instantiate(registry.ceilingLight, go.transform);
+                fixture.transform.position = new Vector3(c.x, height, c.y);
+                foreach (Light packLight in fixture.GetComponentsInChildren<Light>(true)) packLight.enabled = false;
             }
         }
 
