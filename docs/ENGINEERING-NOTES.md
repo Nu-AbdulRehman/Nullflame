@@ -163,5 +163,8 @@ A read-only editor query walked every `WaypointRoute` segment, every spawn-to-fi
 ### EN-051: `GuardMotion.Walk` is the one leg-walker for travel and detours
 `TickTravel` and the new `TickDetour` share `Walk(pts, ref idx, dt, record)`; the post loop keeps its own modulo loop. A detour clears any dwell left at the waypoint the guard was standing on. Rejected: a second motion class for errands, which would need its own history handling.
 
+### EN-053: `FlameVolume.IsLight` separates light rules from fire rules
+Walls and opaque cover stop light (lantern, alarm); they never stop fire. `FlameReceiver` reads `IsLight` for both checks instead of `!InstantKill`, which stopped being a usable proxy once lantern fire became a drain (AD-022).
+
 ### EN-052: The SWAT model's tonfa is hidden
 `SWAT_A_Tonfa` on the pack #5 body was active and read as a grey object in the lantern hand. Disabled in `P_Guard`.

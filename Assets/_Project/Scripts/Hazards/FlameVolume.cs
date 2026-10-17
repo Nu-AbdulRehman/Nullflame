@@ -25,9 +25,12 @@ namespace Nullflame
         }
 
         public bool Lit => isActiveAndEnabled && col.enabled;
-        public bool InstantKill => kind == FlameKind.WallFire || kind == FlameKind.LanternFire;
+        public bool InstantKill => kind == FlameKind.WallFire;
+        // Lantern and alarm light: blocked by walls and by an opaque shadow (EN-048, AD-018). Fire is not light.
+        public bool IsLight => kind == FlameKind.Lantern || kind == FlameKind.Alarm;
 
         public float DamagePerSecond =>
-            kind == FlameKind.Lantern ? tuning.lanternDps : kind == FlameKind.Alarm ? tuning.alarmDps : 0f;
+            kind == FlameKind.Lantern ? tuning.lanternDps : kind == FlameKind.Alarm ? tuning.alarmDps
+            : kind == FlameKind.LanternFire ? tuning.fireDps : 0f;
     }
 }

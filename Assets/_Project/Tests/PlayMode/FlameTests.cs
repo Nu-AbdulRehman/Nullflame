@@ -113,17 +113,17 @@ namespace Nullflame.Tests
             Assert.AreEqual(tuning.alarmDps, before - essence.Value, 1f);
         }
 
-        // AD-018: an opaque shadow is cover from flame light (no lantern drain), but fire still kills in it.
+        // AD-018: an opaque shadow is cover from flame light (no lantern drain), but fire still burns in it.
         [UnityTest]
-        public IEnumerator OpaqueShadow_NoLightDamage_FireStillKills_AD018()
+        public IEnumerator OpaqueShadow_NoLightDamage_FireStillBurns_AD018()
         {
             yield return Setup();
             PlaceAt(new Vector3(25f, 0f, 39f), ShadowOpacity.Opaque);
             yield return Wait(1f);
             Assert.AreEqual(tuning.essenceStart, essence.Value, 1e-3f, "no lantern drain in an opaque shadow");
             SpawnFire(new Vector3(25f, 0f, 39f));
-            yield return Wait(0.2f);
-            Assert.AreEqual(EntityState.Dead, entity.State, "fire still burns in an opaque shadow");
+            yield return Wait(0.5f);
+            Assert.Less(essence.Value, tuning.essenceStart, "fire still burns in an opaque shadow");
         }
 
         // §7.7: wall fire lanterns kill instantly, even in a soft shadow.
@@ -168,15 +168,18 @@ namespace Nullflame.Tests
             Assert.IsFalse(guard.HasLantern, "lanternless after throwing");
         }
 
-        // §7.9 rule 4: fire contact sets Essence to 0.
+        // T-DMG-FIRE (AD-022): lantern fire drains 15 per second while it covers the entity.
         [UnityTest]
-        public IEnumerator FireContact_Kills()
+        public IEnumerator FireDrains_TDMGFIRE()
         {
             yield return Setup();
             PlaceAt(new Vector3(10f, 0f, 26f));
             SpawnFire(new Vector3(10f, 0f, 26f));
-            yield return Wait(0.2f);
-            Assert.AreEqual(EntityState.Dead, entity.State);
+            yield return null;
+            float before = essence.Value;
+            yield return Wait(1f);
+            Assert.AreEqual(tuning.fireDps, before - essence.Value, 1.5f);
+            Assert.AreEqual(EntityState.InShadow, entity.State, "alive after a second in the fire");
         }
 
         // T-FIRE-RADIUS: beyond max radius + entity radius the entity survives.

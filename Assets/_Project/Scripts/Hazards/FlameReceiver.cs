@@ -40,8 +40,8 @@ namespace Nullflame
             {
                 FlameVolume f = touching[i];
                 if (f == null) { touching.RemoveAt(i); continue; }
-                if (!f.Lit || IsOwnLantern(f) || (covered && !f.InstantKill)) continue;
-                if (!f.InstantKill && Blocked(f)) continue; // flame light stops at walls (EN-048)
+                if (!f.Lit || IsOwnLantern(f)) continue;
+                if (f.IsLight && (covered || Blocked(f))) continue; // light stops at walls and opaque cover
                 if (f.InstantKill)
                 {
                     essence.Kill();

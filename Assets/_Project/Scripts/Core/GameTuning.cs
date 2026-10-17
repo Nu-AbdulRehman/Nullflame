@@ -40,6 +40,7 @@ namespace Nullflame
         [Header("Flame")]
         [Tooltip("T-DMG-LANTERN: guard lantern drain (per s)")] public float lanternDps = 8f;
         [Tooltip("T-DMG-ALARM: alarm light drain (per s)")] public float alarmDps = 5f;
+        [Tooltip("T-DMG-FIRE: lantern fire drain (per s), AD-022")] public float fireDps = 15f;
         [Tooltip("T-LANTERN-RADIUS: guard lantern damage radius (m)")] public float lanternRadius = 3f;
         [Tooltip("T-ALARM-RADIUS: alarm light floor radius (m)")] public float alarmFloorRadius = 2f;
 

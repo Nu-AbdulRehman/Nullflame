@@ -24,6 +24,18 @@ namespace Nullflame
             t = 0f;
         }
 
+        // One burst: the pack prefab loops, so the loop is turned off before its first frame.
+        void Smash(Vector3 at)
+        {
+            GameObject go = Instantiate(assets.lanternSmashVfx, at, Quaternion.identity);
+            foreach (ParticleSystem ps in go.GetComponentsInChildren<ParticleSystem>())
+            {
+                ParticleSystem.MainModule main = ps.main;
+                main.loop = false;
+            }
+            Destroy(go, 4f);
+        }
+
         void Update()
         {
             t += Time.deltaTime / tuning.throwTime;
@@ -31,7 +43,7 @@ namespace Nullflame
             if (t < 1f) return;
             LanternFire fire = Instantiate(firePrefab, new Vector3(to.x, 0f, to.z), Quaternion.identity);
             if (oil) fire.UseOilRadius();
-            if (assets != null && assets.lanternSmashVfx != null) Destroy(Instantiate(assets.lanternSmashVfx, fire.transform.position, Quaternion.identity), 4f);
+            if (assets != null && assets.lanternSmashVfx != null) Smash(fire.transform.position);
             SfxPlayer.Play(SfxId.LanternSmash);
             Destroy(gameObject);
         }

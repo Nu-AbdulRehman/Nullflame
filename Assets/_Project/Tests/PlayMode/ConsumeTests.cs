@@ -96,7 +96,7 @@ namespace Nullflame.Tests
 
         // Beat 2: eating the pedestal inside a cone gets the entity burned.
         [UnityTest]
-        public IEnumerator Pedestal_InCone_LeadsToDeath_Beat2()
+        public IEnumerator Pedestal_InCone_GetsBurned_Beat2()
         {
             yield return SetupConsume();
             Consumable ped = SpawnPedestal(new Vector3(25f, 0f, 39.2f));
@@ -105,8 +105,9 @@ namespace Nullflame.Tests
             input.Simulate(consume: true);
             yield return Wait(tuning.viewGrace + 0.15f);
             input.Simulate(consume: false);
+            float before = essence.Value;
             yield return Wait(tuning.alertTime + tuning.throwTime + 0.3f);
-            Assert.AreEqual(EntityState.Dead, entity.State);
+            Assert.Less(essence.Value, before, "burning in the lantern fire (T-DMG-FIRE, AD-022)");
             Assert.IsFalse(powers.HasTimePower);
         }
 
