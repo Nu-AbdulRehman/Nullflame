@@ -168,3 +168,6 @@ Walls and opaque cover stop light (lantern, alarm); they never stop fire. `Flame
 
 ### EN-052: The SWAT model's tonfa is hidden
 `SWAT_A_Tonfa` on the pack #5 body was active and read as a grey object in the lantern hand. Disabled in `P_Guard`.
+
+### EN-054: Pack prefabs are zeroed after `Instantiate(prefab, parent)`
+Pack #8's `MediumFlames` and `TinyFlames` prefab roots store their demo-scene positions ((-6.75, -0.04, -21.75) and (-6.5, 0.09, -16)); `Instantiate(prefab, parent)` keeps that as the local offset, so the lantern fire drew about 23 m from its collider and the wall fire about 16 m from its lantern. `LanternFire` and `FacilityBuilder.Instantiate` now reset local position and rotation after instantiating. Pack #10's `Latern1` renders magenta: its materials are Built-in shaders, which is the owner's Render Pipeline Converter step (CLAUDE.md §5.1), not a code fix.

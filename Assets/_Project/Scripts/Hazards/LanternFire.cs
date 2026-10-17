@@ -22,7 +22,13 @@ namespace Nullflame
         void Awake()
         {
             fire = new FireRadius(tuning.fireStartRadius, tuning.fireMaxRadius, tuning.fireGrowTime, tuning.fireLifeTime, tuning.fireShrinkTime);
-            if (assets.lanternFireVfx != null) vfx = Instantiate(assets.lanternFireVfx, transform).transform;
+            if (assets.lanternFireVfx != null)
+            {
+                // The pack prefab's root carries its demo-scene position; the flames sit on the fire centre.
+                vfx = Instantiate(assets.lanternFireVfx, transform).transform;
+                vfx.localPosition = Vector3.zero;
+                vfx.localRotation = Quaternion.identity;
+            }
             Apply();
         }
 

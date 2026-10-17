@@ -271,8 +271,14 @@ namespace Nullflame.EditorTools
 
         static float Safe(float v) => float.IsInfinity(v) || float.IsNaN(v) ? 1f : v;
 
-        static GameObject Instantiate(GameObject prefab, Transform parent) =>
-            (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+        // Pack prefabs keep their demo-scene position as the local offset; every visual sits on its parent.
+        static GameObject Instantiate(GameObject prefab, Transform parent)
+        {
+            var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, parent);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+            return go;
+        }
 
         static GameObject PropPrefab(AssetRegistry r, PropKind kind)
         {
