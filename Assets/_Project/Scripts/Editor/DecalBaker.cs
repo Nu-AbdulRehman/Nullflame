@@ -13,7 +13,8 @@ namespace Nullflame.EditorTools
         const int Res = 64;
 
         // Render queues from IMPL §2.8: shadows under cones under the outline under the entity.
-        public const int QueueShadow = 3000, QueueOutline = 3003, QueueEntity = 3004;
+        public const int QueueShadow = 3000, QueueCone = 3002, QueueOutline = 3003, QueueEntity = 3004;
+        const int ConeSegments = 24;
 
         [MenuItem("Nullflame/Bake Decals")]
         public static void Bake()
@@ -24,7 +25,41 @@ namespace Nullflame.EditorTools
                 "PH_EntityBlob", QueueEntity);
             Material(null, "PH_Outline", QueueOutline);
             Material(null, "PH_Teardrop", QueueEntity, Color.black);
+            Material(null, "PH_ViewCone", QueueCone, new Color(1f, 1f, 1f, 0.12f));
+            ViewCone(AssetDatabase.LoadAssetAtPath<GameTuning>(FacilityBuilder.TuningPath));
             AssetDatabase.SaveAssets();
+        }
+
+        // Flat fan from the guard's feet: T-VIEW-ANGLE wide, T-VIEW-RANGE long, along +Z. Rebake after changing either.
+        static void ViewCone(GameTuning tuning)
+        {
+            string path = $"{Folder}/PH_ViewCone.asset";
+            var mesh = AssetDatabase.LoadAssetAtPath<Mesh>(path);
+            if (mesh == null)
+            {
+                mesh = new Mesh { name = "PH_ViewCone" };
+                AssetDatabase.CreateAsset(mesh, path);
+            }
+            var verts = new Vector3[ConeSegments + 2];
+            var tris = new int[ConeSegments * 3];
+            float half = tuning.viewAngle * 0.5f;
+            for (int i = 0; i <= ConeSegments; i++)
+            {
+                float a = Mathf.Lerp(-half, half, i / (float)ConeSegments) * Mathf.Deg2Rad;
+                verts[i + 1] = new Vector3(Mathf.Sin(a), 0f, Mathf.Cos(a)) * tuning.viewRange;
+            }
+            for (int i = 0; i < ConeSegments; i++)
+            {
+                tris[i * 3] = 0;
+                tris[i * 3 + 1] = i + 1;
+                tris[i * 3 + 2] = i + 2;
+            }
+            mesh.Clear();
+            mesh.vertices = verts;
+            mesh.triangles = tris;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+            EditorUtility.SetDirty(mesh);
         }
 
         // Alpha 1 inside, fading to 0 over `soft` of the half-size at each edge.

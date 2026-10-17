@@ -1266,7 +1266,7 @@ Meltdown walk speed 2.4 m/s. "W" = waypoint.
 |---|---|---|---|
 | G-GLANCE | (24.0, 36.0) | (23.0, 35.0) → (17.25, 35.0) → (17.25, 26.0) dwell T-INTRO-GLANCE, look at (12, 26) → (17.25, 11.0) → (11.25, 7.5) | (9.75, 7.5) ↔ (12.75, 7.5), dwell 1 s each |
 | G-B | (24.0, 37.0) | (23.0, 35.0) → (20.25, 35.0) → (20.25, 9.0) → (18.75, 7.5) | (17.5, 7.5) ↔ (20.0, 7.5) |
-| G-TIME | (29.5, 38.5) | (23.0, 35.0) → (17.25, 35.0) → (17.25, 11.0) → (3.75, 11.0) → (3.75, 5.0) | (3.75, 5.0) → (6.25, 5.0) dwell 3 s, look at (3.75, 3) → (6.25, 1.0) → (1.25, 1.0) → (1.25, 5.0) → back to (3.75, 5.0) |
+| G-TIME | (29.5, 38.5) | (23.0, 35.0) → (17.25, 35.0) → (17.25, 11.0) → (3.75, 11.0) → (3.75, 5.0) | (3.75, 5.0) → (6.25, 5.0) dwell 4 s, look due north at (6.25, 7) (AD-017) → (6.25, 1.0) → (1.25, 1.0) → (1.25, 5.0) → back to (3.75, 5.0) |
 | G-C | (24.0, 38.0) | (23.0, 35.0) → (20.25, 35.0) → (20.25, 9.0) → (26.25, 7.5) | (25.0, 7.5) ↔ (27.5, 7.5) |
 | G-D | (25.0, 38.0) | (23.0, 35.0) → (20.25, 35.0) → (20.25, 9.0) → (33.75, 7.5) | (32.5, 7.5) ↔ (35.0, 7.5) |
 | G-MAIN | (25.0, 37.0) | (23.0, 35.0) → (19.5, 35.0) | (19.5, 14) ↔ (19.5, 38) |
@@ -1277,7 +1277,7 @@ Meltdown walk speed 2.4 m/s. "W" = waypoint.
 Checks these values were picked to pass (the tests confirm them):
 - G-TIME's travel length ≈ 56 m (§9 Beat 3 says about 55 m).
 - G-TIME passes D-PLAYER at X 17.25, 1.5 m from the doorway (§9.1: within 3 m).
-- G-TIME's loop: 18 m perimeter / 2.4 m/s + 3 s stop ≈ 10.5 s (§9 Beat 2 says about 12 s).
+- G-TIME's loop: 18 m perimeter / 2.4 m/s + 4 s stop ≈ 11.5 s (§9 Beat 2 says about 12 s). Longest safe window ≈ 5.4 s (AD-017).
 - G-TIME's Access Corridor leg at Z 11 keeps it ≥ 3.6 m (lantern radius + entity radius) from G-GLANCE's post at Z 7.5, so a clean ride costs nothing.
 - G-TIME's spawn shadow to the lever shadow ≈ 5 m (§9 Beat 3: within jump range). G-BARRACKS's nearest point to G-TIME's spawn ≈ 3.8 m, outside lantern reach.
 

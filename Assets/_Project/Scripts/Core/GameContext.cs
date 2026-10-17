@@ -11,6 +11,7 @@ namespace Nullflame
         public static GameContext Current { get; private set; }
 
         public ShadowRegistry shadows;
+        public ShadowEntity entity;
 
         void Awake() => Current = this;
 
