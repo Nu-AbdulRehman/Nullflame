@@ -189,3 +189,6 @@ Owner choice (2026-10-18): `FacilityLayout.wallHeight` (6 m) and `wallBelowFloor
 
 ### EN-060: The Semi-Final Gate panels and the Final Gate wear the SCP door look
 `P_GuardGate/PanelWest`, `PanelEast` and `P_FinalGate/PH_FinalGate` use `Art/M_ScpDoor.mat` with the SCP badge quads (`Art/M_ScpBadge.mat`) on both faces, the same recipe as the builder's `ScpDoor` (AD-031), done by hand in the prefabs because they are hand-placed gameplay objects, not builder output. Panel colliders, the doorway blocker and the Final Gate's consume sink are untouched.
+
+### EN-061: Lever console, stocked lantern rack, locker cabinets
+Owner request (2026-10-18). `P_LeverPanel/Panel` keeps its box collider and shadow but hides its cube; the pack #1 `console` sits in the same footprint, and the Meltdown/Normal handle bars use `M_LanternGlow` so the lever reads in the dark. The lantern rack stays the pack #1 `shelf` fitted to its box; `FacilityBuilder.StockRack` stands four CC0 lanterns (`AssetRegistry.rackLantern`) on top and hangs two on the front. Lockers use pack #1 `computer_station` fitted to the 0.6 × 2 × 0.5 m locker box, the pack's tallest narrow unit.

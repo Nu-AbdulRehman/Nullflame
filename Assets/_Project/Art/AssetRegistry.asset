@@ -21,10 +21,11 @@ MonoBehaviour:
   cart: {fileID: 155844, guid: 6456a4784f31cab439d29b7e3bb286a4, type: 3}
   cabinet: {fileID: 142160, guid: b3f6e169466f65a4aa48e83805d9e440, type: 3}
   bunk: {fileID: 192520, guid: 9efb87eb649319c4c8c3a954a74df462, type: 3}
-  locker: {fileID: 0}
+  locker: {fileID: 116326, guid: 82c3b8fcabff82d4787f83e992e386df, type: 3}
   lanternRack: {fileID: 179106, guid: db49253e161c21440b7ccf6d59865098, type: 3}
   labBench: {fileID: 118386, guid: 861fea087c7148246939515a3d957d2e, type: 3}
   oilPipe: {fileID: 7014594128248770012, guid: 292a20cd11ee1634c94eaf73a8fb68d3, type: 3}
+  rackLantern: {fileID: 919132149155446097, guid: 4c1b8ef7444e5754eaac8c214176f49f, type: 3}
   ceilingLight: {fileID: 113558, guid: 9c0a6df65fcfba243abb2cf9260b869f, type: 3}
   alarmLight: {fileID: 195090, guid: bf47bd9e279487a4ca3d6f7a10492900, type: 3}
   wallFireLantern: {fileID: 1882602143141976, guid: 56c82061e6c4de742a208837848be55a, type: 3}

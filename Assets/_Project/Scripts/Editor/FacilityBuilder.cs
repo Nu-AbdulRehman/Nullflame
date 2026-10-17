@@ -101,7 +101,10 @@ namespace Nullflame.EditorTools
 
             Transform props = Group(level, "Props");
             foreach (var p in layout.props)
-                Block(p.id, props, p.center, p.size, p.yaw, PropPrefab(registry, p.kind), solid: false, visible: true);
+            {
+                GameObject prop = Block(p.id, props, p.center, p.size, p.yaw, PropPrefab(registry, p.kind), solid: false, visible: true);
+                if (p.kind == PropKind.LanternRack) StockRack(prop, p, registry);
+            }
 
             BuildMeltdownFlames(meltdown, layout, tuning, registry, height);
 
@@ -233,6 +236,34 @@ namespace Nullflame.EditorTools
         const float DoorBadge = 0.45f;      // badge side as a fraction of the door width
         const string DoorMaterialPath = "Assets/_Project/Art/M_ScpDoor.mat";
         const string BadgeMaterialPath = "Assets/_Project/Art/M_ScpBadge.mat";
+
+        const int RackLanterns = 4;
+        const float RackLanternScale = 0.055f; // the CC0 lantern is 8.3 units tall: 0.45 m
+        const string GlowMaterialPath = "Assets/_Project/Art/M_LanternGlow.mat";
+        // Spare lanterns on top of the rack and along its front, so it reads as a lantern rack (EN-061).
+        static void StockRack(GameObject rack, PropSpec p, AssetRegistry registry)
+        {
+            if (registry.rackLantern == null) return;
+            var row = new GameObject("Lanterns").transform;
+            row.SetParent(rack.transform.parent, false);
+            row.SetPositionAndRotation(p.center, Quaternion.Euler(0f, p.yaw, 0f));
+            for (int i = 0; i < RackLanterns; i++)
+            {
+                float x = (i + 0.5f) / RackLanterns * p.size.x - p.size.x * 0.5f;
+                Lantern(row, new Vector3(x, p.size.y, 0f), registry);                                   // top row
+                if (i % 2 == 0) Lantern(row, new Vector3(x + 0.2f, p.size.y * 0.5f, -p.size.z * 0.5f - 0.12f), registry); // hanging on the front
+            }
+        }
+
+        static void Lantern(Transform row, Vector3 local, AssetRegistry registry)
+        {
+            GameObject l = Instantiate(registry.rackLantern, row);
+            l.transform.localPosition = local;
+            l.transform.localScale = Vector3.one * RackLanternScale;
+            foreach (Collider c in l.GetComponentsInChildren<Collider>()) Object.DestroyImmediate(c);
+            var glow = AssetDatabase.LoadAssetAtPath<Material>(GlowMaterialPath); // spares glow like the hand lantern
+            if (glow != null) foreach (Renderer r in l.GetComponentsInChildren<Renderer>()) r.sharedMaterial = glow;
+        }
 
         // A closed SCP door (AD-031): a solid slab in the wall's material, darkened (Bake Door Material), with the
         // SCP badge on both faces. Blocks jumps, sight and the NavMesh like a wall.

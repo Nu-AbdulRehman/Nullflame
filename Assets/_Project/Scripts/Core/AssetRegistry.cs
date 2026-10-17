@@ -24,6 +24,8 @@ namespace Nullflame
         public GameObject lanternRack;
         public GameObject labBench;
         public GameObject oilPipe;
+        [Tooltip("Spare lanterns stood on the lantern rack (look only).")]
+        public GameObject rackLantern;
 
         [Header("Lights")]
         public GameObject ceilingLight;
