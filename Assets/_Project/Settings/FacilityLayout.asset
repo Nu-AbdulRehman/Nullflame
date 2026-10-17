@@ -1,0 +1,350 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b0352140a354014eb8ade6461cc1fc0, type: 3}
+  m_Name: FacilityLayout
+  m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.FacilityLayout
+  wallThickness: 0.2
+  areas:
+  - id: TimeRoom
+    xz:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 7.5
+      height: 6
+    playerAccess: 1
+  - id: ScpRoomA
+    xz:
+      serializedVersion: 2
+      x: 7.5
+      y: 0
+      width: 7.5
+      height: 6
+    playerAccess: 0
+  - id: ScpRoomB
+    xz:
+      serializedVersion: 2
+      x: 15
+      y: 0
+      width: 7.5
+      height: 6
+    playerAccess: 0
+  - id: ScpRoomC
+    xz:
+      serializedVersion: 2
+      x: 22.5
+      y: 0
+      width: 7.5
+      height: 6
+    playerAccess: 0
+  - id: ScpRoomD
+    xz:
+      serializedVersion: 2
+      x: 30
+      y: 0
+      width: 7.5
+      height: 6
+    playerAccess: 0
+  - id: AccessCorridor
+    xz:
+      serializedVersion: 2
+      x: 0
+      y: 6
+      width: 37.5
+      height: 6
+    playerAccess: 1
+  - id: MainCorridor
+    xz:
+      serializedVersion: 2
+      x: 15.75
+      y: 12
+      width: 6
+      height: 28
+    playerAccess: 1
+  - id: PlayerRoom
+    xz:
+      serializedVersion: 2
+      x: 8.25
+      y: 22.25
+      width: 7.5
+      height: 7.5
+    playerAccess: 1
+  - id: Lab
+    xz:
+      serializedVersion: 2
+      x: 21.75
+      y: 19.5
+      width: 10.25
+      height: 10.25
+    playerAccess: 1
+  - id: Barracks
+    xz:
+      serializedVersion: 2
+      x: 21.75
+      y: 29.75
+      width: 10.25
+      height: 10.25
+    playerAccess: 1
+  - id: SleepingAlcove
+    xz:
+      serializedVersion: 2
+      x: 32
+      y: 34.85
+      width: 1.75
+      height: 5.1500015
+    playerAccess: 0
+  - id: SemiFinalGate
+    xz:
+      serializedVersion: 2
+      x: 15.75
+      y: 40
+      width: 6
+      height: 1.5
+    playerAccess: 1
+  - id: FinalCorridor
+    xz:
+      serializedVersion: 2
+      x: 15.75
+      y: 41.5
+      width: 6
+      height: 14.5
+    playerAccess: 1
+  - id: WestSideCorridor
+    xz:
+      serializedVersion: 2
+      x: 9.75
+      y: 53
+      width: 6
+      height: 3
+    playerAccess: 0
+  - id: EastSideCorridor
+    xz:
+      serializedVersion: 2
+      x: 21.75
+      y: 53
+      width: 6
+      height: 3
+    playerAccess: 0
+  - id: FinalGate
+    xz:
+      serializedVersion: 2
+      x: 15.75
+      y: 56
+      width: 6
+      height: 1.5
+    playerAccess: 1
+  walls:
+  - a: {x: 0, y: 0}
+    b: {x: 37.5, y: 0}
+  - a: {x: 0, y: 0}
+    b: {x: 0, y: 12}
+  - a: {x: 37.5, y: 0}
+    b: {x: 37.5, y: 12}
+  - a: {x: 7.5, y: 0}
+    b: {x: 7.5, y: 6}
+  - a: {x: 15, y: 0}
+    b: {x: 15, y: 6}
+  - a: {x: 22.5, y: 0}
+    b: {x: 22.5, y: 6}
+  - a: {x: 30, y: 0}
+    b: {x: 30, y: 6}
+  - a: {x: 0, y: 6}
+    b: {x: 37.5, y: 6}
+  - a: {x: 0, y: 12}
+    b: {x: 15.75, y: 12}
+  - a: {x: 21.75, y: 12}
+    b: {x: 37.5, y: 12}
+  - a: {x: 15.75, y: 12}
+    b: {x: 15.75, y: 40}
+  - a: {x: 8.25, y: 22.25}
+    b: {x: 15.75, y: 22.25}
+  - a: {x: 8.25, y: 29.75}
+    b: {x: 15.75, y: 29.75}
+  - a: {x: 8.25, y: 22.25}
+    b: {x: 8.25, y: 29.75}
+  - a: {x: 21.75, y: 12}
+    b: {x: 21.75, y: 40}
+  - a: {x: 21.75, y: 19.5}
+    b: {x: 32, y: 19.5}
+  - a: {x: 32, y: 19.5}
+    b: {x: 32, y: 29.75}
+  - a: {x: 21.75, y: 29.75}
+    b: {x: 32, y: 29.75}
+  - a: {x: 32, y: 29.75}
+    b: {x: 32, y: 40}
+  - a: {x: 32, y: 34.85}
+    b: {x: 33.75, y: 34.85}
+  - a: {x: 33.75, y: 34.85}
+    b: {x: 33.75, y: 40}
+  - a: {x: 21.75, y: 40}
+    b: {x: 33.75, y: 40}
+  - a: {x: 15.75, y: 40}
+    b: {x: 15.75, y: 41.5}
+  - a: {x: 21.75, y: 40}
+    b: {x: 21.75, y: 41.5}
+  - a: {x: 15.75, y: 41.5}
+    b: {x: 15.75, y: 53}
+  - a: {x: 21.75, y: 41.5}
+    b: {x: 21.75, y: 53}
+  - a: {x: 9.75, y: 53}
+    b: {x: 15.75, y: 53}
+  - a: {x: 9.75, y: 56}
+    b: {x: 15.75, y: 56}
+  - a: {x: 9.75, y: 53}
+    b: {x: 9.75, y: 56}
+  - a: {x: 21.75, y: 53}
+    b: {x: 27.75, y: 53}
+  - a: {x: 21.75, y: 56}
+    b: {x: 27.75, y: 56}
+  - a: {x: 27.75, y: 53}
+    b: {x: 27.75, y: 56}
+  - a: {x: 15.75, y: 56}
+    b: {x: 15.75, y: 57.5}
+  - a: {x: 21.75, y: 56}
+    b: {x: 21.75, y: 57.5}
+  - a: {x: 15.75, y: 57.5}
+    b: {x: 21.75, y: 57.5}
+  openings:
+  - id: D-SCP-T
+    center: {x: 3.75, y: 6}
+    width: 2
+    kind: 3
+  - id: D-SCP-A
+    center: {x: 11.25, y: 6}
+    width: 2
+    kind: 3
+  - id: D-SCP-B
+    center: {x: 18.75, y: 6}
+    width: 2
+    kind: 3
+  - id: D-SCP-C
+    center: {x: 26.25, y: 6}
+    width: 2
+    kind: 3
+  - id: D-SCP-D
+    center: {x: 33.75, y: 6}
+    width: 2
+    kind: 3
+  - id: D-PLAYER
+    center: {x: 15.75, y: 26}
+    width: 2
+    kind: 1
+  - id: D-BARRACKS
+    center: {x: 21.75, y: 35}
+    width: 2.5
+    kind: 2
+  - id: D-LAB
+    center: {x: 27, y: 29.75}
+    width: 2
+    kind: 2
+  - id: D-SLEEP
+    center: {x: 32, y: 37.4}
+    width: 2
+    kind: 0
+  - id: D-SLEEP-SHOW
+    center: {x: 33.75, y: 37.4}
+    width: 2
+    kind: 4
+  - id: D-SIDE-W
+    center: {x: 9.75, y: 54.5}
+    width: 2
+    kind: 4
+  - id: D-SIDE-E
+    center: {x: 27.75, y: 54.5}
+    width: 2
+    kind: 4
+  props:
+  - id: Crate1
+    kind: 0
+    center: {x: 16.45, y: 0.6, z: 16}
+    size: {x: 1.2, y: 1.2, z: 1.2}
+    yaw: 0
+  - id: Crate2
+    kind: 0
+    center: {x: 16.45, y: 0.6, z: 33}
+    size: {x: 1.2, y: 1.2, z: 1.2}
+    yaw: 0
+  - id: Cart
+    kind: 1
+    center: {x: 6, y: 0.5, z: 8}
+    size: {x: 1.4, y: 1, z: 0.8}
+    yaw: 0
+  - id: Cabinet
+    kind: 2
+    center: {x: 1, y: 1, z: 5.6}
+    size: {x: 1.2, y: 2, z: 0.6}
+    yaw: 0
+  - id: LanternRack
+    kind: 5
+    center: {x: 29, y: 0.9, z: 39.6}
+    size: {x: 2, y: 1.8, z: 0.5}
+    yaw: 0
+  - id: Bunk1
+    kind: 3
+    center: {x: 23.6, y: 0.6, z: 31.5}
+    size: {x: 1, y: 1.2, z: 2}
+    yaw: 0
+  - id: Bunk2
+    kind: 3
+    center: {x: 30.2, y: 0.6, z: 31.5}
+    size: {x: 1, y: 1.2, z: 2}
+    yaw: 0
+  - id: Locker1
+    kind: 4
+    center: {x: 25.2, y: 1, z: 30.2}
+    size: {x: 0.6, y: 2, z: 0.5}
+    yaw: 0
+  - id: Locker2
+    kind: 4
+    center: {x: 28.9, y: 1, z: 30.2}
+    size: {x: 0.6, y: 2, z: 0.5}
+    yaw: 0
+  - id: LabBench1
+    kind: 6
+    center: {x: 25, y: 0.45, z: 24}
+    size: {x: 2, y: 0.9, z: 0.8}
+    yaw: 0
+  - id: LabBench2
+    kind: 6
+    center: {x: 29, y: 0.45, z: 24}
+    size: {x: 2, y: 0.9, z: 0.8}
+    yaw: 0
+  blockers:
+  - id: Block-SCP-A
+    center: {x: 11.25, y: 6}
+    size: {x: 2, y: 0.4}
+  - id: Block-SCP-B
+    center: {x: 18.75, y: 6}
+    size: {x: 2, y: 0.4}
+  - id: Block-SCP-C
+    center: {x: 26.25, y: 6}
+    size: {x: 2, y: 0.4}
+  - id: Block-SCP-D
+    center: {x: 33.75, y: 6}
+    size: {x: 2, y: 0.4}
+  ceilingLights:
+  - {x: 4, y: 9}
+  - {x: 12, y: 9}
+  - {x: 20, y: 9}
+  - {x: 28, y: 9}
+  - {x: 34, y: 9}
+  - {x: 18.75, y: 15}
+  - {x: 18.75, y: 21}
+  - {x: 18.75, y: 27}
+  - {x: 18.75, y: 33}
+  - {x: 18.75, y: 39}
+  - {x: 18.75, y: 44}
+  - {x: 18.75, y: 49}
+  - {x: 18.75, y: 54}
+  - {x: 3.75, y: 3}
+  - {x: 26.875, y: 34.875}
+  - {x: 26.875, y: 24.625}

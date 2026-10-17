@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c6186369e198d24abc5b4563f5cea58, type: 3}
+  m_Name: AssetRegistry
+  m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.AssetRegistry
+  floorTile: {fileID: 0}
+  wallSegment: {fileID: 0}
+  doorFrame: {fileID: 0}
+  containmentDoor: {fileID: 0}
+  gatePanel: {fileID: 0}
+  finalGate: {fileID: 0}
+  showOnlyDoor: {fileID: 0}
+  crate: {fileID: 0}
+  cart: {fileID: 0}
+  cabinet: {fileID: 0}
+  pedestal: {fileID: 0}
+  stopwatch: {fileID: 0}
+  bunk: {fileID: 0}
+  locker: {fileID: 0}
+  lanternRack: {fileID: 0}
+  leverPanel: {fileID: 0}
+  leverHandle: {fileID: 0}
+  labBench: {fileID: 0}
+  oilPipe: {fileID: 0}
+  ceilingLight: {fileID: 0}
+  alarmLight: {fileID: 0}
+  wallFireLantern: {fileID: 0}
+  guardBody: {fileID: 0}
+  guardController: {fileID: 0}
+  guardLantern: {fileID: 0}
+  lanternFireVfx: {fileID: 0}
+  fireSmallVfx: {fileID: 0}
+  pipeBurstVfx: {fileID: 0}
+  lanternSmashVfx: {fileID: 0}
+  oilDripVfx: {fileID: 0}
+  shadowDecalMaterial: {fileID: 0}
+  entityBlobMaterial: {fileID: 0}
+  oilDropMaterial: {fileID: 0}
+  viewConeMaterial: {fileID: 0}
+  outlineMaterial: {fileID: 0}
+  viewConeMesh: {fileID: 0}
+  teardropMesh: {fileID: 0}

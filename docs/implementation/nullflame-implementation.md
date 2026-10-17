@@ -66,13 +66,13 @@ The `Logic` folder stays inside the runtime assembly. A rule enforced by review 
 
 ### 2.3 Physics layers `[OD-007]`
 
-PROPOSED user layers (a `TagManager` change, owner approval needed):
+User layers (AD-002; Unity assigned slots 8 to 10 because 6 and 7 were taken by `add_layer`'s ordering). Code looks layers up by name, never by index:
 
 | Layer | Index | Used by | Hit by |
 |---|---|---|---|
-| `LevelSolid` | 6 | Walls, door panels, closed containment doors, Semi-Final Gate panels and its doorway blocker, invisible doorway blockers | Jump line-of-sight raycast (IMPL §7.5), guard view raycast (IMPL §10.4), camera collision spherecast (IMPL §8) |
-| `Entity` | 7 | The entity's trigger capsule | `FlameVolume` triggers |
-| `Hazard` | 8 | `FlameVolume` trigger colliders | The entity capsule |
+| `LevelSolid` | 8 | Walls, door panels, closed containment doors, Semi-Final Gate panels and its doorway blocker, invisible doorway blockers | Jump line-of-sight raycast (IMPL §7.5), guard view raycast (IMPL §10.4), camera collision spherecast (IMPL §8) |
+| `Entity` | 9 | The entity's trigger capsule | `FlameVolume` triggers |
+| `Hazard` | 10 | `FlameVolume` trigger colliders | The entity capsule |
 
 The physics matrix needs `Entity` × `Hazard` on. Nothing else needs to collide; gameplay never uses non-trigger rigidbody contacts. Props from packs keep whatever colliders they ship with on `Default`, which no gameplay query hits.
 
@@ -1244,7 +1244,7 @@ Blockers: one invisible `LevelSolid` box in each of D-SCP-A..D (2 m × 0.4 m, fu
 | Lever panel (Barracks) | 24, 39.7 | 1.2 × 0.4 × 1.6 | 23.0–25.0, 38.3–39.9 |
 | Bunk 1 (Barracks) | 23.6, 31.5 | 1.0 × 2.0 × 1.2 | 22.9–24.4, 30.3–32.7 |
 | Bunk 2 (Barracks) | 30.2, 31.5 | 1.0 × 2.0 × 1.2 | 29.4–30.9, 30.3–32.7 |
-| Locker 1, 2 (Barracks) | 26.0, 30.2 / 27.9, 30.2 | 0.6 × 0.5 × 2.0 | none (dressing only) |
+| Locker 1, 2 (Barracks) | 25.2, 30.2 / 28.9, 30.2 | 0.6 × 0.5 × 2.0 | none (dressing only). Moved from 26.0 / 27.9 during B1 so neither blocks D-LAB (X 26–28) |
 | Lab bench 1, 2 (SHOULD) | 25, 24 / 29, 24 | 2.0 × 0.8 × 0.9 | 23.9–26.1, 23.3–24.9 / 27.9–30.1, 23.3–24.9 |
 | Final Gate shadow | – | – | 15.85–21.65, 54.5–56 |
 | Player Room floor shadow | – | – | 8.35–15.65, 22.35–29.65 (whole floor; see `[OD-013]` for the option of ending it 1.5 m short of the door) |

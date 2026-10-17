@@ -6,8 +6,9 @@ Two lists (`CLAUDE.md` §4.1, §5.4): every builder or baker script and the cont
 
 | Script | Menu item | Builds | Owned root / output folder | Rebuild source |
 |---|---|---|---|---|
+| `Assets/_Project/Scripts/Editor/FacilityBuilder.cs` | `Nullflame/Build Facility` | Floors, walls with door cuts, closed containment doors (Normal), show-only doors, invisible SCP doorway blockers, props, ceiling lights. Kit visuals from `AssetRegistry` slots, cubes when a slot is empty | `Level_Generated`, `State_Meltdown/Generated_Meltdown`, `State_Normal/Generated_Normal` | `Settings/FacilityLayout.asset`, `Settings/GameTuning.asset` (wall height), `Art/AssetRegistry.asset` |
 
-Planned (from `docs/implementation/nullflame-implementation.md` §25): `FacilityBuilder` (`Nullflame/Build Facility`), `PipeBuilder` (`Nullflame/Build Pipes`), `DecalBaker` (`Nullflame/Bake Decals`), `ToneBaker` (`Nullflame/Bake Placeholder Tones`).
+Planned (from `docs/implementation/nullflame-implementation.md` §25): `PipeBuilder` (`Nullflame/Build Pipes`), `DecalBaker` (`Nullflame/Bake Decals`), `ToneBaker` (`Nullflame/Bake Placeholder Tones`).
 
 ## Third-party assets
 
