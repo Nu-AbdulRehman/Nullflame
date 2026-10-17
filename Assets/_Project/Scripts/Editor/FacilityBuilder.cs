@@ -218,13 +218,42 @@ namespace Nullflame.EditorTools
                     Block(o.id + "_Closed", normal, panelCenter, panelSize, yaw, registry.containmentDoor, solid: true, visible: true);
                     break;
                 case OpeningKind.ShowOnlyDoor:
-                    Block(o.id, Group(level, "Doorways"), panelCenter, panelSize, yaw, registry.showOnlyDoor, solid: true, visible: true);
+                case OpeningKind.ScpDoor:
+                    ScpDoor(o.id, Group(level, "Doorways"), panelCenter, o.width, height, yaw);
                     break;
                 case OpeningKind.OpenFrame:
                 case OpeningKind.Door:
                     if (registry.doorFrame != null)
                         Block(o.id + "_Frame", Group(level, "Doorways"), panelCenter, panelSize, yaw, registry.doorFrame, solid: false, visible: true);
                     break;
+            }
+        }
+
+        const float DoorThickness = 0.12f;  // thinner than the 0.2 m wall: the slab sits a little inside each face
+        const float DoorBadge = 0.45f;      // badge side as a fraction of the door width
+        const string DoorMaterialPath = "Assets/_Project/Art/M_ScpDoor.mat";
+        const string BadgeMaterialPath = "Assets/_Project/Art/M_ScpBadge.mat";
+
+        // A closed SCP door (AD-031): a solid slab in the wall's material, darkened (Bake Door Material), with the
+        // SCP badge on both faces. Blocks jumps, sight and the NavMesh like a wall.
+        static void ScpDoor(string id, Transform parent, Vector3 center, float width, float height, float yaw)
+        {
+            GameObject slab = Block(id, parent, center, new Vector3(width, height, DoorThickness), yaw, null, solid: true, visible: true);
+            var door = AssetDatabase.LoadAssetAtPath<Material>(DoorMaterialPath);
+            var badge = AssetDatabase.LoadAssetAtPath<Material>(BadgeMaterialPath);
+            if (door != null) slab.GetComponent<Renderer>().sharedMaterial = door;
+            if (badge == null) return;
+            float side = Mathf.Min(width, height) * DoorBadge;
+            for (int face = -1; face <= 1; face += 2)
+            {
+                var quad = GameObject.CreatePrimitive(PrimitiveType.Quad);
+                Object.DestroyImmediate(quad.GetComponent<Collider>());
+                quad.name = "Badge";
+                quad.transform.SetParent(slab.transform, false);
+                quad.transform.localPosition = new Vector3(0f, 0f, face * 0.51f);
+                quad.transform.localRotation = Quaternion.Euler(0f, face > 0 ? 180f : 0f, 0f); // a quad faces its -Z
+                quad.transform.localScale = new Vector3(side / width, side / height, 1f);
+                quad.GetComponent<Renderer>().sharedMaterial = badge;
             }
         }
 

@@ -25,6 +25,26 @@ namespace Nullflame.EditorTools
             AssetDatabase.SaveAssets();
         }
 
+        // The closed SCP doors: the wall kit's own material, darkened (AD-031). Updated in place so the GUID holds.
+        [MenuItem("Nullflame/Bake Door Material")]
+        public static void BakeDoor()
+        {
+            var registry = AssetDatabase.LoadAssetAtPath<AssetRegistry>("Assets/_Project/Art/AssetRegistry.asset");
+            var wallRenderer = registry.wallSegment != null ? registry.wallSegment.GetComponentInChildren<Renderer>() : null;
+            if (wallRenderer == null) { Debug.LogError("AssetRegistry.wallSegment has no renderer; set the wall kit first."); return; }
+            const string path = "Assets/_Project/Art/M_ScpDoor.mat";
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (mat == null)
+            {
+                mat = new Material(wallRenderer.sharedMaterial);
+                AssetDatabase.CreateAsset(mat, path);
+            }
+            else mat.CopyPropertiesFromMaterial(wallRenderer.sharedMaterial);
+            mat.SetColor("_BaseColor", wallRenderer.sharedMaterial.GetColor("_BaseColor") * new Color(0.55f, 0.55f, 0.55f, 1f));
+            EditorUtility.SetDirty(mat);
+            AssetDatabase.SaveAssets();
+        }
+
         [MenuItem("Nullflame/Bake Decals")]
         public static void Bake()
         {

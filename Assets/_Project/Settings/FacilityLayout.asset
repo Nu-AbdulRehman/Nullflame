@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: FacilityLayout
   m_EditorClassIdentifier: Nullflame.Runtime::Nullflame.FacilityLayout
   wallThickness: 0.2
+  wallHeight: 6
+  ceilingLightRange: 8
+  ceilingLightIntensity: 1.5
   areas:
   - id: TimeRoom
     xz:
@@ -221,19 +224,19 @@ MonoBehaviour:
   - id: D-SCP-A
     center: {x: 11.25, y: 6}
     width: 2
-    kind: 3
+    kind: 6
   - id: D-SCP-B
     center: {x: 18.75, y: 6}
     width: 2
-    kind: 3
+    kind: 6
   - id: D-SCP-C
     center: {x: 26.25, y: 6}
     width: 2
-    kind: 3
+    kind: 6
   - id: D-SCP-D
     center: {x: 33.75, y: 6}
     width: 2
-    kind: 3
+    kind: 6
   - id: D-PLAYER
     center: {x: 15.75, y: 26}
     width: 2
@@ -348,3 +351,89 @@ MonoBehaviour:
   - {x: 3.75, y: 3}
   - {x: 26.875, y: 34.875}
   - {x: 26.875, y: 24.625}
+  alarmLamps:
+  - at: {x: 15.75, y: 16}
+    yaw: 90
+  - at: {x: 15.75, y: 24}
+    yaw: 90
+  - at: {x: 15.75, y: 32}
+    yaw: 90
+  - at: {x: 21.75, y: 16}
+    yaw: -90
+  - at: {x: 21.75, y: 24}
+    yaw: -90
+  - at: {x: 21.75, y: 32}
+    yaw: -90
+  - at: {x: 8, y: 12}
+    yaw: 180
+  - at: {x: 26, y: 12}
+    yaw: 180
+  - at: {x: 34, y: 12}
+    yaw: 180
+  alarmLampHeight: 2.6
+  wallFireLanterns:
+  - {x: 15.95, y: 2, z: 44}
+  - {x: 15.95, y: 2, z: 48.5}
+  - {x: 15.95, y: 2, z: 53}
+  - {x: 21.55, y: 2, z: 44}
+  - {x: 21.55, y: 2, z: 48.5}
+  - {x: 21.55, y: 2, z: 53}
+  pipeHeight: 2.5
+  pipeStripWidth: 1
+  crackPoints:
+  - id: W1
+    zMin: 42
+    zMax: 45
+    stripX: 16.35
+    dropX: 17.45
+    wallFaceX: 15.85
+  - id: W2
+    zMin: 45
+    zMax: 48
+    stripX: 16.35
+    dropX: 17.45
+    wallFaceX: 15.85
+  - id: W3
+    zMin: 48
+    zMax: 51
+    stripX: 16.35
+    dropX: 17.45
+    wallFaceX: 15.85
+  - id: W4
+    zMin: 51
+    zMax: 54
+    stripX: 16.35
+    dropX: 17.45
+    wallFaceX: 15.85
+  - id: E1
+    zMin: 42
+    zMax: 45
+    stripX: 21.15
+    dropX: 20.05
+    wallFaceX: 21.65
+  - id: E2
+    zMin: 45
+    zMax: 48
+    stripX: 21.15
+    dropX: 20.05
+    wallFaceX: 21.65
+  - id: E3
+    zMin: 48
+    zMax: 51
+    stripX: 21.15
+    dropX: 20.05
+    wallFaceX: 21.65
+  - id: E4
+    zMin: 51
+    zMax: 54
+    stripX: 21.15
+    dropX: 20.05
+    wallFaceX: 21.65
+  alarmColor: {r: 1, g: 0.1, b: 0.05, a: 1}
+  fireColor: {r: 1, g: 0.5, b: 0.15, a: 1}
+  noFloorAreas:
+  - SemiFinalGate
+  - FinalCorridor
+  - WestSideCorridor
+  - EastSideCorridor
+  - FinalGate

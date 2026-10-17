@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Nullflame
 {
-    public enum OpeningKind { Open, OpenFrame, Door, ContainmentDoor, ShowOnlyDoor, GateSlot }
+    public enum OpeningKind { Open, OpenFrame, Door, ContainmentDoor, ShowOnlyDoor, GateSlot, ScpDoor }
     public enum PropKind { Crate, Cart, Cabinet, Bunk, Locker, LanternRack, LabBench }
 
     [System.Serializable] public struct AreaSpec { public string id; public Rect xz; public bool playerAccess; }
@@ -66,10 +66,11 @@ namespace Nullflame
         public OpeningSpec[] openings =
         {
             Opening("D-SCP-T", 3.75f, 6f, 2f, OpeningKind.ContainmentDoor),
-            Opening("D-SCP-A", 11.25f, 6f, 2f, OpeningKind.ContainmentDoor),
-            Opening("D-SCP-B", 18.75f, 6f, 2f, OpeningKind.ContainmentDoor),
-            Opening("D-SCP-C", 26.25f, 6f, 2f, OpeningKind.ContainmentDoor),
-            Opening("D-SCP-D", 33.75f, 6f, 2f, OpeningKind.ContainmentDoor),
+            // SCP A-D stay sealed in both states: a closed SCP door (AD-031), plus the invisible blocker.
+            Opening("D-SCP-A", 11.25f, 6f, 2f, OpeningKind.ScpDoor),
+            Opening("D-SCP-B", 18.75f, 6f, 2f, OpeningKind.ScpDoor),
+            Opening("D-SCP-C", 26.25f, 6f, 2f, OpeningKind.ScpDoor),
+            Opening("D-SCP-D", 33.75f, 6f, 2f, OpeningKind.ScpDoor),
             Opening("D-PLAYER", 15.75f, 26f, 2f, OpeningKind.OpenFrame),
             Opening("D-BARRACKS", 21.75f, 35f, 2.5f, OpeningKind.Door),
             Opening("D-LAB", 27f, 29.75f, 2f, OpeningKind.Door),
