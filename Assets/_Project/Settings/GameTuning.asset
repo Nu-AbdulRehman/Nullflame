@@ -80,8 +80,8 @@ MonoBehaviour:
   introCameraPullTime: 1.5
   autoRestartDelay: 3
   cameraDistance: 6
-  cameraPitchMin: 25
-  cameraPitchMax: 70
+  cameraPitchMin: 5
+  cameraPitchMax: 80
   cameraPitchStart: 45
   mouseSensitivity: 0.12
   cameraFollowDamping: 0.12

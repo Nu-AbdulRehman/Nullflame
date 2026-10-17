@@ -115,8 +115,8 @@ namespace Nullflame
 
         [Header("Camera")]
         [Tooltip("T-CAM-DIST: camera distance (m)")] public float cameraDistance = 6f;
-        [Tooltip("T-CAM-PITCH-MIN: min pitch (degrees)")] public float cameraPitchMin = 25f;
-        [Tooltip("T-CAM-PITCH-MAX: max pitch (degrees)")] public float cameraPitchMax = 70f;
+        [Tooltip("T-CAM-PITCH-MIN: min pitch (degrees)")] public float cameraPitchMin = 5f;
+        [Tooltip("T-CAM-PITCH-MAX: max pitch (degrees)")] public float cameraPitchMax = 80f;
         [Tooltip("T-CAM-PITCH-START: start pitch (degrees)")] public float cameraPitchStart = 45f;
         [Tooltip("T-CAM-SENS: mouse sensitivity (degrees per count)")] public float mouseSensitivity = 0.12f;
         [Tooltip("T-CAM-DAMP: follow damping (s)")] public float cameraFollowDamping = 0.12f;
