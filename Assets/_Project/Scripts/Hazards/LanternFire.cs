@@ -49,15 +49,8 @@ namespace Nullflame
         void BurnShadows()
         {
             var shadows = registry.Shadows;
-            float r2 = Radius * Radius;
             for (int i = shadows.Count - 1; i >= 0; i--)
-            {
-                ShadowArea s = shadows[i];
-                if (!s.destroyedByFire) continue;
-                Vector3 d = s.Center - transform.position;
-                d.y = 0f;
-                if (d.sqrMagnitude <= r2) Destroy(s.gameObject);
-            }
+                if (shadows[i].destroyedByFire && Contains(shadows[i].Center, 0f)) Destroy(shadows[i].gameObject);
         }
 
         public bool Contains(Vector3 point, float extraRadius)
