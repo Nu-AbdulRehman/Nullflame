@@ -19,6 +19,8 @@ namespace Nullflame
         public Color lanternColor = new Color(1f, 0.55f, 0.2f);
         [Tooltip("Off for intro wave guards, which IntroSequence starts.")]
         public bool startOnEnable = true;
+        [Tooltip("Spawned transit guards: destroy at the end of the travel route (show-only doors).")]
+        public bool despawnAtEnd;
 
         public bool HasLantern { get; set; } = true;
         public bool IsBeingConsumed { get; set; }
@@ -27,6 +29,22 @@ namespace Nullflame
         static readonly List<RoutePoint> TravelBuffer = new List<RoutePoint>(32);
 
         void Awake()
+        {
+            if (lanternLight != null) lanternLight.color = lanternColor;
+            if (travelRoute != null) Build(); // spawned guards are built by Init instead
+        }
+
+        // Spawners configure a fresh instance before its first frame (IMPL §17).
+        public void Init(WaypointRoute travel, WaypointRoute post, GuardMood guardMood, bool despawn)
+        {
+            travelRoute = travel;
+            postRoute = post;
+            mood = guardMood;
+            despawnAtEnd = despawn;
+            Build();
+        }
+
+        void Build()
         {
             travelRoute.ToRoutePoints(TravelBuffer);
             var travel = new List<RoutePoint>(TravelBuffer);
@@ -38,8 +56,8 @@ namespace Nullflame
             }
             float speed = mood == GuardMood.Meltdown ? tuning.guardWalkSpeedMeltdown : tuning.guardWalkSpeedNormal;
             Motion = new GuardMotion(travel, post, speed, tuning.reverseSpeedMultiplier, tuning.historyStep);
+            Motion.ArrivedAtEnd += () => { if (despawnAtEnd) Destroy(gameObject); };
             Apply();
-            if (lanternLight != null) lanternLight.color = lanternColor;
         }
 
         void OnEnable()

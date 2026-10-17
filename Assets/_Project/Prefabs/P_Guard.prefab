@@ -404,6 +404,7 @@ MonoBehaviour:
   mood: 0
   lanternColor: {r: 1, g: 0.55, b: 0.2, a: 1}
   startOnEnable: 1
+  despawnAtEnd: 0
 --- !u!114 &8957981638465384575
 MonoBehaviour:
   m_ObjectHideFlags: 0

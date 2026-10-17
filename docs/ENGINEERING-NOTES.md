@@ -78,3 +78,21 @@ Found by `Rewind_IsOneWay`: holding Q after a completed rewind started a second 
 
 ### EN-025: State_Normal is activated briefly in Edit mode to author its contents
 MCP for Unity can't edit objects under an inactive parent, so `State_Normal` is switched on while its routes and guards are authored, then switched off again before saving. `WorldStateController` relies on it starting inactive.
+
+### EN-026: Menu buttons pick a GameFlow action from an enum
+`MenuButton` sits next to a uGUI `Button` and calls `GameFlow.Play`, `Resume`, `Restart`, `ReturnToTitle` or `Quit`, chosen by an enum in the Inspector. Rejected: wiring `Button.onClick` persistent listeners, which MCP for Unity can't set reliably (same reason as EN-019). The buttons share the `Prefabs/UI/P_MenuButton` prefab.
+
+### EN-027: Restart reloads the scene by name, not build index
+`SceneManager.LoadScene(gameObject.scene.name)`. PlayMode tests load the Facility through `EditorSceneManager.LoadSceneInPlayMode`, which gives the scene build index −1, so a reload by index failed there.
+
+### EN-028: The intro skip finds the control moment by simulating, not by a stored time
+`IntroSequence.Skip` sets Essence to 90 and steps the wave in 1/60 s ticks until G-GLANCE has paused at D-PLAYER and walked on south. The control moment then follows route edits automatically. Rejected: a tuned "skip to t = N s" number, which would drift whenever a route changes.
+
+### EN-029: Spawners can stagger their first guards
+`GuardSpawner.initialSpacing` spaces the guards a refill-only spawner places at the start (`SpawnTimer`), so they don't stand on top of each other at the first waypoint. 0 keeps the old behaviour.
+
+### EN-030: The Beat 1 soft fail ends once the wave guards are gone
+`GameFlow.CheckMissedChance` stops checking when any wave guard is destroyed, which happens when the rewind removes `State_Meltdown`. Without this, the destroyed guards counted as "at their posts" and Normal state showed the Missed screen.
+
+### EN-031: PlayMode tests start from the control moment
+`TestScenes.LoadFacility` clears `HasSeenIntro`, loads the scene, then calls `GameFlow.BeginPlaying()`, so tests skip the title screen without running the intro skip. Tests that need the wave call `IntroSequence.Run()` themselves. Test waits use game time, because an unfocused Editor runs at a low frame rate and real-time waits under-ran. The Player's Start Shadow must be `PlayerRoomFloor`; a manual check that changes it and saves the scene breaks the beat tests.

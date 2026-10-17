@@ -10,13 +10,16 @@ namespace Nullflame.Tests
     {
         public const string FacilityPath = "Assets/_Project/Scenes/Facility.unity";
 
-        // Loads Facility without needing it in the build list (IMPL §24). Editor only.
+        // Loads Facility (IMPL §24) and starts play from the title without the intro, so guards stay at their
+        // spawns and Essence is at its start value. Editor only.
         public static IEnumerator LoadFacility()
         {
+            GameFlow.HasSeenIntro = false;
 #if UNITY_EDITOR
             UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(FacilityPath, new LoadSceneParameters(LoadSceneMode.Single));
 #endif
             yield return null;
+            Object.FindAnyObjectByType<GameFlow>().BeginPlaying();
             yield return null;
         }
     }
