@@ -86,10 +86,10 @@ namespace Nullflame.EditorTools
                 int span = 0;
                 foreach (Vector2 cut in cuts)
                 {
-                    WallSpan(walls, i, span++, w.a, dir, start, cut.x, yaw, layout.wallHeight, layout.wallThickness, registry);
+                    WallSpan(walls, i, span++, w.a, dir, start, cut.x, yaw, layout.wallHeight, layout.wallBelowFloor, layout.wallThickness, registry);
                     start = cut.y;
                 }
-                WallSpan(walls, i, span, w.a, dir, start, length + half, yaw, layout.wallHeight, layout.wallThickness, registry);
+                WallSpan(walls, i, span, w.a, dir, start, length + half, yaw, layout.wallHeight, layout.wallBelowFloor, layout.wallThickness, registry);
             }
 
             Transform blockers = Group(level, "Blockers");
@@ -257,13 +257,14 @@ namespace Nullflame.EditorTools
             }
         }
 
+        // A span runs from -below (under the floor) up to height.
         static void WallSpan(Transform parent, int wall, int span, Vector2 a, Vector2 dir, float t0, float t1,
-            float yaw, float height, float thickness, AssetRegistry registry)
+            float yaw, float height, float below, float thickness, AssetRegistry registry)
         {
             if (t1 - t0 < 0.01f) return;
             Vector2 mid = a + dir * ((t0 + t1) * 0.5f);
-            Block("Wall_" + wall + "_" + span, parent, new Vector3(mid.x, height * 0.5f, mid.y),
-                new Vector3(t1 - t0, height, thickness), yaw, registry.wallSegment, solid: true, visible: true);
+            Block("Wall_" + wall + "_" + span, parent, new Vector3(mid.x, (height - below) * 0.5f, mid.y),
+                new Vector3(t1 - t0, height + below, thickness), yaw, registry.wallSegment, solid: true, visible: true);
         }
 
         // A box at center/size/yaw. solid = LevelSolid BoxCollider. The visual is the prefab fitted to the box,
