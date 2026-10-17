@@ -186,3 +186,6 @@ Pack #8's `MediumFlames` and `TinyFlames` prefab roots store their demo-scene po
 
 ### EN-059: Walls are 6 m, ceilings 4 m, walls reach 1 m below the floor
 Owner choice (2026-10-18): `FacilityLayout.wallHeight` (6 m) and `wallBelowFloor` (1 m) drive wall spans and a lintel above every opening; the ceiling slab, door panels, blockers and light heights stay on T-LVL-CEIL (4 m). The walls poke through the ceiling, which hides the seam where kit wall and ceiling tiles meet. Hand-scaling walls under `Level_Generated` is lost on the next `Build Facility`; this field is the source.
+
+### EN-060: The Semi-Final Gate panels and the Final Gate wear the SCP door look
+`P_GuardGate/PanelWest`, `PanelEast` and `P_FinalGate/PH_FinalGate` use `Art/M_ScpDoor.mat` with the SCP badge quads (`Art/M_ScpBadge.mat`) on both faces, the same recipe as the builder's `ScpDoor` (AD-031), done by hand in the prefabs because they are hand-placed gameplay objects, not builder output. Panel colliders, the doorway blocker and the Final Gate's consume sink are untouched.

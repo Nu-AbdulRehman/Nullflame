@@ -20,7 +20,7 @@ Every placeholder asset in the project and what the final asset must be (`CLAUDE
 | PH-014 | `PH_OilPipe` (Unity cylinder, #1 `dark color` material, no collider) | `AssetRegistry.oilPipe`, placed by `PipeBuilder` on each `P_CrackablePipe` (S16, §7.6) | Wall oil-pipe mesh, 3 m segments that read as crackable, #1 sci-fi style | Open |
 | PH-015 | `PH_OilDrip` (default Particle System, `PH_OilDrip.mat` flat black URP Particles/Unlit) | `P_CrackablePipe` drip (S16, §7.6) | Kenney Particle Pack sprite tinted black (pack not imported yet), or a drip VFX | Open |
 | PH-016 | `PH_OilDecal` (baked black soft-edged quad) | `P_OilDrop` (S16, §7.6) | Glossy oil puddle decal, 1.2 m | Open |
-| PH-017 | `PH_FinalGate` (Unity cube 6 × 4 × 1.5 m, #1 `dark color` material, LevelSolid collider) | `Shared/FinalGate` (`P_FinalGate`, S11, Beat 5) | Pack #3 Sci Fi Doors gate scaled to the 6 × 4 m slot, sinks on consume | Open |
+| PH-017 | `PH_FinalGate` (Unity cube 6 × 4 × 1.5 m, #1 `dark color` material, LevelSolid collider) | `Shared/FinalGate` (`P_FinalGate`, S11, Beat 5) | Pack #3 Sci Fi Doors gate scaled to the 6 × 4 m slot, sinks on consume | Open (slab now wears `M_ScpDoor` and the SCP badge, EN-060; still a box) |
 | PH-018 | Plain uGUI win screen (default button sprite, LegacyRuntime font) | `Canvas/WinScreen` (S17, §12) | Styled win screen in B10 polish; credit lines must stay word for word | Open |
 
 ## Expected placeholders (not created yet)
