@@ -29,7 +29,9 @@ namespace Nullflame
             CrackablePipe pipe = consume.Pipe != null ? consume.Pipe : consume.AvailablePipe;
             if (rewind) affordable = essence.CanAfford(tuning.rewindCost) || timePowers.ChannelProgress > 0f;
             if (pipe != null) affordable = essence.CanAfford(tuning.pipeCost) || consume.Pipe != null;
-            if (c == shown && affordable == shownAffordable && reverse == shownReverse && rewind == shownRewind && pipe == shownPipe) return;
+            // ReferenceEquals: a consumed target is a destroyed object, which Unity's == reports equal to null,
+            // so the plain compare kept the old prompt on screen after a consume.
+            if (ReferenceEquals(c, shown) && affordable == shownAffordable && reverse == shownReverse && rewind == shownRewind && ReferenceEquals(pipe, shownPipe)) return;
             shownRewind = rewind;
             shownPipe = pipe;
             shown = c;

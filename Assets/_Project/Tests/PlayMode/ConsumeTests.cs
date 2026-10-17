@@ -126,6 +126,8 @@ namespace Nullflame.Tests
             Assert.IsTrue(entity.OnFloor, "Barracks floor is allowed: no void after the consume");
             Assert.AreEqual(spot.x, entity.transform.position.x, 1e-3f);
             Assert.AreEqual(EntityState.InShadow, entity.State);
+            var label = GameObject.Find("Canvas").transform.Find("HUD/Prompt").GetComponent<UnityEngine.UI.Text>();
+            Assert.IsFalse(label.enabled, "the consume prompt clears once its target is gone");
         }
 
         // T-COST-GATE, T-CON-GATE: the placed Final Gate refuses at Essence 80 and wins above it (Beat 5).
