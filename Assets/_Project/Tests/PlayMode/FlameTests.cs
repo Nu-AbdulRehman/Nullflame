@@ -112,7 +112,7 @@ namespace Nullflame.Tests
         public IEnumerator Alarm_OnFloor_Drains_TDMGFLOOR()
         {
             yield return Setup();
-            PlaceAt(new Vector3(8f, 0f, 8f));
+            PlaceAt(new Vector3(8f, 0f, 10.4f)); // under the Access Corridor north-wall lamp at (8, 12), AD-030
             entity.Move(new Vector3(0.8f, 0f, 0f));
             Assert.IsTrue(entity.OnFloor);
             yield return null;
@@ -150,7 +150,9 @@ namespace Nullflame.Tests
         public IEnumerator LightOff_StopsDamage()
         {
             yield return Setup();
-            PlaceAt(new Vector3(8f, 0f, 8f));
+            PlaceAt(new Vector3(8f, 0f, 10.4f)); // under the Access Corridor north-wall lamp at (8, 12), AD-030
+            entity.Move(new Vector3(0.8f, 0f, 0f)); // bare floor: the lamp reaches it; no soft-shadow drain (AD-028)
+            Assert.IsTrue(entity.OnFloor);
             yield return Wait(0.2f);
             foreach (var f in Object.FindObjectsByType<FlameVolume>(FindObjectsSortMode.None))
                 if (f.kind == FlameKind.Alarm) f.gameObject.SetActive(false);

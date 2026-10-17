@@ -131,11 +131,15 @@ namespace Nullflame.EditorTools
         {
             int hazard = LayerMask.NameToLayer("Hazard");
             Transform alarms = Group(meltdown, "AlarmLights");
-            foreach (Vector2 p in layout.alarmLights)
+            float inset = layout.wallThickness * 0.5f + 0.05f;
+            foreach (AlarmLampSpec lampSpec in layout.alarmLamps)
             {
+                // The wall point moves off the wall face by the inset, along the lamp's facing.
+                Vector3 facing = Quaternion.Euler(0f, lampSpec.yaw, 0f) * Vector3.forward;
+                Vector3 p = new Vector3(lampSpec.at.x, 0f, lampSpec.at.y) + facing * inset;
                 var go = new GameObject("AlarmLight");
                 go.transform.SetParent(alarms, false);
-                go.transform.position = new Vector3(p.x, 0f, p.y);
+                go.transform.position = p;
                 go.layer = hazard;
                 var capsule = go.AddComponent<CapsuleCollider>();
                 capsule.isTrigger = true;
@@ -145,16 +149,20 @@ namespace Nullflame.EditorTools
                 Flame(go, FlameKind.Alarm, tuning);
                 var lamp = new GameObject("Lamp");
                 lamp.transform.SetParent(go.transform, false);
-                lamp.transform.localPosition = new Vector3(0f, height - 0.2f, 0f);
-                lamp.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                lamp.transform.localPosition = new Vector3(0f, layout.alarmLampHeight, 0f);
+                lamp.transform.localRotation = Quaternion.Euler(90f, 0f, 0f); // the cone points at the floor circle
                 var light = lamp.AddComponent<Light>();
                 light.type = LightType.Spot;
                 light.color = layout.alarmColor;
-                light.range = height + 1f;
-                light.spotAngle = 2f * Mathf.Atan(tuning.alarmFloorRadius / (height - 0.2f)) * Mathf.Rad2Deg;
+                light.range = layout.alarmLampHeight + 1.5f;
+                light.spotAngle = 2f * Mathf.Atan(tuning.alarmFloorRadius / layout.alarmLampHeight) * Mathf.Rad2Deg;
                 light.intensity = 6f;
                 light.shadows = LightShadows.Soft;
-                if (registry.alarmLight != null) Instantiate(registry.alarmLight, lamp.transform);
+                if (registry.alarmLight == null) continue;
+                GameObject fixture = Instantiate(registry.alarmLight, go.transform);
+                fixture.transform.localPosition = new Vector3(0f, layout.alarmLampHeight, 0f);
+                fixture.transform.localRotation = Quaternion.Euler(0f, lampSpec.yaw, 0f);
+                foreach (Light packLight in fixture.GetComponentsInChildren<Light>(true)) packLight.enabled = false;
             }
 
             Transform fire = Group(meltdown, "WallFireLanterns");

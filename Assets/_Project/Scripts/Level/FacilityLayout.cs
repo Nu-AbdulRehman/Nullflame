@@ -10,6 +10,7 @@ namespace Nullflame
     [System.Serializable] public struct OpeningSpec { public string id; public Vector2 center; public float width; public OpeningKind kind; }
     [System.Serializable] public struct PropSpec { public string id; public PropKind kind; public Vector3 center; public Vector3 size; public float yaw; }
     [System.Serializable] public struct BlockerSpec { public string id; public Vector2 center; public Vector2 size; }
+    [System.Serializable] public struct AlarmLampSpec { public Vector2 at; public float yaw; }
     [System.Serializable] public struct CrackPointSpec { public string id; public float zMin, zMax, stripX, dropX, wallFaceX; }
 
     // Facility geometry in metres, X east, Z north (design doc §4, IMPL §6.1, Appendix A.1-A.3).
@@ -106,10 +107,16 @@ namespace Nullflame
         };
 
         [Header("Meltdown flame lights (Appendix A.3)")]
-        public Vector2[] alarmLights =
+        // Wall-mounted red alarm lamps, Meltdown only (AD-030): three on each Main Corridor wall, three on the
+        // Access Corridor's north (door-less) wall, none in the Final Corridor. `at` is the floor point of the
+        // damage circle at the wall face; `yaw` points the lamp into the room. Mounted at alarmLampHeight.
+        public AlarmLampSpec[] alarmLamps =
         {
-            new Vector2(8f, 8f), new Vector2(30f, 11f), new Vector2(20.5f, 14f), new Vector2(20.5f, 30f),
+            Lamp(15.75f, 16f, 90f), Lamp(15.75f, 24f, 90f), Lamp(15.75f, 32f, 90f),
+            Lamp(21.75f, 16f, -90f), Lamp(21.75f, 24f, -90f), Lamp(21.75f, 32f, -90f),
+            Lamp(8f, 12f, 180f), Lamp(26f, 12f, 180f), Lamp(34f, 12f, 180f),
         };
+        public float alarmLampHeight = 2.6f;
         public Vector3[] wallFireLanterns =
         {
             new Vector3(15.95f, 2f, 44f), new Vector3(15.95f, 2f, 48.5f), new Vector3(15.95f, 2f, 53f),
@@ -153,6 +160,7 @@ namespace Nullflame
             return false;
         }
 
+        static AlarmLampSpec Lamp(float x, float z, float yaw) => new AlarmLampSpec { at = new Vector2(x, z), yaw = yaw };
         static AreaSpec Area(string id, float x0, float x1, float z0, float z1, bool access) =>
             new AreaSpec { id = id, xz = Rect.MinMaxRect(x0, z0, x1, z1), playerAccess = access };
         // 3 m segments; west strips X 15.85-16.85 with drops at X 17.45, east strips X 20.65-21.65 with drops at X 20.05.
