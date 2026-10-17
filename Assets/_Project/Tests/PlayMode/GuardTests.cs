@@ -11,6 +11,31 @@ namespace Nullflame.Tests
     {
         static GuardController Guard(string name) => GameObject.Find(name).GetComponent<GuardController>();
 
+        // AD-020: a leg through a prop is threaded round it by the NavMesh; a clear leg stays straight.
+        [UnityTest]
+        public IEnumerator NavRoute_ThreadsRoundProps_AD020()
+        {
+            yield return TestScenes.LoadFacility();
+            Bounds crate = GameObject.Find("Crate1").GetComponentInChildren<Renderer>().bounds; // Main Corridor, west wall
+            var through = new List<RoutePoint>
+            {
+                new RoutePoint { Position = new Vector3(crate.center.x, 0f, crate.min.z - 2f) },
+                new RoutePoint { Position = new Vector3(crate.center.x, 0f, crate.max.z + 2f) },
+            };
+            NavRoute.Expand(through, false);
+            Assert.Greater(through.Count, 2, "corners added round the crate");
+            foreach (RoutePoint p in through)
+                Assert.IsFalse(crate.Contains(new Vector3(p.Position.x, crate.center.y, p.Position.z)), "no corner inside the crate");
+
+            var clear = new List<RoutePoint>
+            {
+                new RoutePoint { Position = new Vector3(19.5f, 0f, 20f) },
+                new RoutePoint { Position = new Vector3(19.5f, 0f, 28f) },
+            };
+            NavRoute.Expand(clear, false);
+            Assert.AreEqual(2, clear.Count, "a clear corridor leg stays straight");
+        }
+
         // §7.2: being in a guard's shadow moves the entity with it.
         [UnityTest]
         public IEnumerator RideGuard_EntityMovesWithShadow()

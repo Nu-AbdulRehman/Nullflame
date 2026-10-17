@@ -2,7 +2,8 @@
     "name": "Nullflame.Editor",
     "rootNamespace": "Nullflame.EditorTools",
     "references": [
-        "Nullflame.Runtime"
+        "Nullflame.Runtime",
+        "Unity.AI.Navigation"
     ],
     "includePlatforms": [
         "Editor"

@@ -48,11 +48,13 @@ namespace Nullflame
         {
             travelRoute.ToRoutePoints(TravelBuffer);
             var travel = new List<RoutePoint>(TravelBuffer);
+            NavRoute.Expand(travel, false);
             List<RoutePoint> post = null;
             if (postRoute != null)
             {
                 postRoute.ToRoutePoints(TravelBuffer);
                 post = new List<RoutePoint>(TravelBuffer);
+                NavRoute.Expand(post, true);
             }
             float speed = mood == GuardMood.Meltdown ? tuning.guardWalkSpeedMeltdown : tuning.guardWalkSpeedNormal;
             Motion = new GuardMotion(travel, post, speed, tuning.reverseSpeedMultiplier, tuning.historyStep);
