@@ -166,6 +166,9 @@ A read-only editor query walked every `WaypointRoute` segment, every spawn-to-fi
 ### EN-053: `FlameVolume.IsLight` separates light rules from fire rules
 Walls and opaque cover stop light (lantern, alarm); they never stop fire. `FlameReceiver` reads `IsLight` for both checks instead of `!InstantKill`, which stopped being a usable proxy once lantern fire became a drain (AD-022).
 
+### EN-055: Stepping out of a prop's shadow, and jumping onto bare floor
+A prop's shadow footprint often lies inside the guard NavMesh's 0.5 m clearance band round the prop, so a floor step from it found no mesh within 0.3 m and was refused: the entity was trapped. `ShadowEntity.FloorStep` now treats a start point off the mesh as "inside a band": the step is allowed onto the nearest floor within 1 m, with no raycast. From the floor itself a step into a band is still refused, so walls and props still block. `JumpTargeting` also accepts a jump with no shadow under the reticle when `ShadowEntity.CanLandOnFloor` says the point is allowed floor on the mesh; the landing attaches to whatever shadow is there, or stays on the floor. No outline is drawn for a floor jump. Rejected: a looser snap everywhere, which would let the entity walk through thin walls.
+
 ### EN-052: The SWAT model's tonfa is hidden
 `SWAT_A_Tonfa` on the pack #5 body was active and read as a grey object in the lantern hand. Disabled in `P_Guard`.
 

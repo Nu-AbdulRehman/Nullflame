@@ -32,28 +32,25 @@ namespace Nullflame
                 return;
             }
             bool valid = TryGetTarget(aim, out ShadowArea target, out Vector3 landing);
-            if (target == null)
-            {
-                outline.enabled = false;
-                return;
-            }
             HasValidTarget = valid;
-            DrawOutline(target, valid ? Valid : Invalid);
+            if (target != null) DrawOutline(target, valid ? Valid : Invalid);
+            else outline.enabled = false; // a floor jump has no outline
             if (valid && input.JumpPressed) entity.BeginJump(target, landing);
         }
 
-        // target is the shadow under (or snapped to) floorPoint, or null. Returns whether it can be jumped to.
+        // target is the shadow under (or snapped to) floorPoint, or null for bare floor (AD-023). Returns
+        // whether the jump is allowed: in range, line of sight, not into fire, and for floor, floor the entity may stand on.
         public bool TryGetTarget(Vector3 floorPoint, out ShadowArea target, out Vector3 landing)
         {
             target = registry.FindAt(floorPoint, entity.Current);
             if (target == null) target = registry.FindNearest(floorPoint, tuning.reticleSnapDistance, entity.Current);
             landing = floorPoint;
-            if (target == null) return false;
+            if (target == null && !entity.CanLandOnFloor(floorPoint)) return false;
 
-            landing = target.isMoving ? target.Center : target.ClampInside(floorPoint, tuning.entitySize * 0.5f);
+            if (target != null) landing = target.isMoving ? target.Center : target.ClampInside(floorPoint, tuning.entitySize * 0.5f);
             if (registry.IsInsideAnyFire(landing, tuning.entitySize * 0.5f)) return false;
             Vector3 from = entity.transform.position;
-            Vector3 closest = target.ClosestPoint(from);
+            Vector3 closest = target != null ? target.ClosestPoint(from) : landing;
             Vector3 d = closest - from;
             d.y = 0f;
             if (d.sqrMagnitude > tuning.jumpRange * tuning.jumpRange) return false;

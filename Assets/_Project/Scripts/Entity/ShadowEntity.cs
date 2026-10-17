@@ -35,6 +35,7 @@ namespace Nullflame
 
         float Margin => tuning.entitySize * 0.5f;
         const float FloorSnap = 0.3f; // how far off the guard NavMesh a floor step may land
+        const float FloorPopOut = 1f;  // a shadow footprint can sit inside the mesh's wall/prop clearance; step out to the nearest floor
 
         void Start()
         {
@@ -59,11 +60,12 @@ namespace Nullflame
             SetState(EntityState.InShadow);
         }
 
+        // target null: a jump onto bare floor (AD-023), landing where the floor allows.
         public void BeginJump(ShadowArea target, Vector3 landing)
         {
             Attach(null);
             jumpTarget = target;
-            jumpTarget.Removed += OnTargetRemoved;
+            if (jumpTarget != null) jumpTarget.Removed += OnTargetRemoved;
             jumpFrom = transform.position;
             jumpLanding = landing;
             jumpT = 0f;
@@ -146,9 +148,14 @@ namespace Nullflame
         bool FloorStep(Vector3 from, ref Vector3 target)
         {
             if (layout != null && !layout.FloorAllowed(target)) return false;
-            if (!NavMesh.SamplePosition(from, out NavMeshHit start, FloorSnap, NavMesh.AllAreas)) return false;
-            if (NavMesh.Raycast(start.position, target, out NavMeshHit hit, NavMesh.AllAreas)) return false; // wall or prop
-            if (!NavMesh.SamplePosition(target, out NavMeshHit end, FloorSnap, NavMesh.AllAreas)) return false;
+            bool onMesh = NavMesh.SamplePosition(from, out NavMeshHit start, FloorSnap, NavMesh.AllAreas);
+            if (onMesh && NavMesh.Raycast(start.position, target, out _, NavMesh.AllAreas)) return false; // wall or prop
+            if (!NavMesh.SamplePosition(target, out NavMeshHit end, FloorSnap, NavMesh.AllAreas))
+            {
+                // Off the mesh: inside a wall's or prop's clearance band. From the floor that is a blocked step;
+                // from a shadow footprint inside the band it is the way out, onto the nearest floor.
+                if (onMesh || !NavMesh.SamplePosition(target, out end, FloorPopOut, NavMesh.AllAreas)) return false;
+            }
             target = new Vector3(end.position.x, target.y, end.position.z);
             return true;
         }
@@ -164,6 +171,12 @@ namespace Nullflame
             if (landedOn != null) landedOn.Removed -= OnTargetRemoved;
             jumpTarget = null;
             if (landedOn != null) Place(landedOn, jumpLanding);
+            else if (CanLandOnFloor(jumpLanding))
+            {
+                transform.position = jumpLanding;
+                SetState(EntityState.InShadow);
+                Attach(GameContext.Current != null ? GameContext.Current.shadows.FindAt(jumpLanding, null) : null);
+            }
             else
             {
                 transform.position = jumpLanding;
@@ -171,6 +184,10 @@ namespace Nullflame
                 SpawnVoid(jumpLanding);
             }
         }
+
+        // Bare floor the entity may stand on: allowed by the layout and on the guard NavMesh (AD-023).
+        public bool CanLandOnFloor(Vector3 p) =>
+            (layout == null || layout.FloorAllowed(p)) && NavMesh.SamplePosition(p, out _, FloorSnap, NavMesh.AllAreas);
 
         void SpawnVoid(Vector3 position)
         {
