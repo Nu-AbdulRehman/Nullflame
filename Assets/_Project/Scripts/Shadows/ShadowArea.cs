@@ -29,6 +29,9 @@ namespace Nullflame
 
         public event Action<ShadowArea> Removed;
 
+        static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
+        static MaterialPropertyBlock block;
+
         public Vector3 Center => transform.position;
         public float Yaw => transform.eulerAngles.y;
         public float Area => size.x * size.y;
@@ -51,7 +54,13 @@ namespace Nullflame
         public void SetSize(Vector2 newSize)
         {
             size = newSize;
-            if (decal != null) decal.localScale = new Vector3(size.x, size.y, 1f);
+            if (decal == null) return;
+            decal.localScale = new Vector3(size.x, size.y, 1f);
+            // Look only: a soft shadow is drawn lighter than an opaque one (design doc 7.1 "softer, lighter").
+            if (!decal.TryGetComponent(out Renderer r)) return;
+            block ??= new MaterialPropertyBlock();
+            block.SetColor(BaseColor, opacity == ShadowOpacity.Opaque ? Color.white : new Color(1f, 1f, 1f, 0.55f));
+            r.SetPropertyBlock(block);
         }
 
         void OnValidate() => SetSize(size);

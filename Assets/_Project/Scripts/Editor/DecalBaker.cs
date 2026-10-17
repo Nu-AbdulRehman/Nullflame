@@ -19,7 +19,8 @@ namespace Nullflame.EditorTools
         [MenuItem("Nullflame/Bake Decals")]
         public static void Bake()
         {
-            Material(Texture("PH_ShadowDecal", (u, v) => new Color(0.32f, 0.32f, 0.34f, 0.6f * Edge(u, v, 0.08f))),
+            // Near-black so it reads darker than the lit floor; ShadowArea tints soft shadows lighter.
+            Material(Texture("PH_ShadowDecal", (u, v) => new Color(0.01f, 0.01f, 0.02f, 0.85f * Edge(u, v, 0.18f))),
                 "PH_ShadowDecal", QueueShadow);
             Material(Texture("PH_EntityBlob", (u, v) => new Color(0f, 0f, 0f, Radial(u, v, 0.75f))),
                 "PH_EntityBlob", QueueEntity);

@@ -109,7 +109,7 @@ namespace Nullflame.EditorTools
                 light.type = LightType.Point;
                 light.range = layout.ceilingLightRange;
                 light.intensity = layout.ceilingLightIntensity;
-                light.shadows = LightShadows.None;
+                light.shadows = LightShadows.Soft; // real silhouettes are a look only; gameplay reads ShadowArea (design doc 7.1)
                 if (registry.ceilingLight != null) Instantiate(registry.ceilingLight, go.transform);
             }
         }
@@ -142,7 +142,7 @@ namespace Nullflame.EditorTools
                 light.range = height + 1f;
                 light.spotAngle = 2f * Mathf.Atan(tuning.alarmFloorRadius / (height - 0.2f)) * Mathf.Rad2Deg;
                 light.intensity = 6f;
-                light.shadows = LightShadows.None;
+                light.shadows = LightShadows.Soft;
                 if (registry.alarmLight != null) Instantiate(registry.alarmLight, lamp.transform);
             }
 
@@ -168,7 +168,7 @@ namespace Nullflame.EditorTools
                 light.color = layout.fireColor;
                 light.range = 4f;
                 light.intensity = 2f;
-                light.shadows = LightShadows.None;
+                light.shadows = LightShadows.Soft;
                 if (registry.wallFireLantern != null) Instantiate(registry.wallFireLantern, go.transform);
                 if (registry.fireSmallVfx != null) Instantiate(registry.fireSmallVfx, go.transform);
             }
