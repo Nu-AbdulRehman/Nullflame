@@ -26,6 +26,8 @@ namespace Nullflame
         [Tooltip("Oil drops and void shadows: destroyed when lantern fire reaches them.")]
         public bool destroyedByFire;
         [SerializeField] Transform decal;
+        [Tooltip("Look only: the owner's real-time shadow shows this area, so no decal is drawn (EN-047).")]
+        public bool hideDecal;
 
         public event Action<ShadowArea> Removed;
 
@@ -58,11 +60,13 @@ namespace Nullflame
             decal.localScale = new Vector3(size.x, size.y, 1f);
             // Look only: a soft shadow is drawn lighter than an opaque one (design doc 7.1 "softer, lighter").
             if (!decal.TryGetComponent(out Renderer r)) return;
+            r.enabled = !hideDecal;
             block ??= new MaterialPropertyBlock();
             block.SetColor(BaseColor, opacity == ShadowOpacity.Opaque ? Color.white : new Color(1f, 1f, 1f, 0.55f));
             r.SetPropertyBlock(block);
         }
 
+        void Awake() => SetSize(size); // applies hideDecal and the soft tint in builds, where OnValidate never runs
         void OnValidate() => SetSize(size);
 
         void OnDrawGizmos()
