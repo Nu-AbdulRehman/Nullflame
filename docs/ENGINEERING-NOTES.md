@@ -45,3 +45,15 @@ Checked on 2026-10-17: Free Laboratory Pack (#4) contains only flasks and pipett
 
 ### EN-014: `ShadowArea.isMoving` is a serialized flag (IMPL §7.1)
 The guard prefab sets it. Rejected: computing it from a `GuardController` in the parents, which couples the shadow script to the guard script before guards exist and adds a lookup.
+
+### EN-015: Fire visuals use the Particle Pack (#8), not Vefects (#9)
+Every Vefects fire material uses `SH_Vefects_VFX_URP_Fire_Flames_01`, which fails to compile on URP 17.3 ("redefinition of '_CameraDepthTexture_TexelSize'", d3d11). The pack is read-only, so `lanternFireVfx` and `fireSmallVfx` point at #8 `MediumFlames` and `TinyFlames`, the fallback `docs/assets/free-assets.md` §2 lists. Rejected: editing the Vefects shader (packs are read-only, `CLAUDE.md` §5.1). The approved Vefects credit (AD-015) is only needed if a Vefects asset is used later.
+
+### EN-016: Alarm lights and wall fire lanterns are built by FacilityBuilder (IMPL §11.3)
+Their positions are layout data (Appendix A.3), so they live in `FacilityLayout` and the builder places them under `State_Meltdown/Generated_Meltdown`, with visuals from `AssetRegistry` slots. This keeps them visible and editable in the scene and rebuildable. Rejected: hand-placed prefab instances (positions duplicated outside the layout) and runtime instantiation (invisible in Edit mode).
+
+### EN-017: Damage collider sizes come from GameTuning at Awake (IMPL §11.1)
+`FlameVolume` sets the lantern sphere radius to T-LANTERN-RADIUS and the alarm capsule radius to T-ALARM-RADIUS, and `LanternFire` sets its sphere from `FireRadius`. Rejected: typed collider sizes in prefabs, which would drift from the tunables.
+
+### EN-018: Lanternless guards keep a white cone (IMPL §10.5)
+The spec asks for a grey-tinted cone while lanternless. Skipped for now: it needs a per-guard material instance, and the hidden lantern already shows the state. Add in B10 polish if play-testing shows confusion.

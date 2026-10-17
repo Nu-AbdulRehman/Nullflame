@@ -6,7 +6,7 @@ Two lists (`CLAUDE.md` §4.1, §5.4): every builder or baker script and the cont
 
 | Script | Menu item | Builds | Owned root / output folder | Rebuild source |
 |---|---|---|---|---|
-| `Assets/_Project/Scripts/Editor/FacilityBuilder.cs` | `Nullflame/Build Facility` | Floors, walls with door cuts, closed containment doors (Normal), show-only doors, invisible SCP doorway blockers, props, ceiling lights. Kit visuals from `AssetRegistry` slots, cubes when a slot is empty | `Level_Generated`, `State_Meltdown/Generated_Meltdown`, `State_Normal/Generated_Normal` | `Settings/FacilityLayout.asset`, `Settings/GameTuning.asset` (wall height), `Art/AssetRegistry.asset` |
+| `Assets/_Project/Scripts/Editor/FacilityBuilder.cs` | `Nullflame/Build Facility` | Floors, walls with door cuts, closed containment doors (Normal), show-only doors, invisible SCP doorway blockers, props, ceiling lights; Meltdown alarm lights (spot light + floor-circle FlameVolume) and Final Corridor wall fire lanterns (lights, lantern and flame visuals, one instant-kill box). Kit visuals from `AssetRegistry` slots, cubes when a slot is empty | `Level_Generated`, `State_Meltdown/Generated_Meltdown`, `State_Normal/Generated_Normal` | `Settings/FacilityLayout.asset`, `Settings/GameTuning.asset` (wall height), `Art/AssetRegistry.asset` |
 | `Assets/_Project/Scripts/Editor/DecalBaker.cs` | `Nullflame/Bake Decals` | `PH_ShadowDecal.png/.mat`, `PH_EntityBlob.png/.mat`, `PH_Outline.mat`, `PH_Teardrop.mat`, `PH_ViewCone.asset/.mat` (cone mesh from T-VIEW-ANGLE and T-VIEW-RANGE; URP Unlit transparent materials, render queues from IMPL §2.8) | `Assets/_Project/Placeholders/` | Code constants in `DecalBaker`; `Settings/GameTuning.asset` for the cone |
 
 Planned (from `docs/implementation/nullflame-implementation.md` §25): `PipeBuilder` (`Nullflame/Build Pipes`), `ToneBaker` (`Nullflame/Bake Placeholder Tones`).
@@ -15,5 +15,8 @@ Planned (from `docs/implementation/nullflame-implementation.md` §25): `PipeBuil
 
 | AssetRegistry slot | Asset | Pack | Source | License | Credit required |
 |---|---|---|---|---|---|
+| `lanternFireVfx` | `MediumFlames.prefab` | #8 Particle Pack (Unity) | https://assetstore.unity.com/packages/essentials/tutorial-projects/unity-particle-pack-127325 | Standard Unity Asset Store EULA | No |
+| `fireSmallVfx` | `TinyFlames.prefab` | #8 Particle Pack (Unity) | same as above | Standard Unity Asset Store EULA | No |
+| `wallFireLantern` | `Latern1.prefab` | #10 Modular Medieval Lanterns (Alexandr Voevodov) | https://marketplace.unity.com/packages/3d/environments/historic/modular-medieval-lanterns-85527 | Standard Unity Asset Store EULA | No |
 
 Known credit requirements before first use: the Vintage Pocket Watch (CC BY 4.0, "Vintage Pocket Watch by Mune (Sketchfab), CC BY 4.0") and Vefects' Free Fire VFX (license not stated; wording pending OD-015).

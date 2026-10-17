@@ -16,36 +16,16 @@ MonoBehaviour:
   wallSegment: {fileID: 0}
   doorFrame: {fileID: 0}
   containmentDoor: {fileID: 0}
-  gatePanel: {fileID: 0}
-  finalGate: {fileID: 0}
   showOnlyDoor: {fileID: 0}
   crate: {fileID: 0}
   cart: {fileID: 0}
   cabinet: {fileID: 0}
-  pedestal: {fileID: 0}
-  stopwatch: {fileID: 0}
   bunk: {fileID: 0}
   locker: {fileID: 0}
   lanternRack: {fileID: 0}
-  leverPanel: {fileID: 0}
-  leverHandle: {fileID: 0}
   labBench: {fileID: 0}
-  oilPipe: {fileID: 0}
   ceilingLight: {fileID: 0}
   alarmLight: {fileID: 0}
-  wallFireLantern: {fileID: 0}
-  guardBody: {fileID: 0}
-  guardController: {fileID: 0}
-  guardLantern: {fileID: 0}
-  lanternFireVfx: {fileID: 0}
-  fireSmallVfx: {fileID: 0}
-  pipeBurstVfx: {fileID: 0}
-  lanternSmashVfx: {fileID: 0}
-  oilDripVfx: {fileID: 0}
-  shadowDecalMaterial: {fileID: 0}
-  entityBlobMaterial: {fileID: 0}
-  oilDropMaterial: {fileID: 0}
-  viewConeMaterial: {fileID: 0}
-  outlineMaterial: {fileID: 0}
-  viewConeMesh: {fileID: 0}
-  teardropMesh: {fileID: 0}
+  wallFireLantern: {fileID: 1882602143141976, guid: 56c82061e6c4de742a208837848be55a, type: 3}
+  lanternFireVfx: {fileID: 1478314613700728, guid: be6847dd39ab95f4daa2ed98e4f90564, type: 3}
+  fireSmallVfx: {fileID: 1972207730512856, guid: ea4fb55d0227e604386f44f905cfe7c0, type: 3}

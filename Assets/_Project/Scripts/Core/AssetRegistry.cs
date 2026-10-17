@@ -26,5 +26,11 @@ namespace Nullflame
 
         [Header("Lights")]
         public GameObject ceilingLight;
+        public GameObject alarmLight;
+        public GameObject wallFireLantern;
+
+        [Header("VFX")]
+        public GameObject lanternFireVfx;
+        public GameObject fireSmallVfx;
     }
 }

@@ -10,6 +10,8 @@ Every placeholder asset in the project and what the final asset must be (`CLAUDE
 | PH-004 | `PH_Outline` material (white unlit, tinted by the LineRenderer) | `Player/TargetOutline` (S4, §12) | Fine as a material; final look may add a dashed or glowing line texture | Open |
 | PH-005 | `PH_ViewCone` fan mesh (baked from T-VIEW-ANGLE / T-VIEW-RANGE) + `.mat` (white, alpha 0.12, queue 3002) | `P_Guard/ViewCone` (S8, §8.3 MUST) | Fine as a mesh; final look may add a radial fade texture so the cone edge reads softer. Rebake after changing either tunable | Open |
 | PH-006 | Unity capsule (default material) as the guard body | `P_Guard/Visual` (S7, §8.1) | Pack #5 Low Poly SWAT body as a child visual through `AssetRegistry`, Humanoid rig driven by `Art/Guard.controller` (B10) | Open |
+| PH-007 | Red unlit sphere `PH_AlertIcon.mat` above the guard's head | `P_Guard/AlertIcon` (S10, §12 "!" over the guard) | Camera-facing "!" icon sprite, 128 px PNG, red/orange, readable at 15 m | Open |
+| PH-008 | Small Unity sphere + orange point light | `P_ThrownLantern/Body` (S10, §7.9) | The guard lantern model (pack #10 hand-held lantern or the CC0 Low poly Lantern OBJ) as the thrown visual | Open |
 
 ## Expected placeholders (not created yet)
 

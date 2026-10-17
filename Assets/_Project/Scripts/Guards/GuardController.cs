@@ -56,6 +56,7 @@ namespace Nullflame
         // Also called by IntroSequence to fast-forward guards deterministically.
         public void Tick(float dt)
         {
+            if (Motion.Paused) return; // LanternAttack owns the facing while alerting
             Motion.Tick(dt);
             Apply();
         }

@@ -16,6 +16,7 @@ namespace Nullflame
         [SerializeField] Transform cameraTransform;
         [SerializeField] ShadowArea startShadow;
         [SerializeField] ShadowArea voidPrefab;
+        [SerializeField] Essence essence;
 
         public EntityState State { get; private set; } = EntityState.Inactive;
         public ShadowArea Current { get; private set; }
@@ -36,8 +37,11 @@ namespace Nullflame
             if (startShadow != null && State == EntityState.Inactive) Place(startShadow, transform.position);
         }
 
+        void OnEnable() => essence.Died += Die;
+
         void OnDisable()
         {
+            essence.Died -= Die;
             if (Current != null) Current.Removed -= OnCurrentRemoved;
             if (jumpTarget != null) jumpTarget.Removed -= OnTargetRemoved;
         }

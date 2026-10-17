@@ -104,6 +104,19 @@ namespace Nullflame
             new Vector2(3.75f, 3f), new Vector2(26.875f, 34.875f), new Vector2(26.875f, 24.625f),
         };
 
+        [Header("Meltdown flame lights (Appendix A.3)")]
+        public Vector2[] alarmLights =
+        {
+            new Vector2(8f, 8f), new Vector2(30f, 11f), new Vector2(20.5f, 14f), new Vector2(20.5f, 30f),
+        };
+        public Vector3[] wallFireLanterns =
+        {
+            new Vector3(15.95f, 2f, 44f), new Vector3(15.95f, 2f, 48.5f), new Vector3(15.95f, 2f, 53f),
+            new Vector3(21.55f, 2f, 44f), new Vector3(21.55f, 2f, 48.5f), new Vector3(21.55f, 2f, 53f),
+        };
+        public Color alarmColor = new Color(1f, 0.1f, 0.05f);
+        public Color fireColor = new Color(1f, 0.5f, 0.15f);
+
         public bool TryGetArea(string id, out Rect xz)
         {
             for (int i = 0; i < areas.Length; i++)

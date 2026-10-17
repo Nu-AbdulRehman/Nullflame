@@ -47,6 +47,7 @@ namespace Nullflame
             if (target == null) return false;
 
             landing = target.isMoving ? target.Center : target.ClampInside(floorPoint, tuning.entitySize * 0.5f);
+            if (registry.IsInsideAnyFire(landing, tuning.entitySize * 0.5f)) return false;
             Vector3 from = entity.transform.position;
             Vector3 closest = target.ClosestPoint(from);
             Vector3 d = closest - from;

@@ -3,16 +3,27 @@ using UnityEngine;
 
 namespace Nullflame
 {
-    // Every active ShadowArea and the queries on them (IMPL §7.2). Guards and fires join in later steps.
+    // Every active ShadowArea and fire, and the queries on them (IMPL §7.2). Guards join in a later step.
     public sealed class ShadowRegistry : MonoBehaviour
     {
         readonly List<ShadowArea> shadows = new List<ShadowArea>();
+        readonly List<LanternFire> fires = new List<LanternFire>();
 
         public IReadOnlyList<ShadowArea> Shadows => shadows;
 
         public void Register(ShadowArea s) => shadows.Add(s);
 
         public void Unregister(ShadowArea s) => shadows.Remove(s);
+        public void Register(LanternFire f) => fires.Add(f);
+        public void Unregister(LanternFire f) => fires.Remove(f);
+
+        // A burning fire blocks jumps that land inside it (design doc §7.9 rule 5).
+        public bool IsInsideAnyFire(Vector3 point, float extraRadius)
+        {
+            for (int i = 0; i < fires.Count; i++)
+                if (fires[i].Contains(point, extraRadius)) return true;
+            return false;
+        }
 
         // Smallest shadow containing point, so an oil drop on a pipe strip or a guard shadow over the
         // Player Room floor wins over the larger one.

@@ -97,6 +97,8 @@ namespace Nullflame.EditorTools
             foreach (var p in layout.props)
                 Block(p.id, props, p.center, p.size, p.yaw, PropPrefab(registry, p.kind), solid: false, visible: true);
 
+            BuildMeltdownFlames(meltdown, layout, tuning, registry, height);
+
             Transform lights = Group(level, "CeilingLights");
             foreach (Vector2 c in layout.ceilingLights)
             {
@@ -110,6 +112,75 @@ namespace Nullflame.EditorTools
                 light.shadows = LightShadows.None;
                 if (registry.ceilingLight != null) Instantiate(registry.ceilingLight, go.transform);
             }
+        }
+
+        // Alarm lights (cone light + floor-circle damage) and the Final Corridor wall fire (instant-kill box),
+        // Meltdown only (design doc §7.7, §10).
+        static void BuildMeltdownFlames(Transform meltdown, FacilityLayout layout, GameTuning tuning, AssetRegistry registry, float height)
+        {
+            int hazard = LayerMask.NameToLayer("Hazard");
+            Transform alarms = Group(meltdown, "AlarmLights");
+            foreach (Vector2 p in layout.alarmLights)
+            {
+                var go = new GameObject("AlarmLight");
+                go.transform.SetParent(alarms, false);
+                go.transform.position = new Vector3(p.x, 0f, p.y);
+                go.layer = hazard;
+                var capsule = go.AddComponent<CapsuleCollider>();
+                capsule.isTrigger = true;
+                capsule.height = height;
+                capsule.center = new Vector3(0f, height * 0.5f, 0f);
+                capsule.radius = tuning.alarmFloorRadius;
+                Flame(go, FlameKind.Alarm, tuning);
+                var lamp = new GameObject("Lamp");
+                lamp.transform.SetParent(go.transform, false);
+                lamp.transform.localPosition = new Vector3(0f, height - 0.2f, 0f);
+                lamp.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                var light = lamp.AddComponent<Light>();
+                light.type = LightType.Spot;
+                light.color = layout.alarmColor;
+                light.range = height + 1f;
+                light.spotAngle = 2f * Mathf.Atan(tuning.alarmFloorRadius / (height - 0.2f)) * Mathf.Rad2Deg;
+                light.intensity = 6f;
+                light.shadows = LightShadows.None;
+                if (registry.alarmLight != null) Instantiate(registry.alarmLight, lamp.transform);
+            }
+
+            Transform fire = Group(meltdown, "WallFireLanterns");
+            if (layout.TryGetArea("FinalCorridor", out Rect corridor))
+            {
+                var box = new GameObject("WallFireKillVolume");
+                box.transform.SetParent(fire, false);
+                box.transform.position = new Vector3(corridor.center.x, height * 0.5f, corridor.center.y);
+                box.layer = hazard;
+                var col = box.AddComponent<BoxCollider>();
+                col.isTrigger = true;
+                col.size = new Vector3(corridor.width, height, corridor.height);
+                Flame(box, FlameKind.WallFire, tuning);
+            }
+            foreach (Vector3 p in layout.wallFireLanterns)
+            {
+                var go = new GameObject("WallFireLantern");
+                go.transform.SetParent(fire, false);
+                go.transform.position = p;
+                var light = go.AddComponent<Light>();
+                light.type = LightType.Point;
+                light.color = layout.fireColor;
+                light.range = 4f;
+                light.intensity = 2f;
+                light.shadows = LightShadows.None;
+                if (registry.wallFireLantern != null) Instantiate(registry.wallFireLantern, go.transform);
+                if (registry.fireSmallVfx != null) Instantiate(registry.fireSmallVfx, go.transform);
+            }
+        }
+
+        static void Flame(GameObject go, FlameKind kind, GameTuning tuning)
+        {
+            var f = go.AddComponent<FlameVolume>();
+            f.kind = kind;
+            var so = new SerializedObject(f);
+            so.FindProperty("tuning").objectReferenceValue = tuning;
+            so.ApplyModifiedPropertiesWithoutUndo();
         }
 
         static void BuildOpening(OpeningSpec o, Vector2 c, float yaw, float height, float thickness,
