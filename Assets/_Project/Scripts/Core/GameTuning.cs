@@ -111,7 +111,7 @@ namespace Nullflame
         [Tooltip("T-INTRO-WAVE: spacing between wave guards (s)")] public float introWaveSpacing = 3f;
         [Tooltip("T-INTRO-GLANCE: G-GLANCE pause at D-PLAYER (s)")] public float introGlanceTime = 2f;
         [Tooltip("T-INTRO-CAM: intro camera pull-back time (s)")] public float introCameraPullTime = 1.5f;
-        [Tooltip("T-FAIL-RESTART: auto restart delay on death or missed chance (s)")] public float autoRestartDelay = 3f;
+        [Tooltip("T-FAIL-RESTART: auto restart delay on death (s)")] public float autoRestartDelay = 3f;
 
         [Header("Camera")]
         [Tooltip("T-CAM-DIST: camera distance (m)")] public float cameraDistance = 6f;

@@ -3,9 +3,10 @@ using UnityEngine.SceneManagement;
 
 namespace Nullflame
 {
-    public enum FlowState { Title, Playing, Paused, Dead, Missed, Won }
+    public enum FlowState { Title, Playing, Paused, Dead, Won }
 
-    // Title, play, pause, death, Beat 1 soft fail and restart (design doc §9, §12, §14, IMPL §19).
+    // Title, play, pause, death, win and restart (design doc §9, §12, §14, IMPL §19). The Beat 1 "missed chance"
+    // fail was removed with floor movement (AD-024).
     // Restart reloads the scene; HasSeenIntro is the only static that survives it (CLAUDE.md §3).
     [DefaultExecutionOrder(-100)]
     public sealed class GameFlow : MonoBehaviour
@@ -13,24 +14,18 @@ namespace Nullflame
         public static bool HasSeenIntro;
 
         [SerializeField] GameTuning tuning;
-        [SerializeField] FacilityLayout layout;
         [SerializeField] Essence essence;
         [SerializeField] ShadowEntity entity;
         [SerializeField] InputReader input;
-        [SerializeField] TimePowers timePowers;
         [SerializeField] OrbitCamera cameraRig;
         [SerializeField] IntroSequence intro;
-        [Tooltip("G-GLANCE, G-B, G-TIME, G-C, G-D: when all reach their posts, Beat 1 is missed.")]
-        [SerializeField] GuardController[] waveGuards;
         [SerializeField] GameObject titleScreen;
         [SerializeField] GameObject pauseScreen;
         [SerializeField] GameObject deathScreen;
-        [SerializeField] GameObject missedScreen;
         [SerializeField] GameObject winScreen;
         [SerializeField] UnityEngine.UI.Text winTimeText;
 
         float restartTimer = -1f;
-        Rect timeRoom;
 
         public FlowState State { get; private set; } = FlowState.Title;
         public float RunTime { get; private set; } // win screen "time taken", from the moment of control (EN-009)
@@ -40,7 +35,6 @@ namespace Nullflame
 
         void Start()
         {
-            layout.TryGetArea("TimeRoom", out timeRoom);
             if (HasSeenIntro) intro.Skip();
             else
             {
@@ -76,7 +70,6 @@ namespace Nullflame
             {
                 RunTime += Time.deltaTime;
                 if (input.PausePressed) Pause();
-                else CheckMissedChance();
             }
             else if (State == FlowState.Paused && input.PausePressed) Resume();
         }
@@ -136,20 +129,6 @@ namespace Nullflame
             State = FlowState.Dead;
             deathScreen.SetActive(true);
             SfxPlayer.Play(SfxId.DeathSting);
-            SetGameplay(false);
-            restartTimer = tuning.autoRestartDelay;
-        }
-
-        // Beat 1 soft fail: every wave guard is at its post and the entity never reached the Time Room.
-        void CheckMissedChance()
-        {
-            if (timePowers.HasTimePower) return;
-            Vector3 p = entity.transform.position;
-            if (timeRoom.Contains(new Vector2(p.x, p.z))) return;
-            for (int i = 0; i < waveGuards.Length; i++)
-                if (waveGuards[i] == null || !waveGuards[i].Motion.ReachedEnd) return; // destroyed by the rewind: Beat 1 is over
-            State = FlowState.Missed;
-            missedScreen.SetActive(true);
             SetGameplay(false);
             restartTimer = tuning.autoRestartDelay;
         }

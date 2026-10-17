@@ -65,20 +65,6 @@ namespace Nullflame.Tests
             Assert.Greater(Flow.Guard("G-TIME").transform.position.z, 26f, "G-TIME is still to pass D-PLAYER (Z 26)");
             Assert.AreNotEqual(GuardMoveState.Idle, Flow.Guard("G-GLANCE").Motion.State, "the wave is under way");
         }
-
-        // Beat 1 fail: all five wave guards at their posts and the entity outside the Time Room.
-        [UnityTest]
-        public IEnumerator AllWaveGuardsPosted_PlayerOutside_Missed_Beat1()
-        {
-            yield return TestScenes.LoadFacility();
-            GameFlow flow = Flow.Find<GameFlow>();
-            foreach (string n in new[] { "G-GLANCE", "G-B", "G-TIME", "G-C", "G-D" }) Flow.Guard(n).StartRoute();
-            Time.timeScale = 10f;
-            for (float t = 0f; t < 90f && flow.State == FlowState.Playing; t += Time.deltaTime) yield return null;
-            Time.timeScale = 1f;
-            Assert.AreEqual(FlowState.Missed, flow.State);
-            Assert.IsTrue(GameObject.Find("Canvas").transform.Find("MissedScreen").gameObject.activeSelf);
-        }
     }
 
     public sealed class SpawnerTests
