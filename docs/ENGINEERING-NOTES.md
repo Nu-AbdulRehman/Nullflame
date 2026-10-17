@@ -39,3 +39,9 @@ Retries start at Beat 1 with the wave about to pass D-PLAYER. Ticking each wave 
 
 ### EN-012: Lab benches come from pack #1, not pack #4
 Checked on 2026-10-17: Free Laboratory Pack (#4) contains only flasks and pipettes (`Assets/FreeLabAssets/Prefabs`), no benches. The `LabBench` registry slot uses #1's `Decorative elements/Tables/desk_no_computer.prefab`, the fallback `docs/assets/free-assets.md` §2 lists. #4's flasks can dress the desks. Rejected: a primitive bench, since #1 covers the need.
+
+### EN-013: The entity owns void-shadow cleanup; no VoidShadow component (IMPL §7.3, §13.3)
+`ShadowEntity` remembers the void it spawned and destroys it when it attaches to any other shadow. Rejected: a separate `VoidShadow` component polling the entity every frame, which is a second script for one rule. The `Removed` handlers only set flags; the void spawns on the next `Update`, because `ShadowArea.OnDisable` also runs during scene unload.
+
+### EN-014: `ShadowArea.isMoving` is a serialized flag (IMPL §7.1)
+The guard prefab sets it. Rejected: computing it from a `GuardController` in the parents, which couples the shadow script to the guard script before guards exist and adds a lookup.
