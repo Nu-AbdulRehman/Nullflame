@@ -27,6 +27,8 @@ MonoBehaviour:
   essenceLowThreshold: 25
   lanternDps: 8
   alarmDps: 5
+  fireDps: 15
+  floorLightDps: 40
   lanternRadius: 3
   alarmFloorRadius: 2
   throwTime: 0.6
@@ -86,21 +88,21 @@ MonoBehaviour:
   cameraCollisionRadius: 0.3
   spawnSleepMeltdown:
     interval: 20
-    maxAlive: 2
+    maxAlive: 1
     refillOnly: 0
   spawnSleepNormal:
     interval: 25
-    maxAlive: 3
+    maxAlive: 2
     refillOnly: 0
   spawnSideNormal:
     interval: 15
-    maxAlive: 2
+    maxAlive: 1
     refillOnly: 0
   spawnFinalNormal:
     interval: 10
-    maxAlive: 2
+    maxAlive: 1
     refillOnly: 1
   spawnFinalMeltdown:
     interval: 0
-    maxAlive: 2
+    maxAlive: 1
     refillOnly: 1

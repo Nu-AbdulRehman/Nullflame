@@ -123,11 +123,11 @@ namespace Nullflame
         [Tooltip("T-CAM-RADIUS: collision spherecast radius (m)")] public float cameraCollisionRadius = 0.3f;
 
         [Header("Spawners")]
-        [Tooltip("T-SPN-SLEEP-M")] public SpawnerTuning spawnSleepMeltdown = new SpawnerTuning { interval = 20f, maxAlive = 2 };
-        [Tooltip("T-SPN-SLEEP-N: max counts the two routine guards")] public SpawnerTuning spawnSleepNormal = new SpawnerTuning { interval = 25f, maxAlive = 3 };
-        [Tooltip("T-SPN-SIDE-N: max counts guards in transit")] public SpawnerTuning spawnSideNormal = new SpawnerTuning { interval = 15f, maxAlive = 2 };
-        [Tooltip("T-SPN-FINAL-N: interval is the refill delay")] public SpawnerTuning spawnFinalNormal = new SpawnerTuning { interval = 10f, maxAlive = 2, refillOnly = true };
-        [Tooltip("T-SPN-FINAL-M: no respawn")] public SpawnerTuning spawnFinalMeltdown = new SpawnerTuning { interval = 0f, maxAlive = 2, refillOnly = true };
+        [Tooltip("T-SPN-SLEEP-M")] public SpawnerTuning spawnSleepMeltdown = new SpawnerTuning { interval = 20f, maxAlive = 1 };
+        [Tooltip("T-SPN-SLEEP-N: max counts the routine guard")] public SpawnerTuning spawnSleepNormal = new SpawnerTuning { interval = 25f, maxAlive = 2 };
+        [Tooltip("T-SPN-SIDE-N: max counts guards in transit")] public SpawnerTuning spawnSideNormal = new SpawnerTuning { interval = 15f, maxAlive = 1 };
+        [Tooltip("T-SPN-FINAL-N: interval is the refill delay")] public SpawnerTuning spawnFinalNormal = new SpawnerTuning { interval = 10f, maxAlive = 1, refillOnly = true };
+        [Tooltip("T-SPN-FINAL-M: no respawn")] public SpawnerTuning spawnFinalMeltdown = new SpawnerTuning { interval = 0f, maxAlive = 1, refillOnly = true };
 
         public SpawnerTuning GetSpawner(SpawnerId id)
         {

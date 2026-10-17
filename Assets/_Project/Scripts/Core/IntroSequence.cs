@@ -70,7 +70,7 @@ namespace Nullflame
             for (int step = 0; step < SkipMaxSteps && pullSteps != 0; step++)
             {
                 Advance(SkipStep);
-                for (int i = 0; i < wave.Length; i++) wave[i].Tick(SkipStep);
+                for (int i = 0; i < wave.Length; i++) if (wave[i] != null) wave[i].Tick(SkipStep);
                 if (pullSteps > 0) { pullSteps--; continue; }
                 float z = wave[0].transform.position.z;
                 if (Mathf.Abs(z - doorZ) < 0.01f) atDoor = true;
@@ -87,12 +87,16 @@ namespace Nullflame
         void OnDisable() => StopAllCoroutines();
 
         // Guard i leaves at spacing * (i + 1): 3 s, 6 s, 9 s ... (design doc §9 Beat 0, T-INTRO-WAVE).
+        // Empty slots (guards cut in AD-025) keep their timing so G-TIME still leaves third.
         void Advance(float dt)
         {
             if (released >= wave.Length) return;
             elapsed += dt;
             while (released < wave.Length && elapsed >= tuning.introWaveSpacing * (released + 1))
-                wave[released++].StartRoute();
+            {
+                if (wave[released] != null) wave[released].StartRoute();
+                released++;
+            }
         }
     }
 }

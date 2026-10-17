@@ -110,27 +110,28 @@ namespace Nullflame.Tests
             var spawner = GameObject.Find("SP-FINAL-N");
             var safe = GameObject.Find("PlayerRoomFloor").GetComponent<ShadowArea>();
             entity.Place(safe, safe.Center); // out of the patrollers' sight while they spawn
+            int patrollers = tuning.spawnFinalNormal.maxAlive; // T-SPN-FINAL-N (1 since AD-025)
             GuardController[] guards = null;
             Time.timeScale = 5f;
             for (float t = 0f; t < 40f; t += Time.deltaTime)
             {
                 guards = spawner.GetComponentsInChildren<GuardController>();
-                if (guards.Length == 2 && InCorridor(guards[0]) && InCorridor(guards[1])) break;
+                if (guards.Length == patrollers && System.Array.TrueForAll(guards, InCorridor)) break;
                 yield return null;
             }
             Time.timeScale = 1f;
-            Assert.AreEqual(2, guards.Length, "both patrollers spawned");
+            Assert.AreEqual(patrollers, guards.Length, "every patroller spawned");
             foreach (var g in guards)
             {
                 Assert.IsTrue(InCorridor(g), $"{g.name} in the Final Corridor");
                 g.GetComponent<GuardVision>().enabled = false; // only the burst throws
             }
-            // The pipe furthest from both patrollers, so no guard shadow passes over it during the hold.
+            // The pipe furthest from every patroller, so no guard shadow passes over it during the hold.
             float best = -1f;
             foreach (var c in Object.FindObjectsByType<CrackablePipe>(FindObjectsSortMode.None))
             {
-                float d = Mathf.Min(Vector3.Distance(c.strip.Center, guards[0].transform.position),
-                                    Vector3.Distance(c.strip.Center, guards[1].transform.position));
+                float d = float.MaxValue;
+                foreach (var g in guards) d = Mathf.Min(d, Vector3.Distance(c.strip.Center, g.transform.position));
                 if (d > best) { best = d; pipe = c; }
             }
             entity.Place(pipe.strip, pipe.strip.Center);
@@ -142,7 +143,7 @@ namespace Nullflame.Tests
 
             Assert.IsTrue(pipe.Cracked);
             foreach (var g in guards) Assert.IsFalse(g.HasLantern, $"{g.name} threw its lantern");
-            Assert.AreEqual(2, Object.FindObjectsByType<ThrownLantern>(FindObjectsSortMode.None).Length);
+            Assert.AreEqual(patrollers, Object.FindObjectsByType<ThrownLantern>(FindObjectsSortMode.None).Length);
         }
 
         // T-FIRE-RADIUS-OIL: the burst fire grows to 5 m and destroys the oil drops it reaches (§7.6).
