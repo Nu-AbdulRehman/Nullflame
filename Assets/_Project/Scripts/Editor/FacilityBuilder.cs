@@ -41,9 +41,9 @@ namespace Nullflame.EditorTools
 
         public static void Build(Scene scene, FacilityLayout layout, GameTuning tuning, AssetRegistry registry)
         {
-            Transform level = ClearedRoot(scene, LevelRootName);
-            Transform meltdown = ClearedChild(FindOrCreateRoot(scene, MeltdownRootName), MeltdownGenName);
-            Transform normal = ClearedChild(FindOrCreateRoot(scene, NormalRootName), NormalGenName);
+            Transform level = Clear(FindOrCreateRoot(scene, LevelRootName));
+            Transform meltdown = Clear(Group(FindOrCreateRoot(scene, MeltdownRootName), MeltdownGenName));
+            Transform normal = Clear(Group(FindOrCreateRoot(scene, NormalRootName), NormalGenName));
             float height = tuning.ceilingHeight;
 
             Transform floors = Group(level, "Floors");
@@ -234,10 +234,6 @@ namespace Nullflame.EditorTools
             SceneManager.MoveGameObjectToScene(root, scene);
             return root.transform;
         }
-
-        static Transform ClearedRoot(Scene scene, string name) => Clear(FindOrCreateRoot(scene, name));
-
-        static Transform ClearedChild(Transform parent, string name) => Clear(Group(parent, name));
 
         static Transform Clear(Transform t)
         {

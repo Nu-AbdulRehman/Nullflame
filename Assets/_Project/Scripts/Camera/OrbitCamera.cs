@@ -19,8 +19,6 @@ namespace Nullflame
         Vector3 pivotVelocity;
         int solidMask;
 
-        public Transform Target { get => target; set => target = value; }
-
         void Awake()
         {
             solidMask = LayerMask.GetMask("LevelSolid");

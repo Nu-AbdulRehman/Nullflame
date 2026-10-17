@@ -11,9 +11,18 @@ namespace Nullflame.Tests
     public sealed class FacilityBuilderTests
     {
         Scene scene;
+        FacilityLayout layout;
+        GameTuning tuning;
+        AssetRegistry registry;
 
         [SetUp]
-        public void SetUp() => scene = SceneManager.GetActiveScene();
+        public void SetUp()
+        {
+            scene = SceneManager.GetActiveScene();
+            layout = AssetDatabase.LoadAssetAtPath<FacilityLayout>(FacilityBuilder.LayoutPath);
+            tuning = AssetDatabase.LoadAssetAtPath<GameTuning>(FacilityBuilder.TuningPath);
+            registry = AssetDatabase.LoadAssetAtPath<AssetRegistry>(FacilityBuilder.RegistryPath);
+        }
 
         [TearDown]
         public void TearDown()
@@ -28,10 +37,6 @@ namespace Nullflame.Tests
         [Test]
         public void Build_TwiceProducesSameChildCount()
         {
-            var layout = AssetDatabase.LoadAssetAtPath<FacilityLayout>(FacilityBuilder.LayoutPath);
-            var tuning = AssetDatabase.LoadAssetAtPath<GameTuning>(FacilityBuilder.TuningPath);
-            var registry = AssetDatabase.LoadAssetAtPath<AssetRegistry>(FacilityBuilder.RegistryPath);
-
             FacilityBuilder.Build(scene, layout, tuning, registry);
             int first = CountAll();
             FacilityBuilder.Build(scene, layout, tuning, registry);
@@ -46,10 +51,6 @@ namespace Nullflame.Tests
         [Test]
         public void Build_LeavesForeignChildrenOfStateRoots()
         {
-            var layout = AssetDatabase.LoadAssetAtPath<FacilityLayout>(FacilityBuilder.LayoutPath);
-            var tuning = AssetDatabase.LoadAssetAtPath<GameTuning>(FacilityBuilder.TuningPath);
-            var registry = AssetDatabase.LoadAssetAtPath<AssetRegistry>(FacilityBuilder.RegistryPath);
-
             FacilityBuilder.Build(scene, layout, tuning, registry);
             var handPlaced = new GameObject("Guards");
             handPlaced.transform.SetParent(FindRoot(FacilityBuilder.MeltdownRootName), false);
