@@ -4,7 +4,7 @@ using UnityEngine.UI;
 namespace Nullflame
 {
     // Values kept from before the title and pause menus went (AD-032), so saved buttons stay bound.
-    public enum MenuAction { Restart = 2, Quit = 3, NewGame = 4 }
+    public enum MenuAction { Restart = 2, Quit = 3 }
 
     // Binds a uGUI Button to a GameFlow action chosen in the Inspector (EN-026).
     [RequireComponent(typeof(Button))]
@@ -22,7 +22,6 @@ namespace Nullflame
             {
                 case MenuAction.Restart: flow.Restart(); break;
                 case MenuAction.Quit: flow.Quit(); break;
-                case MenuAction.NewGame: flow.NewGame(); break;
             }
         }
     }

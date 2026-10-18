@@ -20,13 +20,11 @@ namespace Nullflame
         [SerializeField] OrbitCamera cameraRig;
         [SerializeField] IntroSequence intro;
         [SerializeField] GameObject deathScreen;
-        [SerializeField] GameObject winScreen;
-        [SerializeField] UnityEngine.UI.Text winTimeText;
+        [SerializeField] string outroScene = "Outro";
 
         float restartTimer = -1f;
 
         public FlowState State { get; private set; } = FlowState.Intro;
-        public float RunTime { get; private set; } // win screen "time taken", from the moment of control (EN-009)
 
         void OnEnable() => essence.Died += OnDied;
         void OnDisable() => essence.Died -= OnDied;
@@ -57,19 +55,11 @@ namespace Nullflame
                 if (restartTimer <= 0f) Restart();
                 return;
             }
-            if (State == FlowState.Playing) RunTime += Time.deltaTime;
         }
 
         public void Restart()
         {
             HasSeenIntro = true;
-            SceneManager.LoadScene(gameObject.scene.name);
-        }
-
-        // Win screen: a fresh run with the intro (EN-008, AD-032).
-        public void NewGame()
-        {
-            HasSeenIntro = false;
             SceneManager.LoadScene(gameObject.scene.name);
         }
 
@@ -82,15 +72,12 @@ namespace Nullflame
 #endif
         }
 
-        // Final Gate consumed (Beat 5): win screen with the run time and credits.
+        // Final Gate consumed (Beat 5): the Outro scene plays the win cutscene and the credits, then the menu.
         public void Win()
         {
             State = FlowState.Won;
-            int s = Mathf.FloorToInt(RunTime);
-            winTimeText.text = $"Time taken: {s / 60}:{s % 60:00}";
-            winScreen.SetActive(true);
-            SfxPlayer.Play(SfxId.WinSting);
             SetGameplay(false);
+            SceneManager.LoadScene(outroScene);
         }
 
         void OnDied()
