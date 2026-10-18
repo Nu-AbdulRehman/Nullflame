@@ -128,10 +128,15 @@ namespace Nullflame.EditorTools
         // Essence bar from docs/design/health_bar.png: a bar with the top-left and bottom-right corners cut at 45°.
         // Sized for the 420 x 56 HUD rect at 2x; Frame is the white outline, Fill the solid shape the Image tints.
         [MenuItem("Nullflame/Bake Essence Bar")]
-        public static void BakeEssenceBar()
+        public static void BakeEssenceBar() => BakeBar("UI_EssenceBar", 840, 112, 6f);
+
+        // Menu buttons: the same shape with a much thicker outline (hollow inside).
+        [MenuItem("Nullflame/Bake Menu Button")]
+        public static void BakeMenuButton() => BakeBar("UI_MenuButton", 840, 240, 18f);
+
+        static void BakeBar(string name, int w, int h, float stroke)
         {
-            const int w = 840, h = 112;
-            const float cut = h * 0.25f, stroke = 6f;
+            float cut = h * 0.25f;
             float Dist(float u, float v)
             {
                 float x = u * w, y = v * h;
@@ -139,12 +144,12 @@ namespace Nullflame.EditorTools
                 d = Mathf.Min(d, (x + h - y - cut) * 0.7071f); // top-left cut
                 return Mathf.Min(d, (w - x + y - cut) * 0.7071f); // bottom-right cut
             }
-            Sprite(Texture("UI_EssenceBarFrame", (u, v) =>
+            Sprite(Texture(name + "Frame", (u, v) =>
             {
                 float d = Dist(u, v);
                 return new Color(1f, 1f, 1f, Mathf.Clamp01(d) * Mathf.Clamp01(stroke - d));
             }, w, h, "Assets/_Project/Art"));
-            Sprite(Texture("UI_EssenceBarFill", (u, v) => new Color(1f, 1f, 1f, Mathf.Clamp01(Dist(u, v))), w, h, "Assets/_Project/Art"));
+            Sprite(Texture(name + "Fill", (u, v) => new Color(1f, 1f, 1f, Mathf.Clamp01(Dist(u, v))), w, h, "Assets/_Project/Art"));
         }
 
         [MenuItem("Nullflame/Bake Decals")]
