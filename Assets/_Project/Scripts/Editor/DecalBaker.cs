@@ -45,6 +45,86 @@ namespace Nullflame.EditorTools
             AssetDatabase.SaveAssets();
         }
 
+        // The Time SCP stopwatch: the Sketchfab pocket watch's PBR textures on URP Lit materials, remapped onto the
+        // four materials the FBX imports (Watch, Glass, Minutes, Text) (EN-063). The owner's model and textures
+        // are never edited; only the normal map's import type and the FBX's material remap table change.
+        [MenuItem("Nullflame/Bake Watch Material")]
+        public static void BakeWatch()
+        {
+            const string tex = "Assets/vintage-pocket-watch/textures/";
+            const string fbx = "Assets/vintage-pocket-watch/source/Pocketwatch_lowpoly.fbx";
+            var normalImporter = (TextureImporter)AssetImporter.GetAtPath(tex + "Pocketwatch_lowpoly_Watch_Normal.png");
+            if (normalImporter.textureType != TextureImporterType.NormalMap)
+            {
+                normalImporter.textureType = TextureImporterType.NormalMap;
+                normalImporter.SaveAndReimport();
+            }
+
+            Material watch = Lit("M_PocketWatch");
+            watch.SetTexture("_BaseMap", Tex(tex + "Pocketwatch_lowpoly_Watch_BaseColor.png"));
+            watch.SetTexture("_BumpMap", Tex(tex + "Pocketwatch_lowpoly_Watch_Normal.png"));
+            watch.SetTexture("_MetallicGlossMap", Tex(tex + "Pocketwatch_lowpoly_Watch_Metallic.png"));
+            watch.SetTexture("_EmissionMap", Tex(tex + "Pocketwatch_lowpoly_Watch_Emissive.png"));
+            watch.SetColor("_EmissionColor", Color.white);
+            watch.SetFloat("_Smoothness", 0.6f);
+            watch.EnableKeyword("_NORMALMAP");
+            watch.EnableKeyword("_METALLICSPECGLOSSMAP");
+            watch.EnableKeyword("_EMISSION");
+
+            Material glass = Lit("M_PocketWatchGlass");
+            glass.SetFloat("_Surface", 1f);
+            glass.SetFloat("_SrcBlend", (float)BlendMode.SrcAlpha);
+            glass.SetFloat("_DstBlend", (float)BlendMode.OneMinusSrcAlpha);
+            glass.SetFloat("_ZWrite", 0f);
+            glass.SetOverrideTag("RenderType", "Transparent");
+            glass.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            glass.renderQueue = (int)RenderQueue.Transparent;
+            glass.SetColor("_BaseColor", new Color(0.9f, 0.95f, 1f, 0.2f));
+            glass.SetFloat("_Smoothness", 0.95f);
+
+            Material hands = Cutout("M_PocketWatchHands", Tex(tex + "Minutes_Alpha.png"));
+            Material text = Cutout("M_PocketWatchText", Tex(tex + "Text_alpha.png"));
+
+            var importer = (ModelImporter)AssetImporter.GetAtPath(fbx);
+            Remap(importer, "Watch", watch);
+            Remap(importer, "Glass", glass);
+            Remap(importer, "Minutes", hands);
+            Remap(importer, "Text", text);
+            importer.SaveAndReimport();
+            AssetDatabase.SaveAssets();
+        }
+
+        static Texture2D Tex(string path) => AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+
+        static Material Lit(string name)
+        {
+            string path = $"Assets/_Project/Art/{name}.mat";
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (mat == null)
+            {
+                mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                AssetDatabase.CreateAsset(mat, path);
+            }
+            EditorUtility.SetDirty(mat);
+            return mat;
+        }
+
+        // Alpha-clipped dark detail (watch hands, dial text) from an alpha-only texture.
+        static Material Cutout(string name, Texture2D alpha)
+        {
+            Material mat = Lit(name);
+            mat.SetTexture("_BaseMap", alpha);
+            mat.SetColor("_BaseColor", new Color(0.08f, 0.08f, 0.08f, 1f));
+            mat.SetFloat("_AlphaClip", 1f);
+            mat.SetFloat("_Cutoff", 0.5f);
+            mat.EnableKeyword("_ALPHATEST_ON");
+            mat.renderQueue = (int)RenderQueue.AlphaTest;
+            return mat;
+        }
+
+        static void Remap(ModelImporter importer, string sourceMaterial, Material target) =>
+            importer.AddRemap(new AssetImporter.SourceAssetIdentifier(typeof(Material), sourceMaterial), target);
+
         [MenuItem("Nullflame/Bake Decals")]
         public static void Bake()
         {

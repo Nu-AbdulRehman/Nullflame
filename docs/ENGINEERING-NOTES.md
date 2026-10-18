@@ -195,3 +195,6 @@ Owner request (2026-10-18). `P_LeverPanel/Panel` keeps its box collider and shad
 
 ### EN-062: The Time Room cabinet is the pack #1 vending machine
 The pack's `cabinet` is a wide low unit (2 x 1.77 x 1.56 m); fitted to the 1.2 x 2 x 0.6 m cabinet box it squashed into a featureless block. `vending_machine` (2.4 x 4 x 1.15 m) fits that box at a uniform 0.5 scale, so it keeps its proportions and front panel. `AssetRegistry.cabinet` now points at it.
+
+### EN-063: Time SCP pedestal is a pack column with the real pocket watch
+`P_Pedestal`'s cylinder and flat stopwatch renderers are disabled (kept for their transforms; the `Consumable.sinkRoot` is still `Visual`). Two children under `Visual` replace them, so they sink with the consume: `Column` (#1 `column_end`, about 1 m tall) and `Watch` (`Pocketwatch_lowpoly.fbx`, about 0.34 m wide, lying face up on the column top). Their local scales compensate for `Visual`'s 0.5 y scale. `Nullflame/Bake Watch Material` (DecalBaker) builds the URP materials from the pack textures (base color, normal, metallic, emissive; transparent glass; alpha-clipped hands and dial text) and remaps the FBX's embedded materials to them, so the pack folder is untouched. Rejected: using the FBX's own materials (Standard shader, pink in URP) and adding an `AssetRegistry` slot (one prop, one prefab; a slot adds wiring with no second user).
