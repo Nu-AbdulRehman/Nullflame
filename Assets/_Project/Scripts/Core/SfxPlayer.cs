@@ -7,6 +7,7 @@ namespace Nullflame
         Klaxon, AlertSting, JumpWhoosh, ReverseWhoosh, RewindSweep, ConsumeLoop, ConsumeDone, PowerGranted,
         FireLoop, LanternSmash, PipeCreak, PipeCrack, OilDrip, PipeBurst, GateSlide, DoorSlide, Footstep,
         Heartbeat, MusicMeltdown, MusicNormal, DeathSting, WinSting, UiClick,
+        Hurt, Scream, // appended: a burn starting, a guard being eaten
     }
 
     // 2D one-shots and named loops (IMPL §22.1). Clips come only from the AssetRegistry; an empty slot is silent.

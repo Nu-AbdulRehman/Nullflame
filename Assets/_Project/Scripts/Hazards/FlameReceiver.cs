@@ -10,6 +10,7 @@ namespace Nullflame
         [SerializeField] ShadowEntity entity;
         [SerializeField] Essence essence;
         [SerializeField] GameTuning tuning;
+        bool burning;
 
         readonly List<FlameVolume> touching = new List<FlameVolume>(16);
         int solidMask;
@@ -52,7 +53,9 @@ namespace Nullflame
             }
             // A soft shadow (pipe strip) is thin cover: a slow drain until oil drops give opaque cover (AD-028).
             if (entity.Current != null && entity.Current.opacity == ShadowOpacity.Soft) dps += tuning.softShadowDps;
-            if (dps <= 0f) return;
+            if (dps <= 0f) { burning = false; return; }
+            if (!burning) SfxPlayer.Play(SfxId.Hurt); // once per burn, not per frame
+            burning = true;
             IsInFlame = true;
             essence.Damage(dps * Time.deltaTime);
         }
