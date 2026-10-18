@@ -36,7 +36,7 @@ MonoBehaviour:
   - id: 8
     clip: {fileID: 8300000, guid: af0e33a1b1f847f4f80e106592282d96, type: 3}
   - id: 1
-    clip: {fileID: 8300000, guid: 7344788851f2c454295aedabc87566ad, type: 3}
+    clip: {fileID: 0}
   - id: 2
     clip: {fileID: 8300000, guid: 959c206c3cd7a804eb0805af0f0f8d3b, type: 3}
   - id: 6
@@ -56,7 +56,7 @@ MonoBehaviour:
   - id: 20
     clip: {fileID: 8300000, guid: a7c898aa8befd5343b37fe2c4433eec3, type: 3}
   - id: 22
-    clip: {fileID: 8300000, guid: 7344788851f2c454295aedabc87566ad, type: 3}
+    clip: {fileID: 0}
   - id: 23
     clip: {fileID: 8300000, guid: 560dafdf2f985a544bfa485adb307be0, type: 3}
   - id: 24

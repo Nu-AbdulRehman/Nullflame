@@ -12,6 +12,8 @@ namespace Nullflame
         [SerializeField] GameObject menu;
         [SerializeField] Button play;
         [SerializeField] Button quit;
+        [SerializeField] AudioSource music;
+        [SerializeField] AudioClip menuMusic;
         [SerializeField] string gameScene = "Facility";
 
         void Awake()
@@ -45,6 +47,12 @@ namespace Nullflame
         {
             if (video != null) video.Stop();
             menu.SetActive(true);
+            if (music != null && menuMusic != null && !music.isPlaying)
+            {
+                music.clip = menuMusic;
+                music.loop = true;
+                music.Play();
+            }
         }
 
         void Play()
