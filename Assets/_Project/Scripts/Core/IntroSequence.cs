@@ -30,6 +30,14 @@ namespace Nullflame
 
         public void Run() => StartCoroutine(Cinematic());
 
+        // Tests: drop the cinematic before it releases the wave, so play starts at the spawns (EN-065).
+        public void Cancel()
+        {
+            StopAllCoroutines();
+            running = false;
+            fx.SetBlack(0f);
+        }
+
         IEnumerator Cinematic()
         {
             running = true;

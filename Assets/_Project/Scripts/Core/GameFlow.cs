@@ -3,10 +3,11 @@ using UnityEngine.SceneManagement;
 
 namespace Nullflame
 {
-    public enum FlowState { Title, Playing, Paused, Dead, Won }
+    public enum FlowState { Intro, Playing, Dead, Won }
 
-    // Title, play, pause, death, win and restart (design doc §9, §12, §14, IMPL §19). The Beat 1 "missed chance"
-    // fail was removed with floor movement (AD-024).
+    // Intro, play, death, win and restart (design doc §9, §12, §14, IMPL §19). The title screen and the pause
+    // menu are gone (AD-032): a new game runs the intro as soon as the scene loads, until a Menu scene replaces
+    // the title. The Beat 1 "missed chance" fail was removed with floor movement (AD-024).
     // Restart reloads the scene; HasSeenIntro is the only static that survives it (CLAUDE.md §3).
     [DefaultExecutionOrder(-100)]
     public sealed class GameFlow : MonoBehaviour
@@ -16,18 +17,15 @@ namespace Nullflame
         [SerializeField] GameTuning tuning;
         [SerializeField] Essence essence;
         [SerializeField] ShadowEntity entity;
-        [SerializeField] InputReader input;
         [SerializeField] OrbitCamera cameraRig;
         [SerializeField] IntroSequence intro;
-        [SerializeField] GameObject titleScreen;
-        [SerializeField] GameObject pauseScreen;
         [SerializeField] GameObject deathScreen;
         [SerializeField] GameObject winScreen;
         [SerializeField] UnityEngine.UI.Text winTimeText;
 
         float restartTimer = -1f;
 
-        public FlowState State { get; private set; } = FlowState.Title;
+        public FlowState State { get; private set; } = FlowState.Intro;
         public float RunTime { get; private set; } // win screen "time taken", from the moment of control (EN-009)
 
         void OnEnable() => essence.Died += OnDied;
@@ -38,22 +36,15 @@ namespace Nullflame
             if (HasSeenIntro) intro.Skip();
             else
             {
-                titleScreen.SetActive(true);
                 SetGameplay(false);
+                intro.Run();
             }
-        }
-
-        public void Play()
-        {
-            titleScreen.SetActive(false);
-            intro.Run();
         }
 
         // Called when the player gets control (end of the intro, or straight away on a retry).
         public void BeginPlaying()
         {
             HasSeenIntro = true;
-            titleScreen.SetActive(false);
             State = FlowState.Playing;
             SetGameplay(true);
         }
@@ -66,41 +57,19 @@ namespace Nullflame
                 if (restartTimer <= 0f) Restart();
                 return;
             }
-            if (State == FlowState.Playing)
-            {
-                RunTime += Time.deltaTime;
-                if (input.PausePressed) Pause();
-            }
-            else if (State == FlowState.Paused && input.PausePressed) Resume();
-        }
-
-        public void Pause()
-        {
-            State = FlowState.Paused;
-            Time.timeScale = 0f;
-            pauseScreen.SetActive(true);
-            SetGameplay(false);
-        }
-
-        public void Resume()
-        {
-            Time.timeScale = 1f;
-            pauseScreen.SetActive(false);
-            State = FlowState.Playing;
-            SetGameplay(true);
+            if (State == FlowState.Playing) RunTime += Time.deltaTime;
         }
 
         public void Restart()
         {
-            Time.timeScale = 1f;
             HasSeenIntro = true;
             SceneManager.LoadScene(gameObject.scene.name);
         }
 
-        public void ReturnToTitle()
+        // Win screen: a fresh run with the intro (EN-008, AD-032).
+        public void NewGame()
         {
-            Time.timeScale = 1f;
-            HasSeenIntro = false; // the title and intro show again (EN-008)
+            HasSeenIntro = false;
             SceneManager.LoadScene(gameObject.scene.name);
         }
 

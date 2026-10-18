@@ -125,6 +125,28 @@ namespace Nullflame.EditorTools
         static void Remap(ModelImporter importer, string sourceMaterial, Material target) =>
             importer.AddRemap(new AssetImporter.SourceAssetIdentifier(typeof(Material), sourceMaterial), target);
 
+        // Essence bar from docs/design/health_bar.png: a bar with the top-left and bottom-right corners cut at 45°.
+        // Sized for the 420 x 56 HUD rect at 2x; Frame is the white outline, Fill the solid shape the Image tints.
+        [MenuItem("Nullflame/Bake Essence Bar")]
+        public static void BakeEssenceBar()
+        {
+            const int w = 840, h = 112;
+            const float cut = h * 0.25f, stroke = 6f;
+            float Dist(float u, float v)
+            {
+                float x = u * w, y = v * h;
+                float d = Mathf.Min(Mathf.Min(x, w - x), Mathf.Min(y, h - y));
+                d = Mathf.Min(d, (x + h - y - cut) * 0.7071f); // top-left cut
+                return Mathf.Min(d, (w - x + y - cut) * 0.7071f); // bottom-right cut
+            }
+            Sprite(Texture("UI_EssenceBarFrame", (u, v) =>
+            {
+                float d = Dist(u, v);
+                return new Color(1f, 1f, 1f, Mathf.Clamp01(d) * Mathf.Clamp01(stroke - d));
+            }, w, h, "Assets/_Project/Art"));
+            Sprite(Texture("UI_EssenceBarFill", (u, v) => new Color(1f, 1f, 1f, Mathf.Clamp01(Dist(u, v))), w, h, "Assets/_Project/Art"));
+        }
+
         [MenuItem("Nullflame/Bake Decals")]
         public static void Bake()
         {
@@ -205,13 +227,13 @@ namespace Nullflame.EditorTools
             importer.SaveAndReimport();
         }
 
-        static Texture2D Texture(string name, System.Func<float, float, Color> pixel)
+        static Texture2D Texture(string name, System.Func<float, float, Color> pixel, int w = Res, int h = Res, string folder = Folder)
         {
-            var tex = new Texture2D(Res, Res, TextureFormat.RGBA32, false);
-            for (int y = 0; y < Res; y++)
-                for (int x = 0; x < Res; x++)
-                    tex.SetPixel(x, y, pixel((x + 0.5f) / Res, (y + 0.5f) / Res));
-            string path = $"{Folder}/{name}.png";
+            var tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+            for (int y = 0; y < h; y++)
+                for (int x = 0; x < w; x++)
+                    tex.SetPixel(x, y, pixel((x + 0.5f) / w, (y + 0.5f) / h));
+            string path = $"{folder}/{name}.png";
             File.WriteAllBytes(path, tex.EncodeToPNG());
             Object.DestroyImmediate(tex);
             AssetDatabase.ImportAsset(path);

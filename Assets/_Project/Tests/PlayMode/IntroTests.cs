@@ -11,7 +11,7 @@ namespace Nullflame.Tests
         [TearDown]
         public void TearDown() => Time.timeScale = 1f;
 
-        // New game from the title: Play runs the full intro.
+        // New game: the scene runs the full intro by itself (AD-032).
         static IEnumerator PlayFullIntro()
         {
             GameFlow.HasSeenIntro = false;
@@ -20,7 +20,6 @@ namespace Nullflame.Tests
 #endif
             yield return null;
             var flow = Flow.Find<GameFlow>();
-            flow.Play();
             Time.timeScale = 4f;
             for (float t = 0f; t < 60f && flow.State != FlowState.Playing; t += Time.deltaTime) yield return null;
             Time.timeScale = 1f;

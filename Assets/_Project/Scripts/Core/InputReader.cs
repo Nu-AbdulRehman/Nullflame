@@ -12,7 +12,6 @@ namespace Nullflame
         public bool ConsumeHeld { get; private set; }
         public bool ReverseHeld { get; private set; }
         public bool RewindHeld { get; private set; }
-        public bool PausePressed { get; private set; }
         public bool SkipPressed { get; private set; }
 
         bool simulated;
@@ -22,7 +21,7 @@ namespace Nullflame
         {
             simulated = true;
             Look = Move = Vector2.zero;
-            JumpPressed = PausePressed = SkipPressed = false;
+            JumpPressed = SkipPressed = false;
             ConsumeHeld = consume;
             ReverseHeld = reverse;
             RewindHeld = rewind;
@@ -38,14 +37,13 @@ namespace Nullflame
             if (kb == null)
             {
                 Move = Vector2.zero;
-                ConsumeHeld = ReverseHeld = RewindHeld = PausePressed = SkipPressed = false;
+                ConsumeHeld = ReverseHeld = RewindHeld = SkipPressed = false;
                 return;
             }
             Move = new Vector2(Axis(kb.dKey, kb.aKey), Axis(kb.wKey, kb.sKey));
             ConsumeHeld = kb.eKey.isPressed;
             ReverseHeld = kb.rKey.isPressed;
             RewindHeld = kb.qKey.isPressed;
-            PausePressed = kb.escapeKey.wasPressedThisFrame;
             SkipPressed = kb.spaceKey.wasPressedThisFrame;
         }
 
